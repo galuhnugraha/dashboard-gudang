@@ -6,7 +6,7 @@ import {
   Row, Avatar,Dropdown 
 } from 'antd';
 import { createUseStyles } from "react-jss";
-import { Link } from "react-router-dom";
+import { Link,useHistory } from "react-router-dom";
 
 const { Header, Content, Sider, Footer } = Layout;
 
@@ -32,11 +32,14 @@ const useStyles = createUseStyles({
 
 export const App = () => {
   const classes = useStyles();
-
+  let history = useHistory();
+  const logout = () => {
+    history.push("/login");
+  }
   const menu = (
     <Menu>
-      <Menu.Item key="0">
-        <button
+      <Menu.Item key="0" >
+        <button onClick={logout}
           style={{
             backgroundColor: "white",
             border: "none",
