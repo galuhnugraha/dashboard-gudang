@@ -9,15 +9,6 @@ export const Register = observer(() => {
   let history = useHistory();
   const store = useStore();
   const [loading, setLoading] = useState(false);
-  const [state,setState] = useState({
-    birth_day: new Date()
-  })
-
-  function setDate(newDate) {
-    setState({
-      birth_day: newDate
-    })
-  }
 
   const onFinish = values => {
     enterLoading(values);
@@ -113,7 +104,7 @@ export const Register = observer(() => {
                   placeholder="Name" />
               </Form.Item>
               <Form.Item
-                label="Birth Day"
+                label="Birth Date"
                 name="birthDate"
                 size={'large'}
                 rules={[{ required: true, message: 'Please input your Birth Day!' }]}
@@ -126,7 +117,7 @@ export const Register = observer(() => {
                   marginBottom: 0,
                   marginTop: 15
                 }}>
-                <Button style={{ backgroundColor: '#0000FF', color: 'white', borderRadius: 5 }}
+                <Button style={{ backgroundColor: '#132743', color: 'white', borderRadius: 5 }}
                   block
                   htmlType="submit"
                   loading={loading}

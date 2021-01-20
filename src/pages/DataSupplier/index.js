@@ -1,5 +1,5 @@
 import React from "react";
-import { Table,Breadcrumb, PageHeader, Card, Button,Space,message,Popconfirm } from 'antd';
+import { Table, Breadcrumb, PageHeader, Card, Button, Space, message, Popconfirm } from 'antd';
 import {
   PlusOutlined,
   EditOutlined,
@@ -98,7 +98,7 @@ export const DataSupplierScreen = () => {
         <span style={{ color: "#132743" }}>Data Supplier</span>
       </Breadcrumb.Item>
     </Breadcrumb>
-    <Card bordered={false} className={"shadow"} bodyStyle={{ padding: 0, marginTop: 25, borderRadius: 10, boxShadow: '0 0 10px  0  rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.10)' }}>
+    <Card bordered={false} className={"shadow"} bodyStyle={{ padding: 0, marginTop: 25, borderRadius: 5, boxShadow: '0 0 3px  0  rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.10)' }}>
       <PageHeader
         className={"card-page-header"}
         subTitle=""
@@ -115,12 +115,11 @@ export const DataSupplierScreen = () => {
         key="1"
         scroll={{ x: 1200 }}
         hasEmpty
-        size={"large"}
+        size="middle"
+        style={{paddingLeft: '12px'}}
         columns={columns}
         dataSource={data}
-        pagination={{
-          
-        }}
+        
       />
     </Card>
   </div>

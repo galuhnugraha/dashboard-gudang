@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { AppRoutes } from "../../routes/app";
-import { UserOutlined, HomeOutlined, ContainerOutlined, InboxOutlined, UsergroupAddOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import { UserOutlined, MenuUnfoldOutlined,UsergroupAddOutlined, HomeOutlined, ContainerOutlined, InboxOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import {
   Layout, Menu, Col,
   Row, Avatar, Dropdown
@@ -18,13 +18,13 @@ const useStyles = createUseStyles({
     margin: 16px;
   `,
   hideSidebarButton: `SettingOutlined 
-        font-size: 18px;
-		padding: 0 24px;
-		cursor: pointer;
-		color: #fff;
-		transition: color 0.3s;
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
     `,
-  hideSidebarButtonHovered: { "&:hover": `color: #fff;` },
+  hideSidebarButtonHovered: { "&:hover": `color: #1890ff;` },
 
 });
 
@@ -37,9 +37,25 @@ export const App = () => {
       history.push("/login");
     });
   }
+  const editProfile = () => {
+    history.push("/app/edit-profile");
+  }
+  
+
+  const [collapsed, setCollapsed] = useState(false);
   const menu = (
     <Menu>
-      <Menu.Item key="0" >
+      <Menu.Item defaultSelectedKeys={['profile']} key="0">
+        <button onClick={editProfile}
+          style={{
+            backgroundColor: "white",
+            border: "none",
+            textAlign: "center",
+            textDecoration: "none",
+          }}
+        >Edit Profile</button>
+      </Menu.Item>
+      <Menu.Item key="1" >
         <button onClick={logout}
           style={{
             backgroundColor: "white",
@@ -53,7 +69,8 @@ export const App = () => {
   );
 
   return (
-    <Layout theme={"light"}
+    <Layout
+      theme={"light"}
       className={"transparent"}
     >
       <Sider
@@ -63,17 +80,19 @@ export const App = () => {
           console.log(broken);
         }}
         style={{ background: '#132743' }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
-        }}
-        className="site-layout-background"
+        trigger={null} collapsible collapsed={collapsed}
       >
         <div className={classes.logo} />
         <Menu
           theme="dark"
           mode="inline"
           defaultSelectedKeys={['1']}
-          style={{ background: 'transparent' }}
+          style={{
+            backgroundColor: "transparent",
+            borderRightWidth: 0,
+            fontWeight: 400,
+            paddingLeft: 0,
+          }}
         >
           <Menu.Item key="1" style={{ color: 'white' }}>
             <Link to="/app/dashboard">
@@ -105,7 +124,13 @@ export const App = () => {
         <Header style={{ background: '#fff', padding: 0, boxShadow: '0 0 5px  0  rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.10)' }}>
           <Row type="flex" justify="space-between">
             <Col>
-              <MenuFoldOutlined style={{ fontSize: 18, marginLeft: 15 }} />
+              {!collapsed && <MenuFoldOutlined className={classes.hideSidebarButton} onClick={() => {
+                setCollapsed(true);
+              }} />}
+              {collapsed && <MenuUnfoldOutlined className={classes.hideSidebarButton} onClick={() => {
+                setCollapsed(false);
+              }} />}
+
             </Col>
             <Col>
               <div className="ant-dropdown-link" href="#" style={{ color: 'grey', display: 'flex', flexDirection: 'row', height: 50 }}>

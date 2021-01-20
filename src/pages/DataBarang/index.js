@@ -98,7 +98,7 @@ export const DataBarangScreen = () => {
         <span style={{ color: "#132743" }}>Data Barang</span>
       </Breadcrumb.Item>
     </Breadcrumb>
-    <Card bordered={false} className={"shadow"} bodyStyle={{ padding: 0, marginTop: 25, borderRadius: 10, boxShadow: '0 0 10px  0  rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.10)' }}>
+    <Card bordered={false} className={"shadow"} bodyStyle={{ padding: 0, marginTop: 25, borderRadius: 5, boxShadow: '0 0 3px  0  rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.10)' }}>
       <PageHeader
         className={"card-page-header"}
         subTitle=""
@@ -116,7 +116,7 @@ export const DataBarangScreen = () => {
         scroll={{ x: 1200 }}
         hasEmpty
         style={{ paddingLeft: '12px' }}
-        size={"large"}
+        size={"middle"}
         columns={columns}
         dataSource={data}
       />

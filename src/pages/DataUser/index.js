@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Table, Space, Popconfirm, message, Breadcrumb, PageHeader, Card, Button } from 'antd';
+import React, { useEffect, useState } from "react";
+import { Table, Space, Popconfirm, Form, Modal, Input, message, Breadcrumb, PageHeader, Card, Button } from 'antd';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -22,14 +22,71 @@ function cancel(e) {
 
 // const { Search } = Input;
 
-export const DataUserScreen = observer(() => {
+export const DataUserScreen = observer((initialData) => {
   const store = useStore();
-
+  const [form] = Form.useForm();
   useEffect(() => {
     store.user.getAll();
     store.user.setPage(1);
     store.user.setCurrentPage(10);
   }, [])
+
+  const [state, setState] = useState({
+    success: false,
+  });
+
+  useEffect(() => {
+    store.user.getAll();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function fetchData() {
+    await store.user.getAll();
+  }
+
+  const toggleSuccess = (() => {
+    setState({
+      success: !state.success,
+    });
+  })
+
+  async function editData(e) {
+    setState(prevState => ({
+      ...prevState,
+      success: true
+    }))
+    const data = {
+      email: e.email,
+      UserName: e.UserName,
+      phone: e.phone,
+      birthDate: e.birthDate
+    }
+    store.user.updateUser(data)
+      .then(res => {
+        message.success('Data Member Di Update!');
+        toggleSuccess();
+        fetchData();
+      })
+      .catch(err => {
+        message.error(`Error on Updating Member, ${err.message}`);
+        message.error(err.message);
+      });
+  }
+
+  const setEditMode = (value) => {
+    setState(prevState => ({
+      ...prevState,
+      success: true
+    }))
+    form.setFieldsValue({
+      isEdit: value.id,
+      success: true,
+      email: value.email,
+      UserName: value.UserName,
+      phone: value.phone,
+      birthDate: value.birthDate
+    })
+  }
 
   {
     const columns = [
@@ -61,7 +118,9 @@ export const DataUserScreen = observer(() => {
           <Space size="middle">
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               <div>
-                <EditOutlined />
+                <EditOutlined onClick={() => {
+                  setEditMode(record);
+                }} />
               </div>
               <Popconfirm
                 title="Are you sure to delete this task?"
@@ -103,6 +162,7 @@ export const DataUserScreen = observer(() => {
             </Button>,
           ]}
         />
+        {renderModal()}
         <Table
           rowKey={record => record.email}
           hasEmpty
@@ -124,5 +184,57 @@ export const DataUserScreen = observer(() => {
         />
       </Card>
     </div>
+  }
+  function renderModal() {
+    return <Modal visible={state.success}
+      closable={false}
+      confirmLoading={false}
+      destroyOnClose={true} title="Update Users"
+      okText="Save"
+      cancelText="Cancel"
+      bodyStyle={{ background: '#f7fafc' }}
+      onCancel={() => {
+        form.validateFields().then(values => {
+          form.resetFields();
+        });
+        toggleSuccess();
+      }}
+      onOk={() => {
+        form
+          .validateFields()
+          .then(values => {
+            editData(values);
+          })
+          .catch(info => {
+            // console.log('Validate Failed:', info);
+          });
+      }}>
+      <Form layout="vertical" form={form} className={'custom-form'} name="form_in_modal" initialValues={initialData}>
+        <Form.Item
+          label="Email"
+          name="email"
+          size={'large'}
+          rules={[{ required: true, message: 'Please input your Email!' }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Name"
+          name="UserName"
+          size={'large'}
+          rules={[{ required: true, message: 'Please input your Name!' }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Phone"
+          name="phone"
+          size={'large'}
+          rules={[{ required: true, message: 'Please input your phone!' }]}
+        >
+          <Input />
+        </Form.Item>
+      </Form>
+    </Modal>
   }
 });

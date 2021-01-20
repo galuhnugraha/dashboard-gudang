@@ -4,6 +4,7 @@ import {DataSupplierScreen} from "../pages/DataSupplier";
 import {DataUserScreen} from "../pages/DataUser";
 import {Dashboard} from "../pages/Dashboard/Dashboard";
 import {DataBarangScreen} from "../pages/DataBarang";
+import {EditProfile} from "../component/editProfile";
 
 export const AppRoutes = () => {
   return <Switch>
@@ -21,6 +22,9 @@ export const AppRoutes = () => {
     </Route>
     <Route path="/app/data-supplier" exact>
       <DataSupplierScreen/>
+    </Route>
+    <Route path="/app/edit-profile" exact>
+      <EditProfile />
     </Route>
   </Switch>
 };
