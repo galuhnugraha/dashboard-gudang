@@ -1,12 +1,13 @@
 import React from "react";
 import { AppRoutes } from "../../routes/app";
-import { UserOutlined, DashboardOutlined, ContainerOutlined, UsergroupAddOutlined } from '@ant-design/icons';
+import { UserOutlined, HomeOutlined, ContainerOutlined, InboxOutlined, UsergroupAddOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import {
   Layout, Menu, Col,
-  Row, Avatar,Dropdown 
+  Row, Avatar, Dropdown
 } from 'antd';
 import { createUseStyles } from "react-jss";
-import { Link,useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { useStore } from "../../utils/useStores";
 
 const { Header, Content, Sider, Footer } = Layout;
 
@@ -16,25 +17,25 @@ const useStyles = createUseStyles({
     background: rgba(255, 255, 255, 0.2);
     margin: 16px;
   `,
-  hideSidebarButton: `
-    font-size: 18px;
-    line-height: 64px;
-    padding: 0 24px;
-    cursor: pointer;
-    transition: color 0.3s;
+  hideSidebarButton: `SettingOutlined 
+        font-size: 18px;
+		padding: 0 24px;
+		cursor: pointer;
+		color: #fff;
+		transition: color 0.3s;
     `,
-  hideSidebarButtonHovered: {
-    '&:hover': `
-      color: #1890ff;
-    `
-  },
+  hideSidebarButtonHovered: { "&:hover": `color: #fff;` },
+
 });
 
 export const App = () => {
   const classes = useStyles();
   let history = useHistory();
+  const store = useStore();
   const logout = () => {
-    history.push("/login");
+    store.auth.logout().then((res) => {
+      history.push("/login");
+    });
   }
   const menu = (
     <Menu>
@@ -52,23 +53,31 @@ export const App = () => {
   );
 
   return (
-    <Layout>
+    <Layout theme={"light"}
+      className={"transparent"}
+    >
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
         onBreakpoint={broken => {
           console.log(broken);
         }}
-        style={{ background: '#0000FF' }}
+        style={{ background: '#132743' }}
         onCollapse={(collapsed, type) => {
           console.log(collapsed, type);
         }}
+        className="site-layout-background"
       >
         <div className={classes.logo} />
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} style={{ background: '#0000FF' }}>
+        <Menu
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={['1']}
+          style={{ background: 'transparent' }}
+        >
           <Menu.Item key="1" style={{ color: 'white' }}>
             <Link to="/app/dashboard">
-              <DashboardOutlined style={{ fontSize: 18 }} />
+              <HomeOutlined style={{ fontSize: 18 }} />
               <span>Dashboard</span>
             </Link>
           </Menu.Item>
@@ -86,18 +95,18 @@ export const App = () => {
           </Menu.Item>
           <Menu.Item key="4">
             <Link to="/app/data-barang">
-              <UserOutlined style={{ fontSize: 18 }} />
+              <InboxOutlined style={{ fontSize: 18 }} />
               <span>Data Barang</span>
             </Link>
           </Menu.Item>
         </Menu>
       </Sider>
       <Layout>
-        <Header style={{ background: '#fff', padding: 0 }}>
-          <Row type="flex" justify="end">
-            {/* <Col>
-              <p>test</p>
-            </Col> */}
+        <Header style={{ background: '#fff', padding: 0, boxShadow: '0 0 5px  0  rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.10)' }}>
+          <Row type="flex" justify="space-between">
+            <Col>
+              <MenuFoldOutlined style={{ fontSize: 18, marginLeft: 15 }} />
+            </Col>
             <Col>
               <div className="ant-dropdown-link" href="#" style={{ color: 'grey', display: 'flex', flexDirection: 'row', height: 50 }}>
                 <Dropdown overlay={menu} trigger={['click']}>
@@ -112,7 +121,7 @@ export const App = () => {
           style={{
             margin: '24px 16px',
             padding: 24,
-            background: '#fff',
+            // background: '#fff',
             height: 'calc(100vh - 64px)',
           }}
         >

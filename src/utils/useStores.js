@@ -3,16 +3,14 @@ import {Store} from "../store";
 import {useLocalStore} from "mobx-react-lite";
 
 const storeContext = React.createContext(null);
-const store = new Store();
+export const store = new Store(localStorage.getItem('id_token'));
 
 export const StoreProvider = ({ children }) => {
   const localStore = useLocalStore(() => {
-    console.log(store);
     return store;
   });
   return <storeContext.Provider value={localStore}>{children}</storeContext.Provider>
 };
-
 export const useStore = () => {
   const store = React.useContext(storeContext);
   if (!store) {

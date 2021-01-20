@@ -1,0 +1,108 @@
+/*@font-face {*/
+/*    font-family: 'Lorin';*/
+/*    src: local('assets/fonts/Lorin-Bold.eot');*/
+/*    src: local('assets/fonts/Lorin-Bold.woff2');*/
+/*    src: local('assets/fonts/Lorin-Bold.woff');*/
+/*    src: local('assets/fonts/Lorin-Bold.ttf');*/
+/*    src: local('assets/fonts/Lorin-Bold.svg#Lorin-Bold');*/
+/*    font-weight: 300;*/
+/*    font-style: normal;*/
+/*}*/
+
+.small-shadow {
+    box-shadow: 0 2px 5px 0 rgba(60, 66, 87, 0.05),
+      0 1px 1px 0 rgba(0, 0, 0, 0.05);
+  }
+  
+  .card-mission {
+    border: 3px solid #4682b4;
+    position: relative;
+  }
+  .red {
+    background-color: red !important;
+  }
+  .green {
+    background-color: green !important;
+  }
+  
+  .card-vision {
+    border: 3px solid #40e0d0;
+  
+    position: relative;
+  }
+  .ant-table-cell {
+    width: 10% !important;
+  }
+  
+  .card-culture {
+    border: 3px solid #3cb371;
+    position: relative;
+  }
+  
+  .card-mission-img {
+    position: absolute;
+    right: -5%;
+    bottom: -10%;
+    background-color: #4682b4;
+    border-radius: 50%;
+    padding: 5%;
+  }
+  
+  .modal-superadmin-vm {
+    width: 95% !important;
+    height: 90vh !important;
+    /*background-image: url(./assets/images/kanci.jpeg) !important;*/
+    top: 30px !important;
+  }
+  
+  .company-culture {
+    text-align: center;
+    font-family: Segoe Ui !important;
+    color: #3cb371;
+  }
+  
+  .company-mission {
+    text-align: center;
+    font-family: Segoe Ui !important;
+    color: #4682b4;
+  }
+  
+  .company-vision {
+    text-align: center;
+    font-family: Segoe Ui !important;
+    color: #40e0d0;
+  }
+  
+  .company-mission-span1 {
+    font-size: 1.8vw;
+  }
+  
+  .company-mission-span {
+    font-size: 2vw;
+  }
+  
+  .shadow {
+    box-shadow: 0 7px 14px 0 rgba(60, 66, 87, 0.05),
+      0 3px 6px 0 rgba(0, 0, 0, 0.05);
+  }
+  
+  .no-shadow {
+    box-shadow: none !important;
+  }
+  
+  .transparent {
+    background: transparent;
+  }
+  
+  .switch-wrapper-app {
+    position: relative;
+    height: 70vh;
+    width: auto;
+  }
+  
+  .switch-wrapper-app > div {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+  }
+  

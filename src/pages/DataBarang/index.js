@@ -1,7 +1,21 @@
 import React from "react";
-import { Table, Input } from 'antd';
+import { Table,Breadcrumb, PageHeader, Card, Button,Space,Popconfirm,message} from 'antd';
+import {
+  PlusOutlined,
+  EditOutlined,
+  DeleteOutlined
+} from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
-const { Search } = Input;
+function confirm(e) {
+  console.log(e);
+  message.success('Click on Yes');
+}
+
+function cancel(e) {
+  console.log(e);
+  message.error('Click on No');
+}
 
 export const DataBarangScreen = () => {
   const columns = [
@@ -32,7 +46,30 @@ export const DataBarangScreen = () => {
       key: 'operation',
       fixed: 'right',
       width: 100,
-      render: () => <span>action</span>,
+      render: () => {
+        return (
+          <div>
+            <Space size="middle">
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div>
+                  <EditOutlined />
+                </div>
+                <Popconfirm
+                  title="Are you sure to delete this task?"
+                  onConfirm={confirm}
+                  onCancel={cancel}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <div style={{ marginLeft: 8 }}>
+                    <DeleteOutlined />
+                  </div>
+                </Popconfirm>
+              </div>
+            </Space>
+          </div>
+        )
+      },
     },
   ];
 
@@ -51,14 +88,38 @@ export const DataBarangScreen = () => {
     },
   ];
 
-  return <div>
-    <div
-      style={{
-        display: "flex",
-        justifyContent: 'flex-end'
-      }}>
-      <Search placeholder="Search....." enterButton style={{ width: 200, marginTop: 25 }} />
-    </div>
-    <Table columns={columns} dataSource={data} scroll={{ x: 1300 }} style={{ marginTop: 20 }} bordered={true} />
+  return <div style={{ paddingLeft: 10, paddingRight: 10 }}>
+    <Breadcrumb>
+      <Breadcrumb.Item>
+        {/* Home */}
+        <Link to={'/app/dashboard'}>Home</Link>
+      </Breadcrumb.Item>
+      <Breadcrumb.Item>
+        <span style={{ color: "#132743" }}>Data Barang</span>
+      </Breadcrumb.Item>
+    </Breadcrumb>
+    <Card bordered={false} className={"shadow"} bodyStyle={{ padding: 0, marginTop: 25, borderRadius: 10, boxShadow: '0 0 10px  0  rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.10)' }}>
+      <PageHeader
+        className={"card-page-header"}
+        subTitle=""
+        title={"Barang"}
+        extra={[
+          <Button
+            key="1"
+          >
+            <PlusOutlined /> New
+            </Button>,
+        ]}
+      />
+      <Table
+        key="1"
+        scroll={{ x: 1200 }}
+        hasEmpty
+        style={{ paddingLeft: '12px' }}
+        size={"large"}
+        columns={columns}
+        dataSource={data}
+      />
+    </Card>
   </div>
 };

@@ -1,11 +1,15 @@
 import {action, observable} from 'mobx';
+import {AuthStore} from './auth';
+import {UserStore} from './users';
 
 export class Store {
-  @observable testObs = 'umu';
+  @observable token = "";
+  auth = new AuthStore(this);
+  user = new UserStore(this);
 
   @action
-  setTestObs() {
-    this.testObs = 'qwfp';
-    console.log(this.testObs, 'this.testObs');
-  };
+  setToken(token) {
+    this.http.setToken(token);
+    this.token = token;
+  }
 }
