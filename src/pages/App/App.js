@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { AppRoutes } from "../../routes/app";
-import { UserOutlined, MenuUnfoldOutlined,UsergroupAddOutlined, HomeOutlined, ContainerOutlined, InboxOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import { UserOutlined, MenuUnfoldOutlined, UsergroupAddOutlined, HomeOutlined, ContainerOutlined, InboxOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import {
   Layout, Menu, Col,
   Row, Avatar, Dropdown
@@ -40,7 +40,7 @@ export const App = () => {
   const editProfile = () => {
     history.push("/app/edit-profile");
   }
-  
+
 
   const [collapsed, setCollapsed] = useState(false);
   const menu = (
@@ -100,24 +100,28 @@ export const App = () => {
               <span>Dashboard</span>
             </Link>
           </Menu.Item>
-          <Menu.Item key="2">
-            <Link to="/app/data-user">
-              <UsergroupAddOutlined style={{ fontSize: 18 }} />
-              <span>Data User</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="3">
-            <Link to="/app/data-supplier">
-              <ContainerOutlined style={{ fontSize: 18 }} />
-              <span>Data Supplier</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="4">
-            <Link to="/app/data-barang">
-              <InboxOutlined style={{ fontSize: 18 }} />
-              <span>Data Barang</span>
-            </Link>
-          </Menu.Item>
+          <Menu.ItemGroup key="g2" title="Manage">
+            <Menu.Item key="2">
+              <Link to="/app/data-supplier">
+                <ContainerOutlined style={{ fontSize: 18 }} />
+                <span>Data Supplier</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="3">
+              <Link to="/app/data-barang">
+                <InboxOutlined style={{ fontSize: 18 }} />
+                <span>Data Barang</span>
+              </Link>
+            </Menu.Item>
+          </Menu.ItemGroup>
+          <Menu.ItemGroup key="g1" title="Setting">
+            <Menu.Item key="4">
+              <Link to="/app/data-user">
+                <UsergroupAddOutlined style={{ fontSize: 18 }} />
+                <span>User</span>
+              </Link>
+            </Menu.Item>
+          </Menu.ItemGroup>
         </Menu>
       </Sider>
       <Layout>

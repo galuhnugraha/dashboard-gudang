@@ -154,13 +154,13 @@ export const DataUserScreen = observer((initialData) => {
           className={"card-page-header"}
           subTitle=""
           title={"User"}
-          extra={[
-            <Button
-              key="1"
-            >
-              <PlusOutlined /> New
-            </Button>,
-          ]}
+        // extra={[
+        //   <Button
+        //     key="1"
+        //   >
+        //     <PlusOutlined /> New
+        //   </Button>,
+        // ]}
         />
         {renderModal()}
         <Table
@@ -208,7 +208,30 @@ export const DataUserScreen = observer((initialData) => {
           .catch(info => {
             // console.log('Validate Failed:', info);
           });
-      }}>
+      }}
+      footer={[
+        <Button onClick={() => {
+          form.validateFields().then(values => {
+            form.resetFields();
+          });
+          toggleSuccess();
+        }}
+        >
+          Close
+        </Button>,
+        <Button style={{backgroundColor: '#132743',color: 'white'}} onClick={() => {
+          form
+            .validateFields()
+            .then(values => {
+              editData(values);
+            })
+            .catch(info => {
+              // console.log('Validate Failed:', info);
+            });
+        }}>Save</Button>
+
+      ]}
+    >
       <Form layout="vertical" form={form} className={'custom-form'} name="form_in_modal" initialValues={initialData}>
         <Form.Item
           label="Email"
