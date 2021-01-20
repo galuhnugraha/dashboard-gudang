@@ -45,4 +45,7 @@ export class AuthStore {
     async logout() {
         localStorage.removeItem('token');
     }
+
+
+    
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Redirect, Route, Switch} from "react-router-dom";
 import {Login} from "../pages/Login/Login";
-import {Register} from "../pages/Register/Register";
+import {Register} from "../pages/Register";
 import {App} from "../pages/App/App";
 
 export const MainRoutes = () => {
