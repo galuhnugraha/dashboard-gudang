@@ -3,11 +3,12 @@ import {Redirect, Route, Switch} from "react-router-dom";
 import {Login} from "../pages/Login/Login";
 import {Register} from "../pages/Register";
 import {App} from "../pages/App/App";
+import PrivateRoute from "../component/PrivateRoute";
 
 export const MainRoutes = () => {
   return <Switch>
     <Route path="/" exact>
-      <Redirect to={"/app/dashboard"}/>
+      <Redirect to={"/login"}/>
     </Route>
     <Route path="/login" exact>
       <Login />
@@ -15,8 +16,9 @@ export const MainRoutes = () => {
     <Route path="/register" exact>
       <Register />
     </Route>
-    <Route path="/app">
+    {/* <Route path="/app">
       <App />
-    </Route>
+    </Route> */}
+    <PrivateRoute component={App} path="/app" />
   </Switch>;
 };
