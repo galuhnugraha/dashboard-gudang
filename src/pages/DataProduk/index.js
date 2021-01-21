@@ -101,7 +101,7 @@ export const DataProdukScreen = observer((initialData) => {
       success: true
     }))
     form.setFieldsValue({
-      isEdit: value.id,
+      isEdit: value._id,
       success: true,
       productType: value.productType,
       quantity: value.quantity,
