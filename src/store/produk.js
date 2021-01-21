@@ -5,6 +5,7 @@ import debounce from "lodash.debounce";
 export class ProdukStore {
   @observable isLoading = false;
   @observable data = [];
+  @observable warehouse = [];
   @observable currentPage = 1;
   @observable pageSize = 10;
   @observable maxLength = 0;
@@ -105,7 +106,7 @@ export class ProdukStore {
     let filterValue = this.selectedFilterValue;
     const token = localStorage.getItem("token")
     const data = await http.get(`/warehouse`).set({ 'authorization': `Bearer ${token}` });
-    this.data = data.body.data;
+    this.warehouse = data.body.data;
     this.maxLength = data.body.totalData;
     this.isLoading = false;
   }

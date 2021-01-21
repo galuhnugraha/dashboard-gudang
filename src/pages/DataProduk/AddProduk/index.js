@@ -4,12 +4,12 @@ import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
 import { observer } from "mobx-react-lite";
 
-export const AddProduk = observer(() => {
+export const AddProduk = observer((warehouse) => {
     const store = useStore();
     const [form] = Form.useForm();
     const history = useHistory();
     const [loading, setLoading] = useState(false);
-    const [xImg , setXImg] = useState('')
+    const [xImg, setXImg] = useState('')
     const [imgData, setImgData] = useState(null);
 
     const onFinish = values => {
@@ -22,7 +22,12 @@ export const AddProduk = observer(() => {
         reader.readAsDataURL(data);
         reader.onload = () => result(setImgData(reader.result), reader.result);
         reader.onerror = error => reject(error);
-    })
+    });
+
+    useEffect(() => {
+        store.products.getWarehouse();
+        console.log(store.products.data,'test')
+    }, [])
 
     const enterLoading = (e) => {
         setLoading(true);
@@ -37,8 +42,9 @@ export const AddProduk = observer(() => {
             sku: e.sku,
             quantity: e.quantity,
             selfing: e.selfing,
-            warehouseId: e.warehouseId
+            warehouseId: e._id
         }
+        console.log(data,'data guys');
         store.products.AddProduct(data).then(res => {
             message.success('Berhasil Add Product');
             setLoading(false);
@@ -217,7 +223,7 @@ export const AddProduk = observer(() => {
                     <Col lg={2} />
                     <Col lg={11}>
                         <Form.Item
-                            name="warehouseId"
+                            name="_id"
                             label="Warehouse"
                             rules={[
                                 {
@@ -227,15 +233,13 @@ export const AddProduk = observer(() => {
                             ]}
                         >
                             <Select placeholder="Select Warehouse" style={{ width: '95%' }}>
-                                <Select.Option value="jack">Jack</Select.Option>
-                                <Select.Option value="lucy">Lucy</Select.Option>
-                                <Select.Option value="tom">Tom</Select.Option>
+                                {store.products.warehouse.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
                             </Select>
                         </Form.Item>
                     </Col>
                 </Row>
                 <Form.Item label="Product Image" name="productImage" rules={[{ required: true, message: 'Please input file Image!' }]} >
-                    <input type='file' name="file" onChange={addImage}/>
+                    <input type='file' name="file" onChange={addImage} />
                 </Form.Item>
 
                 <Form.Item
