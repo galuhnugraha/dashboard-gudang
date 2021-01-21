@@ -36,7 +36,8 @@ export const AddProduk = observer(() => {
             pricePerUnit: e.pricePerUnit,
             sku: e.sku,
             quantity: e.quantity,
-            selfing: e.selfing
+            selfing: e.selfing,
+            warehouseId: e.warehouseId
         }
         store.products.AddProduct(data).then(res => {
             message.success('Berhasil Add Product');
@@ -216,7 +217,7 @@ export const AddProduk = observer(() => {
                     <Col lg={2} />
                     <Col lg={11}>
                         <Form.Item
-                            name="warehouse"
+                            name="warehouseId"
                             label="Warehouse"
                             rules={[
                                 {

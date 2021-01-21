@@ -98,4 +98,26 @@ export class ProdukStore {
     this.data = data.body.data;
     this.isLoading = false;
   }
+
+  @action
+  async getWarehouse() {
+    this.isLoading = true;
+    let filterValue = this.selectedFilterValue;
+    const token = localStorage.getItem("token")
+    const data = await http.get(`/warehouse`).set({ 'authorization': `Bearer ${token}` });
+    this.data = data.body.data;
+    this.maxLength = data.body.totalData;
+    this.isLoading = false;
+  }
+
+  @action
+  async getSupplier() {
+    this.isLoading = true;
+    let filterValue = this.selectedFilterValue;
+    const token = localStorage.getItem("token")
+    const data = await http.get(`/supliers`).set({ 'authorization': `Bearer ${token}` });
+    this.data = data.body.data;
+    this.maxLength = data.body.totalData;
+    this.isLoading = false;
+  }
 }
