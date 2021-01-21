@@ -4,12 +4,10 @@ import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
 import { observer } from "mobx-react-lite";
 
-export const AddProduk = observer((warehouse) => {
+export const AddProduk = observer(() => {
     const store = useStore();
-    const [form] = Form.useForm();
     const history = useHistory();
     const [loading, setLoading] = useState(false);
-    const [xImg, setXImg] = useState('')
     const [imgData, setImgData] = useState(null);
 
     const onFinish = values => {

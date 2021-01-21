@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { AppRoutes } from "../../routes/app";
-import { UserOutlined, MenuUnfoldOutlined, HomeOutlined, ContainerOutlined, InboxOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import { UserOutlined, MenuUnfoldOutlined, HomeOutlined,MenuFoldOutlined } from '@ant-design/icons';
 import {
   Layout, Menu, Col,
   Row, Avatar, Dropdown
@@ -37,15 +37,12 @@ export const App = () => {
       history.push("/login");
     });
   }
-  const editProfile = () => {
-    history.push("/app/edit-profile");
-  }
 
 
   const [collapsed, setCollapsed] = useState(false);
   const menu = (
     <Menu>
-      <Menu.Item defaultSelectedKeys={['profile']} key="0">
+      {/* <Menu.Item defaultSelectedKeys={['profile']} key="0">
         <button onClick={editProfile}
           style={{
             backgroundColor: "white",
@@ -54,7 +51,7 @@ export const App = () => {
             textDecoration: "none",
           }}
         >Edit Profile</button>
-      </Menu.Item>
+      </Menu.Item> */}
       <Menu.Item key="1" >
         <button onClick={logout}
           style={{

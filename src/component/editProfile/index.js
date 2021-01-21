@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { observer } from 'mobx-react-lite';
-import { useHistory } from "react-router-dom";
 import { Form, Input, PageHeader, Breadcrumb, Button, Card, DatePicker, message } from 'antd';
 import { useStore } from "../../utils/useStores";
 import { Link } from 'react-router-dom';
@@ -9,9 +8,7 @@ import {
 } from '@ant-design/icons';
 
 export const EditProfile = observer((initialData) => {
-  const history = useHistory();
   const store = useStore();
-  const [form] = Form.useForm();
   const [state, setState] = useState({
     success: false,
   });
@@ -30,21 +27,6 @@ export const EditProfile = observer((initialData) => {
       success: !state.success,
     });
   })
-
-  const setEditMode = (value) => {
-    setState(prevState => ({
-      ...prevState,
-      success: true
-    }))
-    form.setFieldsValue({
-      isEdit: value.id,
-      success: true,
-      email: value.email,
-      name: value.name,
-      phone: value.phone,
-      birthDate: value.birthDate
-    })
-  }
 
   async function editData(e) {
     setState(prevState => ({

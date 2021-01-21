@@ -36,7 +36,6 @@ export class ProdukStore {
   @action
   async getAll() {
     this.isLoading = true;
-    let filterValue = this.selectedFilterValue;
     const token = localStorage.getItem("token")
     const data = await http.get(`/products?pg=${this.currentPage}&lm=${this.pageSize}`).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
@@ -103,7 +102,6 @@ export class ProdukStore {
   @action
   async getWarehouse() {
     this.isLoading = true;
-    let filterValue = this.selectedFilterValue;
     const token = localStorage.getItem("token")
     const data = await http.get(`/warehouse`).set({ 'authorization': `Bearer ${token}` });
     this.warehouse = data.body.data;
@@ -114,7 +112,6 @@ export class ProdukStore {
   @action
   async getSupplier() {
     this.isLoading = true;
-    let filterValue = this.selectedFilterValue;
     const token = localStorage.getItem("token")
     const data = await http.get(`/supliers`).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;

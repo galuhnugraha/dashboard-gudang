@@ -245,6 +245,7 @@ export const DataProdukScreen = observer((initialData) => {
             <Search
               placeholder="Search...."
               style={{ width: 200 }}
+              key={row => row._id}
               onSearch={(value) => {
                 store.products.selectedFilterValue = value;
                 store.products.setPage(1);
@@ -267,8 +268,7 @@ export const DataProdukScreen = observer((initialData) => {
         />
         {renderModal()}
         <Table
-          rowKey={record => record.id}
-          key="1"
+          rowKey={record => record._id}
           hasEmpty
           style={{ paddingLeft: '12px' }}
           size={"middle"}
