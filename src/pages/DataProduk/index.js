@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Table, Space, Popconfirm, Form, Modal, Row, Col, Input, message, Breadcrumb, PageHeader, Card, Button } from 'antd';
+import {
+  Table,
+  Space,
+  Popconfirm, Input,
+  Form, Modal,
+  Row, Col,
+  message, Breadcrumb,
+  PageHeader, Card, Button
+} from 'antd';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -34,6 +42,9 @@ export const DataProdukScreen = observer((initialData) => {
   const [state, setState] = useState({
     success: false,
   });
+
+  const { Search } = Input;
+
 
   useEffect(() => {
     store.products.getAll();
@@ -231,6 +242,19 @@ export const DataProdukScreen = observer((initialData) => {
           subTitle=""
           title={"Produk"}
           extra={[
+            <Search
+              placeholder="Search...."
+              style={{ width: 200 }}
+              onSearch={(value) => {
+                store.products.selectedFilterValue = value;
+                store.products.setPage(1);
+                // store.member.search(value);
+              }}
+              onChange={event => {
+                store.products.selectedFilterValue = event.target.value;
+                store.products.setPageDebounced();
+              }}
+            />,
             <Button
               key="1"
               onClick={() => {
@@ -238,7 +262,7 @@ export const DataProdukScreen = observer((initialData) => {
               }}
             >
               <PlusOutlined /> New
-          </Button>,
+          </Button>
           ]}
         />
         {renderModal()}
