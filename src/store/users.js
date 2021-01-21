@@ -8,7 +8,6 @@ export class UserStore {
     @observable currentPage = 1;
     @observable pageSize = 10;
     @observable maxLength = 0;
-    @observable editData = '';
 
     constructor(context) {
         this.context = context;
@@ -36,10 +35,10 @@ export class UserStore {
     }
 
     @action
-    updateUser = async (data) => {
+    updateUser = async (data,id) => {
       this.isLoading = true;
       const token = localStorage.getItem("token")
-      return http.put(`/users/update?id=`).set({ 'authorization': `Bearer ${token}` }).send(data)
+      return http.put(`/users/update?id=${id}`).set({ 'authorization': `Bearer ${token}` }).send(data)
         .then((res) => {
           this.isLoading = false;
           return res;

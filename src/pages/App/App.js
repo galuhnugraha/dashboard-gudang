@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { AppRoutes } from "../../routes/app";
-import { UserOutlined, MenuUnfoldOutlined, UsergroupAddOutlined, HomeOutlined, ContainerOutlined, InboxOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import { UserOutlined, MenuUnfoldOutlined, HomeOutlined, ContainerOutlined, InboxOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import {
   Layout, Menu, Col,
   Row, Avatar, Dropdown
@@ -72,6 +72,7 @@ export const App = () => {
     <Layout
       theme={"light"}
       className={"transparent"}
+      style={{height: '100vh'}}
     >
       <Sider
         breakpoint="lg"
@@ -79,7 +80,7 @@ export const App = () => {
         onBreakpoint={broken => {
           console.log(broken);
         }}
-        style={{ background: '#132743' }}
+        style={{ background: '#132743'}}
         trigger={null} collapsible collapsed={collapsed}
       >
         <div className={classes.logo} />
@@ -103,25 +104,23 @@ export const App = () => {
           <Menu.ItemGroup key="g2" title="Manage">
             <Menu.Item key="2">
               <Link to="/app/data-supplier">
-                <ContainerOutlined style={{ fontSize: 18 }} />
+                {/* <ContainerOutlined style={{ fontSize: 18 }} /> */}
                 <span>Data Supplier</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="3">
               <Link to="/app/data-barang">
-                <InboxOutlined style={{ fontSize: 18 }} />
+                {/* <InboxOutlined style={{ fontSize: 18 }} /> */}
                 <span>Data Barang</span>
               </Link>
             </Menu.Item>
           </Menu.ItemGroup>
-          <Menu.ItemGroup key="g1" title="Setting">
-            <Menu.Item key="4">
-              <Link to="/app/data-user">
-                <UsergroupAddOutlined style={{ fontSize: 18 }} />
-                <span>User</span>
-              </Link>
-            </Menu.Item>
-          </Menu.ItemGroup>
+          <Menu.Item key="4">
+            <Link to="/app/data-produk">
+              {/* <UserOutlined style={{ fontSize: 18 }} /> */}
+              <span>Data Produk</span>
+            </Link>
+          </Menu.Item>
         </Menu>
       </Sider>
       <Layout>

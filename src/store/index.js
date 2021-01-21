@@ -1,11 +1,13 @@
 import {action, observable} from 'mobx';
 import {AuthStore} from './auth';
+import { ProdukStore } from './produk';
 import {UserStore} from './users';
 
 export class Store {
   @observable token = "";
   auth = new AuthStore(this);
   user = new UserStore(this);
+  products = new ProdukStore(this);
 
   @action
   setToken(token) {
