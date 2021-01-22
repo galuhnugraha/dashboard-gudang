@@ -23,7 +23,7 @@ export const AddWarehouse = observer(() => {
         store.warehouse.AddWarehouse(data).then(res => {
             message.success('Berhasil Add Product');
             setLoading(false);
-            history.push("/app/data-produk");
+            history.push("/app/data-warehouse");
         }).catch(err => {
             message.error(err.message);
             setLoading(false);

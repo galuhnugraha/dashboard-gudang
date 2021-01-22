@@ -31,7 +31,6 @@ export const WarehouseScreen = observer((initialData) => {
     success: false,
   });
 
-  const { Option } = Select;
   const [items, setItems] = useState([])
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -42,7 +41,7 @@ export const WarehouseScreen = observer((initialData) => {
     // eslint - disable - next - line react - hooks / exhaustive - deps
   }, []);
   async function fetchData() {
-    await store.warehouse.getWarehouse()
+    await store.warehouse.getWarehouse();
   }
 
   async function checkWarehouse(id) {
@@ -276,7 +275,7 @@ export const WarehouseScreen = observer((initialData) => {
           label="Warehouse Location"
           name="warehosueLocation"
           size={'large'}
-          rules={[{ required: true, message: 'Please input your Product Type!' }]}
+          rules={[{ required: true, message: 'Please input your Warehosue Location!' }]}
         >
           <Input style={{ width: '98%' }} />
         </Form.Item>

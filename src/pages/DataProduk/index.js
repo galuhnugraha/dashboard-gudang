@@ -94,7 +94,7 @@ export const DataProdukScreen = observer((initialData) => {
     if (e.isEdit) {
       store.products.updateProduct(e.isEdit, data)
         .then(res => {
-          message.success('Data Member Di Update!');
+          message.success('Data Produk Di Update!');
           toggleSuccess();
           fetchData();
         })
