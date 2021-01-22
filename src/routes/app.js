@@ -8,6 +8,7 @@ import {EditProfile} from "../component/editProfile";
 import { AddProduk } from "../pages/DataProduk/AddProduk";
 import { WarehouseScreen } from "../pages/Warehouse";
 import {AddWarehouse} from "../pages/Warehouse/addWarehouse";
+import {AddSupplierScreen} from "../pages/DataSupplier/AddSupplier";
 
 export const AppRoutes = () => {
   return <Switch>
@@ -25,6 +26,9 @@ export const AppRoutes = () => {
     </Route>
     <Route path="/app/data-supplier" exact>
       <DataSupplierScreen/>
+    </Route>
+    <Route path="/app/input-supplier" exact>
+      <AddSupplierScreen />
     </Route>
     <Route path="/app/edit-profile" exact>
       <EditProfile />

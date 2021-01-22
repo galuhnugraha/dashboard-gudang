@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Table, Breadcrumb, PageHeader,Input, Card, Button, Space, message, Popconfirm } from 'antd';
+import React, { useEffect, useState } from "react";
+import { Table, Breadcrumb, PageHeader, Select, Input, Form, Modal, Card, Button, Space, message, Popconfirm } from 'antd';
 import {
   PlusOutlined,
   EditOutlined,
@@ -19,14 +19,100 @@ function cancel(e) {
   message.error('Click on No');
 }
 
-export const DataSupplierScreen = observer(() => {
+export const DataSupplierScreen = observer((initialData) => {
   const store = useStore();
   const history = useHistory();
+  const [form] = Form.useForm();
   const { Search } = Input;
+  const [state, setState] = useState({
+    success: false,
+  });
 
   useEffect(() => {
     store.supliers.getSupplier();
   }, []);
+
+  async function fetchData() {
+    await store.warehouse.getWarehouse();
+  }
+
+  function confirm(_id) {
+    store.supliers.deleteSupplier(_id).then((res) => {
+      message.success('Success delete Supplier')
+      history.push('/app/data-supplier');
+      fetchData();
+    }).catch(err => {
+      // message.error(err.response.body.message)
+    })
+  }
+
+  const deleteClick = (_id) => {
+    confirm(_id);
+  }
+
+  const setEditMode = (value) => {
+    setState(prevState => ({
+      ...prevState,
+      success: true
+    }))
+    const halo = value.suplierProduct.map(result => {
+      const product = [
+        {
+          productName: result.productName,
+          price: result.price
+        }
+      ]
+      console.log(product)
+      return result.productName
+    })
+    form.setFieldsValue(
+      {
+        isEdit: value._id,
+        success: true,
+        suplierName: value.suplierName,
+        companyName: value.companyName,
+        suplierAddress: value.suplierAddress.address,
+        suplierPhone: value.suplierPhone,
+        suplierProduct: halo
+      })
+    console.log(typeof value.suplierName)
+  }
+
+  const toggleSuccess = (() => {
+    setState({
+      success: !state.success,
+    });
+  })
+
+  async function editData(e) {
+    const suplierProduct2 = [{
+      productName: e.suplierProduct,
+      price: 12312312313
+    }]
+    const suplierAddress2 = {
+      address: e.suplierAddress,
+    }
+    const data = {
+      suplierName: e.suplierName,
+      companyName: e.companyName,
+      suplierAddress: suplierAddress2,
+      suplierPhone: e.suplierPhone,
+      suplierProduct: suplierProduct2
+    }
+
+    if (e.isEdit) {
+      store.supliers.updateSupplier(e.isEdit, data)
+        .then(res => {
+          message.success('Data Supplier Di Update!');
+          toggleSuccess();
+          fetchData();
+        })
+        .catch(err => {
+          message.error(`Error on Updating Supplier, ${err.message}`);
+          message.error(err.message);
+        });
+    }
+  }
 
   {
     const columns = [
@@ -44,9 +130,9 @@ export const DataSupplierScreen = observer(() => {
       },
       {
         title: 'Supplier Address',
-        dataIndex: 'suplierAddress.address',
-        key: 'suplierAddress.address',
-        render: (text,record) => <span>{record.suplierAddress['address']}</span>,
+        dataIndex: 'suplierAddress',
+        key: 'suplierAddress',
+        render: (text, record) => <span>{record.suplierAddress.address}</span>,
       },
       {
         title: 'Supplier Phone',
@@ -56,10 +142,10 @@ export const DataSupplierScreen = observer(() => {
       {
         title: 'Suplier Product',
         width: 150,
-        dataIndex: 'suplierProduct.productName',
-        key: 'suplierProduct.productName',
-        render: (text,record) => <span >{record.suplierProduct.map((e) => {
-          return <p style={{width: 250}}>{e.productName}</p>
+        dataIndex: 'suplierProduct',
+        key: 'suplierProduct',
+        render: (text, record) => <span >{record.suplierProduct.map((e) => {
+          return <p style={{ width: 250 }}>{e.productName}</p>
         })}</span>
       },
       {
@@ -69,11 +155,16 @@ export const DataSupplierScreen = observer(() => {
           <Space size="middle">
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               <div>
-                <EditOutlined />
+                <EditOutlined onClick={() => {
+                  setEditMode(record)
+                }} />
               </div>
               <Popconfirm
                 title="Are you sure to delete this task?"
                 onCancel={cancel}
+                onConfirm={() => {
+                  deleteClick(record._id)
+                }}
                 okText="Yes"
                 cancelText="No"
               >
@@ -110,11 +201,15 @@ export const DataSupplierScreen = observer(() => {
             />,
             <Button
               key="1"
+              onClick={() => {
+                history.push("/app/input-supplier")
+              }}
             >
               <PlusOutlined /> New
           </Button>
           ]}
         />
+        {renderModal()}
         <Table
           rowKey={record => record._id}
           hasEmpty
@@ -126,5 +221,77 @@ export const DataSupplierScreen = observer(() => {
         />
       </Card>
     </div>
+  }
+  function renderModal() {
+    return <Modal visible={state.success}
+      closable={false}
+      confirmLoading={false}
+      destroyOnClose={true} title="Update Supplier"
+      okText="Save"
+      cancelText="Cancel"
+      bodyStyle={{ background: '#f7fafc' }}
+      onCancel={() => {
+        form.validateFields().then(values => {
+          form.resetFields();
+        });
+        toggleSuccess();
+      }}
+      onOk={() => {
+        form
+          .validateFields()
+          .then(values => {
+            editData(values);
+          })
+          .catch(info => {
+            // console.log('Validate Failed:', info);
+          });
+      }}
+    >
+      <Form layout="vertical" form={form} className={'custom-form'} name="form_in_modal" initialValues={initialData}>
+        <Form.Item name="isEdit" hidden={true}>
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Supplier Name"
+          name="suplierName"
+          size={'large'}
+          rules={[{ required: true, message: 'Please input your Product Name!' }]}
+        >
+          <Input style={{ width: '98%' }} />
+        </Form.Item>
+        <Form.Item
+          label="Company Name"
+          name="companyName"
+          size={'large'}
+          rules={[{ required: true, message: 'Please input your Product Type!' }]}
+        >
+          <Input style={{ width: '98%' }} />
+        </Form.Item>
+        <Form.Item
+          label="Supplier Address"
+          name="suplierAddress"
+          size={'large'}
+          rules={[{ required: true, message: 'Please input your Product Type!' }]}
+        >
+          <Input style={{ width: '98%' }} />
+        </Form.Item>
+        <Form.Item
+          label="Supplier Phone"
+          name="suplierPhone"
+          size={'large'}
+          rules={[{ required: true, message: 'Please input your Product Type!' }]}
+        >
+          <Input style={{ width: '98%' }} />
+        </Form.Item>
+        <Form.Item
+          label="Supplier Product"
+          name="suplierProduct"
+          size={'large'}
+          rules={[{ required: true, message: 'Please input your Product Type!' }]}
+        >
+          <Input style={{ width: '98%' }} />
+        </Form.Item>
+      </Form>
+    </Modal>
   }
 });
