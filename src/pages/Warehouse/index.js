@@ -28,26 +28,27 @@ export const WarehouseScreen = observer((initialData) => {
   const [state, setState] = useState({
     success: false,
   });
-  const [items , setitems] = useState([])
+  const [items, setItems] = useState([])
   useEffect(() => {
-    store.warehouse.getWarehouse()
-    getDataWarehouse()
-    console.log(items)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-
-  const getDataWarehouse = async () => {
     const token = localStorage.getItem("token")
-    const data = await http.get(`/warehouse`).set({ 'authorization': `Bearer ${token}` });
-    console.log(data.body.data)
-    setitems(data.body.data)
-    console.log(items)
+    http.get(`/warehouse`).set({ 'authorization': `Bearer ${token}` }).then((r) => {
+      setItems(r.body.data)
+    })
+    store.warehouse.getWarehouse()
+    // eslint - disable - next - line react - hooks / exhaustive - deps
+  }, []);
+  async function fetchData() {
+    await store.warehouse.getWarehouse()
   }
 
-  function fetchData() {
-    store.warehouse.getWarehouse()
+  async function checkWarehouse(id) {
+    const datas = await JSON.stringify(id) == "6009bfd3ca1eb1370d332472"
+    return datas
   }
+
+  const selectedWarehouse = items.find(checkWarehouse)
+
+  console.log(selectedWarehouse?.items)
 
   function confirm(_id) {
     store.warehouse.deleteWarehouse(_id).then((res) => {
@@ -185,7 +186,7 @@ export const WarehouseScreen = observer((initialData) => {
           style={{ paddingLeft: '12px' }}
           size={"small"}
           columns={columns}
-          dataSource={store.warehouse.items}
+          dataSource={selectedWarehouse?.items}
         />
       </Card>
     </div>
