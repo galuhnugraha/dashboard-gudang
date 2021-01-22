@@ -5,7 +5,8 @@ import {
   Space,
   Popconfirm, Input,
   message, Breadcrumb,
-  PageHeader, Card, Button, Modal, Form
+  PageHeader, Card, Button, Modal, Form,
+  Select
 } from 'antd';
 import {
   DeleteOutlined,
@@ -15,6 +16,7 @@ import {
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../utils/useStores";
 import { observer } from "mobx-react-lite";
+import { appConfig } from "../config/app";
 
 function cancel(e) {
   console.log(e);
@@ -28,6 +30,8 @@ export const WarehouseScreen = observer((initialData) => {
   const [state, setState] = useState({
     success: false,
   });
+
+  const { Option } = Select;
   const [items, setItems] = useState([])
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -118,6 +122,43 @@ export const WarehouseScreen = observer((initialData) => {
         key: 'productType',
       },
       {
+        title: 'Quantity',
+        dataIndex: 'quantity',
+        key: 'quantity',
+      },
+      {
+        title: 'Rack',
+        dataIndex: 'rack',
+        key: 'rack',
+      },
+      {
+        title: 'selfing',
+        dataIndex: 'selfing',
+        key: 'selfing',
+      },
+      {
+        title: 'Location',
+        dataIndex: 'location',
+        key: 'location',
+      },
+      {
+        title: 'SKU',
+        dataIndex: 'sku',
+        key: 'sku',
+      },
+      {
+        title: 'Grosir Price',
+        dataIndex: 'grosirPrice',
+        key: 'grosirPrice',
+        render: (record) => <span>Rp.{record}</span>
+      },
+      {
+        title: 'Price PerUnit',
+        dataIndex: 'pricePerUnit',
+        key: 'pricePerUnit',
+        render: (record) => <span>Rp.{record}</span>
+      },
+      {
         title: 'Action',
         key: 'action',
         render: (text, record) => (
@@ -176,7 +217,10 @@ export const WarehouseScreen = observer((initialData) => {
               }}
             >
               <PlusOutlined /> New
-              </Button>
+              </Button>,
+            <Select placeholder="Select Warehouse" style={{ width: 100 }}>
+              {store.warehouse.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
+            </Select>
           ]}
         />
         {renderModal()}
