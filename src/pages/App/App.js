@@ -110,6 +110,12 @@ export const App = () => {
               <span>Data Produk</span>
             </Link>
           </Menu.Item>
+          <Menu.Item key="5">
+            <Link to="/app/data-warehouse">
+              {/* <UserOutlined style={{ fontSize: 18 }} /> */}
+              <span>Data Warehouse</span>
+            </Link>
+          </Menu.Item>
         </Menu>
       </Sider>
       <Layout>

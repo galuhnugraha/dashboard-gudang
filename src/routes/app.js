@@ -6,6 +6,8 @@ import {Dashboard} from "../pages/Dashboard/Dashboard";
 import {DataBarangScreen} from "../pages/DataBarang";
 import {EditProfile} from "../component/editProfile";
 import { AddProduk } from "../pages/DataProduk/AddProduk";
+import { WarehouseScreen } from "../pages/Warehouse";
+import {AddWarehouse} from "../pages/Warehouse/addWarehouse";
 
 export const AppRoutes = () => {
   return <Switch>
@@ -29,6 +31,12 @@ export const AppRoutes = () => {
     </Route>
     <Route path="/app/input-product" exact>
       <AddProduk />
+    </Route>
+    <Route path="/app/data-warehouse">
+      <WarehouseScreen />
+    </Route>
+    <Route path="/app/input-warehouse">
+      <AddWarehouse />
     </Route>
   </Switch>
 };
