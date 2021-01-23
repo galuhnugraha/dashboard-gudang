@@ -6,7 +6,7 @@ import {
   Form, Modal,
   Row, Col,
   message, Breadcrumb,
-  PageHeader, Card, Button
+  PageHeader, Card, Button,Select
 } from 'antd';
 import {
   DeleteOutlined,
@@ -48,6 +48,7 @@ export const DataProdukScreen = observer((initialData) => {
 
   useEffect(() => {
     store.products.getAll();
+    store.warehouse.getWarehouse()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -263,7 +264,10 @@ export const DataProdukScreen = observer((initialData) => {
               }}
             >
               <PlusOutlined /> New
-          </Button>
+          </Button>,
+            <Select placeholder="Select Warehouse" style={{ width: 100 }}>
+              {store.warehouse.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
+            </Select>
           ]}
         />
         {renderModal()}

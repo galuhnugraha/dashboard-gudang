@@ -164,29 +164,7 @@ export const AddProduk = observer(() => {
                         </Form.Item>
                     </Col>
                 </Row>
-                <Row>
-                    <Col lg={11}>
-                        <Form.Item
-                            name="supplier"
-                            label="Supplier"
-
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please Input Your Grosir Supplier!',
-                                },
-                            ]}
-                        >
-                            <Select placeholder="Select Supplier" style={{ width: '98%' }}>
-                                <Select.Option value="jack">Jack</Select.Option>
-                                <Select.Option value="lucy">Lucy</Select.Option>
-                                <Select.Option value="tom">Tom</Select.Option>
-                            </Select>
-                        </Form.Item>
-                    </Col>
-                    <Col lg={2} />
-                    <Col lg={11}>
-                        <Form.Item
+                <Form.Item
                             name="_id"
                             label="Warehouse"
                             // rules={[
@@ -196,12 +174,10 @@ export const AddProduk = observer(() => {
                             //     },
                             // ]}
                         >
-                            <Select placeholder="Select Warehouse" style={{ width: '95%' }}>
+                            <Select placeholder="Select Warehouse" style={{ width: '98%' }}>
                                 {store.warehouse.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
                             </Select>
                         </Form.Item>
-                    </Col>
-                </Row>
                 <Form.Item label="Product Image" name="productImage" rules={[{ required: true, message: 'Please input file Image!' }]} >
                     <input type='file' name="file" onChange={addImage} />
                 </Form.Item>

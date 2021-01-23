@@ -10,6 +10,7 @@ export class ProdukStore {
   @observable pageSize = 10;
   @observable maxLength = 0;
   @observable selectedFilterValue = '';
+  @observable idWarehouse = '';
 
   @action
   setPage(page = 1) {
@@ -37,7 +38,7 @@ export class ProdukStore {
   async getAll() {
     this.isLoading = true;
     const token = localStorage.getItem("token")
-    const data = await http.get(`/products?pg=${this.currentPage}&lm=${this.pageSize}`).set({ 'authorization': `Bearer ${token}` });
+    const data = await http.get(`/products?pg=${this.currentPage}&lm=${this.pageSize}&warehouseID=${this.idWarehouse}`).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
     this.maxLength = data.body.totalData;
     this.isLoading = false;
