@@ -27,7 +27,8 @@ export const WarehouseScreen = observer((initialData) => {
   const store = useStore();
   const history = useHistory();
   const [form] = Form.useForm();
-  const [wId , setWid] = useState('')
+  const [wId, setWid] = useState('')
+  const [datasSource, setDatasSource] = useState([])
   const [state, setState] = useState({
     success: false,
   });
@@ -46,20 +47,38 @@ export const WarehouseScreen = observer((initialData) => {
   }
 
 
-  const setWarehouseId = (value) =>  {
-    setWid(value)
-    console.log(wId)
-  }
-
-  async function checkWarehouse(id) {
-    const datas = await JSON.stringify(id) == '600d6876ca066d00152b41a3'
+  function checkWarehouse(id) {
+    const datas = id._id === wId
     return datas
   }
-
   const selectedWarehouse = items.find(checkWarehouse)
+  console.log(selectedWarehouse?.items)
 
-  console.log(selectedWarehouse?.items[0].product?.productName)
-  // console.log(warehouseToObject)
+
+
+  const hero = selectedWarehouse?.items.map(r => {
+    const myhero = {
+      createdAt: r.product.createdAt,
+      grosirPrice: r.product.grosirPrice,
+      location: r.product.location,
+      pricePerUnit: r.product.pricePerUnit,
+      productImage: r.product.productImage,
+      productName: r.product.productName,
+      productType: r.product.productType,
+      quantity: r.product.quantity,
+      rack: r.product.rack,
+      selfing: r.product.selfing,
+      sku: r.product.sku,
+      suplierId: r.product.suplierId,
+      updatedAt: r.product.updatedAt,
+      userId: r.product.userId,
+      warehouseId: r.product.warehouseId,
+      warehouseName: r.product.warehouseName,
+      status: r.status
+    }
+    console.log(myhero)
+    return myhero
+  })
 
   function confirm(_id) {
     store.warehouse.deleteWarehouse(_id).then((res) => {
@@ -225,9 +244,9 @@ export const WarehouseScreen = observer((initialData) => {
             >
               <PlusOutlined /> New
               </Button>,
-            <Select placeholder="Select Warehouse" style={{ width: 100 }} onChange={setWarehouseId}>
+            <Select placeholder="Select Warehouse" style={{ width: 100 }} onChange={(value) => setWid(value)}>
               {/* {store.warehouse.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)} */}
-              {items.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)})}
+              {items.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
             </Select>
           ]}
         />
@@ -238,7 +257,7 @@ export const WarehouseScreen = observer((initialData) => {
           style={{ paddingLeft: '12px' }}
           size={"small"}
           columns={columns}
-          dataSource={selectedWarehouse?.items}
+          dataSource={hero}
         />
       </Card>
     </div>
