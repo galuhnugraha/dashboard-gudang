@@ -9,14 +9,11 @@ export class ProdukStore {
   @observable isLoading = false;
   @observable data = [];
   @observable warehouse = [];
-  @observable currentPage = 1;
-  @observable pageSize = 10;
   @observable maxLength = 0;
   @observable query = {
-    page: 1,
-    pageSize: 10,
-    warehouseName: '',
-    products: ''
+    pg: 1,
+    lm: 10,
+    warehouseID: '',
   }
 
   @action
@@ -42,8 +39,12 @@ export class ProdukStore {
   }
 
   @action
-  async getAll() {
+  async getAll(filter) {
+    if(filter != null){
+      this.query.filter = filter; 
+    }
     this.isLoading = true;
+    console.log(qs.stringify(this.query));
     const token = localStorage.getItem("token")
     const data = await http.get(this.baseUrl + '?' + qs.stringify(this.query)).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;

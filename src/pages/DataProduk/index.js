@@ -33,14 +33,15 @@ export const DataProdukScreen = observer((initialData) => {
   const history = useHistory();
   const [imgData, setImgData] = useState(null);
   const [xImg, setXImg] = useState('')
+  const [wid, setWid] = useState([])
   const [filterModal, setFilterModal] = useState(false);
   const [filterQuery, setFilterQuery] = useState({});
 
   const [state, setState] = useState({
     success: false,
-    warehouseName: '',
-    products: ''
+    warehouseID: '',
   });
+
 
   async function fetchData() {
     store.products.getAll();
@@ -49,10 +50,10 @@ export const DataProdukScreen = observer((initialData) => {
 
   useEffect(() => {
     fetchData();
-    return() =>{
-      store.products.query.products = ''
-      store.products.query.page = 1;
-      store.products.query.pageSize = 10;
+    return () => {
+      store.products.query.pg = 1;
+      store.products.query.lm = 10;
+
     }
   }, [filterQuery]);
 
@@ -136,29 +137,34 @@ export const DataProdukScreen = observer((initialData) => {
     });
   })
 
-  function onOkFilter() {
-    if(state.products){
-      store.products.query.products = state.products
-      fetchData()
-    }
 
-    if(state.warehouseId !== ''){
-      setFilterQuery({
-        ...filterQuery,
-        warehouseName : state.warehouseName
-      })
-    }
+  // store.warehouse.data.map(d => {
+  //     console.log(d._id)
+  // })
+
+
+
+  function onOkFilter(value) {
+    // console.log(value)
+    store.products.query.warehouseID = state.warehouseID;
+    setFilterQuery({
+      ...filterQuery,
+      warehouseID: state.warehouseID
+    })
+
     setFilterModal(false);
   }
 
-  function resetFilter(){
+  function resetFilter() {
     form.validateFields().then((values) => {
+      console.log(values)
       form.resetFields();
     });
-    setState({ 
-      warehouseId: '',
+
+    setState({
+      warehouseID: '',
     });
-    store.products.query.warehouseId = ''
+    store.products.query.warehouseID = ''
     delete filterQuery['warehouse']
     setFilterQuery({
       ...filterQuery,
@@ -184,14 +190,16 @@ export const DataProdukScreen = observer((initialData) => {
         <Button key="back" onClick={() => setFilterModal(false)}>
           Cancel
       </Button>,
-        <Button key="submit" type="primary" onClick={onOkFilter}>
+        <Button key="button" type="primary" onClick={onOkFilter}>
           Filter
       </Button>,
       ]}
     >
       <Form initialValues={initialData} form={form} layout="vertical">
-        <Form.Item label="Warehouse" name="warehouseName" >
-          <Select placeholder="Select Warehouse" style={{ width: '97%' }} onChange={(value) =>  setState({...state, warehouseName: value })}>
+        <Form.Item label="Warehouse" name="_id" >
+          <Select placeholder="Select Warehouse" style={{ width: '97%' }} onChange={(value) => {
+            setState({warehouseID: value});
+          }}>
             {store.warehouse.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
           </Select>
         </Form.Item>
@@ -335,14 +343,13 @@ export const DataProdukScreen = observer((initialData) => {
             //   {store.warehouse.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
             // </Select>
             <Button
-              key="1"
               onClick={() => setFilterModal(true)}
             >
               <FilterOutlined /> Filter
         </Button>
           ]}
         />
-         {modalFilter()}
+        {modalFilter()}
         {renderModal()}
         <Table
           rowKey={record => record._id}
