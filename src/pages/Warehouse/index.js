@@ -27,6 +27,7 @@ export const WarehouseScreen = observer((initialData) => {
   const store = useStore();
   const history = useHistory();
   const [form] = Form.useForm();
+  const [wId , setWid] = useState('')
   const [state, setState] = useState({
     success: false,
   });
@@ -44,14 +45,21 @@ export const WarehouseScreen = observer((initialData) => {
     await store.warehouse.getWarehouse();
   }
 
+
+  const setWarehouseId = (value) =>  {
+    setWid(value)
+    console.log(wId)
+  }
+
   async function checkWarehouse(id) {
-    const datas = await JSON.stringify(id) == "6009bfd3ca1eb1370d332472"
+    const datas = await JSON.stringify(id) == '600d6876ca066d00152b41a3'
     return datas
   }
 
   const selectedWarehouse = items.find(checkWarehouse)
 
-  console.log(selectedWarehouse?.items)
+  console.log(selectedWarehouse?.items[0].product?.productName)
+  // console.log(warehouseToObject)
 
   function confirm(_id) {
     store.warehouse.deleteWarehouse(_id).then((res) => {
@@ -74,11 +82,11 @@ export const WarehouseScreen = observer((initialData) => {
       ...prevState,
       success: true
     }))
+    console.log(value.quantity)
     form.setFieldsValue({
       isEdit: value._id,
       success: true,
-      warehouseName: value.warehouseName,
-      warehosueLocation: value.warehosueLocation,
+      quantity: value.quantity,
     })
   }
 
@@ -217,8 +225,9 @@ export const WarehouseScreen = observer((initialData) => {
             >
               <PlusOutlined /> New
               </Button>,
-            <Select placeholder="Select Warehouse" style={{ width: 100 }}>
-              {store.warehouse.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
+            <Select placeholder="Select Warehouse" style={{ width: 100 }} onChange={setWarehouseId}>
+              {/* {store.warehouse.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)} */}
+              {items.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)})}
             </Select>
           ]}
         />
@@ -265,17 +274,9 @@ export const WarehouseScreen = observer((initialData) => {
         </Form.Item>
         <Form.Item
           label="Warehouse Name"
-          name="warehouseName"
+          name="quantity"
           size={'large'}
           rules={[{ required: true, message: 'Please input your Product Name!' }]}
-        >
-          <Input style={{ width: '98%' }} />
-        </Form.Item>
-        <Form.Item
-          label="Warehouse Location"
-          name="warehosueLocation"
-          size={'large'}
-          rules={[{ required: true, message: 'Please input your Warehosue Location!' }]}
         >
           <Input style={{ width: '98%' }} />
         </Form.Item>

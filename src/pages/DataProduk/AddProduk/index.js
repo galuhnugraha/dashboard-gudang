@@ -24,6 +24,7 @@ export const AddProduk = observer(() => {
 
     useEffect(() => {
         store.warehouse.getWarehouse();
+        store.supliers.getSupplier();
         console.log(store.products.data, 'test')
     }, [])
 
@@ -40,7 +41,8 @@ export const AddProduk = observer(() => {
             // sku: e.sku,
             quantity: e.quantity,
             selfing: e.selfing,
-            warehouseId: e._id
+            warehouseId: e._id,
+            suplierId: e._id
         }
         console.log(data, 'data guys');
         store.products.AddProduct(data).then(res => {
@@ -164,20 +166,24 @@ export const AddProduk = observer(() => {
                         </Form.Item>
                     </Col>
                 </Row>
-                <Form.Item
-                    name="_id"
-                    label="Warehouse"
-                // rules={[
-                //     {
-                //         required: true,
-                //         message: 'Please input your Warehouse!',
-                //     },
-                // ]}
-                >
-                    <Select placeholder="Select Warehouse" style={{ width: '98%' }}>
-                        {store.warehouse.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
-                    </Select>
-                </Form.Item>
+                <Row>
+                    <Col lg={11}>
+                        <Form.Item
+                            name="_id"
+                            label="Warehouse"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your Warehouse!',
+                                },
+                            ]}
+                        >
+                            <Select placeholder="Select Warehouse" style={{ width: '98%' }}>
+                                {store.warehouse.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
+                            </Select>
+                        </Form.Item>
+                    </Col>
+                </Row>
                 <Form.Item label="Product Image" name="productImage" rules={[{ required: true, message: 'Please input file Image!' }]} >
                     <input type='file' name="file" onChange={addImage} />
                 </Form.Item>

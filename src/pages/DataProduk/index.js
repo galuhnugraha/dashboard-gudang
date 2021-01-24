@@ -339,9 +339,6 @@ export const DataProdukScreen = observer((initialData) => {
             >
               <PlusOutlined /> New
           </Button>,
-            // <Select placeholder="Select Warehouse" style={{ width: 100 }}>
-            //   {store.warehouse.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
-            // </Select>
             <Button
               onClick={() => setFilterModal(true)}
             >
