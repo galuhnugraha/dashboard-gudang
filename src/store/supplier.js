@@ -10,6 +10,28 @@ export class SupplierStore {
     @observable maxLength = 0;
     @observable selectedFilterValue = '';
 
+    @action
+    setPage(page = 1) {
+      this.currentPage = page;
+      this.getAll();
+    }
+  
+    @action
+    setCurrentPage(current = 10) {
+      this.pageSize = current;
+      this.getAll();
+    }
+  
+    setPageDebounced = debounce((page) => {
+      this.setSearch(page);
+    }, 300);
+  
+    @action
+    setSearch(page = 1) {
+      this.currentPage = page;
+      this.search();
+    }
+
 
     @action
     async getSupplier() {
@@ -63,5 +85,17 @@ export class SupplierStore {
         .catch(err => {
           throw err;
         })
+    }
+
+    @action
+    async search() {
+      let filterValue = this.selectedFilterValue;
+      const token = localStorage.getItem("token");
+      if (!filterValue) {
+        this.getAll();
+      }
+      const data = await http.get(`/suplier?search=${filterValue}`).set({ 'authorization': `Bearer ${token}` });
+      this.data = data.body.data;
+      this.isLoading = false;
     }
 }

@@ -137,13 +137,6 @@ export const DataProdukScreen = observer((initialData) => {
     });
   })
 
-
-  // store.warehouse.data.map(d => {
-  //     console.log(d._id)
-  // })
-
-
-
   function onOkFilter(value) {
     // console.log(value)
     store.products.query.warehouseID = state.warehouseID;

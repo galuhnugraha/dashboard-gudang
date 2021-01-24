@@ -29,20 +29,20 @@ export const DataSupplierScreen = observer((initialData) => {
   });
 
   useEffect(() => {
-    store.supliers.getSupplier();
+    fetchData();
   }, []);
 
   async function fetchData() {
-    await store.warehouse.getWarehouse();
+    await store.supliers.getSupplier();
   }
 
   function confirm(_id) {
     store.supliers.deleteSupplier(_id).then((res) => {
-      message.success('Success delete Supplier')
+      message.success('Success delete Suplier')
       history.push('/app/data-supplier');
       fetchData();
     }).catch(err => {
-      // message.error(err.response.body.message)
+      message.error(err.response.body.message)
     })
   }
 
@@ -87,7 +87,6 @@ export const DataSupplierScreen = observer((initialData) => {
   async function editData(e) {
     const suplierProduct2 = [{
       productName: e.suplierProduct,
-      price: 12312312313
     }]
     const suplierAddress2 = {
       address: e.suplierAddress,
@@ -161,10 +160,10 @@ export const DataSupplierScreen = observer((initialData) => {
               </div>
               <Popconfirm
                 title="Are you sure to delete this task?"
-                onCancel={cancel}
                 onConfirm={() => {
                   deleteClick(record._id)
                 }}
+                onCancel={cancel}
                 okText="Yes"
                 cancelText="No"
               >
@@ -194,11 +193,20 @@ export const DataSupplierScreen = observer((initialData) => {
           subTitle=""
           title={"Supplier"}
           extra={[
-            <Search
-              placeholder="Search...."
-              style={{ width: 200 }}
-              key={row => row._id}
-            />,
+            // <Search
+            //   placeholder="Search...."
+            //   style={{ width: 200 }}
+            //   key={row => row._id}
+            //   onSearch={(value) => {
+            //     store.supliers.selectedFilterValue = value;
+            //     store.supliers.setPage(1);
+            //     // store.member.search(value);
+            //   }}
+            //   onChange={event => {
+            //     store.supliers.selectedFilterValue = event.target.value;
+            //     store.supliers.setPageDebounced();
+            //   }}
+            // />,
             <Button
               key="1"
               onClick={() => {
@@ -218,6 +226,17 @@ export const DataSupplierScreen = observer((initialData) => {
           columns={columns}
           scroll={{ x: 1200 }}
           dataSource={store.supliers.data.slice()}
+          pagination={{
+            total: store.supliers.maxLength,
+            onShowSizeChange: (current, pageSize) => {
+              store.supliers.setCurrentPage(pageSize);
+            }
+          }}
+          loading={store.supliers.isLoading}
+          onChange={(page) => {
+            store.supliers.setPage(page.current);
+          }}
+          current={store.supliers.currentPage}
         />
       </Card>
     </div>
