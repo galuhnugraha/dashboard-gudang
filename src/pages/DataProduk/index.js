@@ -6,12 +6,13 @@ import {
   Form, Modal,
   Row, Col,
   message, Breadcrumb,
-  PageHeader, Card, Button,Select
+  PageHeader, Card, Button, Select
 } from 'antd';
 import {
   DeleteOutlined,
   EditOutlined,
-  PlusOutlined
+  PlusOutlined,
+  FilterOutlined
 } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../utils/useStores";
@@ -32,29 +33,30 @@ export const DataProdukScreen = observer((initialData) => {
   const history = useHistory();
   const [imgData, setImgData] = useState(null);
   const [xImg, setXImg] = useState('')
-
-  useEffect(() => {
-    store.products.getAll();
-    store.products.setPage(1);
-    store.products.setCurrentPage(10);
-  }, []);
+  const [filterModal, setFilterModal] = useState(false);
+  const [filterQuery, setFilterQuery] = useState({});
 
   const [state, setState] = useState({
     success: false,
+    warehouseName: '',
+    products: ''
   });
 
-  const { Search } = Input;
-
-
-  useEffect(() => {
+  async function fetchData() {
     store.products.getAll();
     store.warehouse.getWarehouse()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  async function fetchData() {
-    await store.products.getAll();
   }
+
+  useEffect(() => {
+    fetchData();
+    return() =>{
+      store.products.query.products = ''
+      store.products.query.page = 1;
+      store.products.query.pageSize = 10;
+    }
+  }, [filterQuery]);
+
+  const { Search } = Input;
 
   function confirm(_id) {
     store.products.deleteProduct(_id).then((res) => {
@@ -133,6 +135,70 @@ export const DataProdukScreen = observer((initialData) => {
       success: !state.success,
     });
   })
+
+  function onOkFilter() {
+    if(state.products){
+      store.products.query.products = state.products
+      fetchData()
+    }
+
+    if(state.warehouseId !== ''){
+      setFilterQuery({
+        ...filterQuery,
+        warehouseName : state.warehouseName
+      })
+    }
+    setFilterModal(false);
+  }
+
+  function resetFilter(){
+    form.validateFields().then((values) => {
+      form.resetFields();
+    });
+    setState({ 
+      warehouseId: '',
+    });
+    store.products.query.warehouseId = ''
+    delete filterQuery['warehouse']
+    setFilterQuery({
+      ...filterQuery,
+    })
+    setFilterModal(false);
+  }
+
+
+  function modalFilter() {
+    return <Modal
+      maskClosable={false}
+      closable={false}
+      afterClose={() => {
+        setFilterModal(false)
+      }
+      }
+      title={"Filter"}
+      visible={filterModal}
+      footer={[
+        <Button onClick={() => {
+          resetFilter()
+        }}>Reset Filter</Button>,
+        <Button key="back" onClick={() => setFilterModal(false)}>
+          Cancel
+      </Button>,
+        <Button key="submit" type="primary" onClick={onOkFilter}>
+          Filter
+      </Button>,
+      ]}
+    >
+      <Form initialValues={initialData} form={form} layout="vertical">
+        <Form.Item label="Warehouse" name="warehouseName" >
+          <Select placeholder="Select Warehouse" style={{ width: '97%' }} onChange={(value) =>  setState({...state, warehouseName: value })}>
+            {store.warehouse.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
+          </Select>
+        </Form.Item>
+      </Form>
+    </Modal>
+  }
+
 
   {
     const columns = [
@@ -265,11 +331,18 @@ export const DataProdukScreen = observer((initialData) => {
             >
               <PlusOutlined /> New
           </Button>,
-            <Select placeholder="Select Warehouse" style={{ width: 100 }}>
-              {store.warehouse.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
-            </Select>
+            // <Select placeholder="Select Warehouse" style={{ width: 100 }}>
+            //   {store.warehouse.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
+            // </Select>
+            <Button
+              key="1"
+              onClick={() => setFilterModal(true)}
+            >
+              <FilterOutlined /> Filter
+        </Button>
           ]}
         />
+         {modalFilter()}
         {renderModal()}
         <Table
           rowKey={record => record._id}

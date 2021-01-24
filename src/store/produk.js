@@ -1,16 +1,23 @@
 import { action, observable } from 'mobx';
 import { http } from "../utils/http";
 import debounce from "lodash.debounce";
+import * as qs from "querystring";
 
 export class ProdukStore {
+  baseUrl = "/products";
+
   @observable isLoading = false;
   @observable data = [];
   @observable warehouse = [];
   @observable currentPage = 1;
   @observable pageSize = 10;
   @observable maxLength = 0;
-  @observable selectedFilterValue = '';
-  @observable idWarehouse = '';
+  @observable query = {
+    page: 1,
+    pageSize: 10,
+    warehouseName: '',
+    products: ''
+  }
 
   @action
   setPage(page = 1) {
@@ -38,7 +45,7 @@ export class ProdukStore {
   async getAll() {
     this.isLoading = true;
     const token = localStorage.getItem("token")
-    const data = await http.get(`/products?pg=${this.currentPage}&lm=${this.pageSize}&warehouseID=${this.idWarehouse}`).set({ 'authorization': `Bearer ${token}` });
+    const data = await http.get(this.baseUrl + '?' + qs.stringify(this.query)).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
     this.maxLength = data.body.totalData;
     this.isLoading = false;

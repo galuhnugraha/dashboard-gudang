@@ -107,7 +107,7 @@ export const AddProduk = observer(() => {
                         },
                     ]}
                 >
-                    <Input type="number" style={{ width: '98%' }}/>
+                    <Input type="number" style={{ width: '98%' }} />
                 </Form.Item>
                 <Row>
                     <Col lg={11}>
@@ -165,19 +165,19 @@ export const AddProduk = observer(() => {
                     </Col>
                 </Row>
                 <Form.Item
-                            name="_id"
-                            label="Warehouse"
-                            // rules={[
-                            //     {
-                            //         required: true,
-                            //         message: 'Please input your Warehouse!',
-                            //     },
-                            // ]}
-                        >
-                            <Select placeholder="Select Warehouse" style={{ width: '98%' }}>
-                                {store.warehouse.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
-                            </Select>
-                        </Form.Item>
+                    name="_id"
+                    label="Warehouse"
+                // rules={[
+                //     {
+                //         required: true,
+                //         message: 'Please input your Warehouse!',
+                //     },
+                // ]}
+                >
+                    <Select placeholder="Select Warehouse" style={{ width: '98%' }}>
+                        {store.warehouse.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
+                    </Select>
+                </Form.Item>
                 <Form.Item label="Product Image" name="productImage" rules={[{ required: true, message: 'Please input file Image!' }]} >
                     <input type='file' name="file" onChange={addImage} />
                 </Form.Item>
