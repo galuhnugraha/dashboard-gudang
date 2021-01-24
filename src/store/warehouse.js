@@ -41,7 +41,7 @@ export class WarehouseStore {
     updateWarehouse = async (id, data) => {
       this.isLoading = true;
       const token = localStorage.getItem("token")
-      return http.put(`/warehouse/updateWarehouse/${id}`).set({ 'authorization': `Bearer ${token}` }).send(data)
+      return http.put(`/warehouse/ProductOut/${id}`).set({ 'authorization': `Bearer ${token}` }).send(data)
         .then((res) => {
           this.isLoading = false;
           return res;

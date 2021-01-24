@@ -193,20 +193,20 @@ export const DataSupplierScreen = observer((initialData) => {
           subTitle=""
           title={"Supplier"}
           extra={[
-            // <Search
-            //   placeholder="Search...."
-            //   style={{ width: 200 }}
-            //   key={row => row._id}
-            //   onSearch={(value) => {
-            //     store.supliers.selectedFilterValue = value;
-            //     store.supliers.setPage(1);
-            //     // store.member.search(value);
-            //   }}
-            //   onChange={event => {
-            //     store.supliers.selectedFilterValue = event.target.value;
-            //     store.supliers.setPageDebounced();
-            //   }}
-            // />,
+            <Search
+              placeholder="Search...."
+              style={{ width: 200 }}
+              key={row => row._id}
+              onSearch={(value) => {
+                store.supliers.selectedFilterValue = value;
+                store.supliers.setPage(1);
+                // store.member.search(value);
+              }}
+              onChange={event => {
+                store.supliers.selectedFilterValue = event.target.value;
+                store.supliers.setPageDebounced();
+              }}
+            />,
             <Button
               key="1"
               onClick={() => {

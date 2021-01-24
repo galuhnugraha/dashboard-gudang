@@ -94,7 +94,7 @@ export class SupplierStore {
       if (!filterValue) {
         this.getAll();
       }
-      const data = await http.get(`/suplier?search=${filterValue}`).set({ 'authorization': `Bearer ${token}` });
+      const data = await http.get(`/supliers?search=${filterValue}`).set({ 'authorization': `Bearer ${token}` });
       this.data = data.body.data;
       this.isLoading = false;
     }

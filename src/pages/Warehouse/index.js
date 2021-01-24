@@ -17,6 +17,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../utils/useStores";
 import { observer } from "mobx-react-lite";
 import { appConfig } from "../config/app";
+import moment from "moment";
 
 function cancel(e) {
   console.log(e);
@@ -59,24 +60,24 @@ export const WarehouseScreen = observer((initialData) => {
   const hero = selectedWarehouse?.items.map(r => {
     const myhero = {
       createdAt: r.product.createdAt,
-      grosirPrice: r.product.grosirPrice,
-      location: r.product.location,
-      pricePerUnit: r.product.pricePerUnit,
-      productImage: r.product.productImage,
+      // grosirPrice: r.product.grosirPrice,
+      // location: r.product.location,
+      // pricePerUnit: r.product.pricePerUnit,
+      // productImage: r.product.productImage,
       productName: r.product.productName,
-      productType: r.product.productType,
+      // productType: r.product.productType,
       quantity: r.product.quantity,
-      rack: r.product.rack,
-      selfing: r.product.selfing,
-      sku: r.product.sku,
-      suplierId: r.product.suplierId,
-      updatedAt: r.product.updatedAt,
-      userId: r.product.userId,
-      warehouseId: r.product.warehouseId,
-      warehouseName: r.product.warehouseName,
+      // rack: r.product.rack,
+      // selfing: r.product.selfing,
+      // sku: r.product.sku,
+      // suplierId: r.product.suplierId,
+      // updatedAt: r.product.updatedAt,
+      // userId: r.product.userId,
+      // warehouseId: r.product.warehouseId,
+      // warehouseName: r.product.warehouseName,
       status: r.status
     }
-    console.log(myhero)
+    console.log(myhero,'tet')
     return myhero
   })
 
@@ -101,7 +102,6 @@ export const WarehouseScreen = observer((initialData) => {
       ...prevState,
       success: true
     }))
-    console.log(value.quantity)
     form.setFieldsValue({
       isEdit: value._id,
       success: true,
@@ -117,8 +117,7 @@ export const WarehouseScreen = observer((initialData) => {
 
   async function editData(e) {
     const data = {
-      warehouseName: e.warehouseName,
-      warehosueLocation: e.warehosueLocation,
+      quantity: e.quantity
     }
 
     if (e.isEdit) {
@@ -138,14 +137,10 @@ export const WarehouseScreen = observer((initialData) => {
   {
     const columns = [
       {
-        title: 'Product Name',
+        title: 'Nama Barang',
         dataIndex: 'productName',
         key: 'productName',
-      },
-      {
-        title: 'Product Type',
-        dataIndex: 'productType',
-        key: 'productType',
+        render: (record) => <span>{record}</span>
       },
       {
         title: 'Quantity',
@@ -153,36 +148,15 @@ export const WarehouseScreen = observer((initialData) => {
         key: 'quantity',
       },
       {
-        title: 'Rack',
-        dataIndex: 'rack',
-        key: 'rack',
+        title: 'Status',
+        dataIndex: 'status',
+        key: 'status',
       },
       {
-        title: 'selfing',
-        dataIndex: 'selfing',
-        key: 'selfing',
-      },
-      {
-        title: 'Location',
-        dataIndex: 'location',
-        key: 'location',
-      },
-      {
-        title: 'SKU',
-        dataIndex: 'sku',
-        key: 'sku',
-      },
-      {
-        title: 'Grosir Price',
-        dataIndex: 'grosirPrice',
-        key: 'grosirPrice',
-        render: (record) => <span>Rp.{record}</span>
-      },
-      {
-        title: 'Price PerUnit',
-        dataIndex: 'pricePerUnit',
-        key: 'pricePerUnit',
-        render: (record) => <span>Rp.{record}</span>
+        title: 'Created at',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        render: (text) => moment(text).format("DD-MMM-YYYY HH:mm")
       },
       {
         title: 'Action',
@@ -292,7 +266,7 @@ export const WarehouseScreen = observer((initialData) => {
           <Input />
         </Form.Item>
         <Form.Item
-          label="Warehouse Name"
+          label="Quantity"
           name="quantity"
           size={'large'}
           rules={[{ required: true, message: 'Please input your Product Name!' }]}
