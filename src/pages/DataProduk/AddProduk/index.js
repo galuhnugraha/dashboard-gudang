@@ -42,7 +42,7 @@ export const AddProduk = observer(() => {
             quantity: e.quantity,
             selfing: e.selfing,
             warehouseId: e._id,
-            suplierId: e._id
+            suplierId: e.suplierId
         }
         console.log(data, 'data guys');
         store.products.AddProduct(data).then(res => {
@@ -167,6 +167,23 @@ export const AddProduk = observer(() => {
                     </Col>
                 </Row>
                 <Row>
+                    <Col lg={11}>
+                        <Form.Item
+                            name="suplierId"
+                            label="Supplier"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your Supplier!',
+                                },
+                            ]}
+                        >
+                            <Select placeholder="Select Supplier" style={{ width: '98%' }}>
+                                {store.supliers.data.map(d => <Select.Option value={d._id}>{d.suplierName}</Select.Option>)}
+                            </Select>
+                        </Form.Item>
+                    </Col>
+                    <Col lg={2} />
                     <Col lg={11}>
                         <Form.Item
                             name="_id"
