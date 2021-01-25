@@ -92,7 +92,7 @@ export class SupplierStore {
       let filterValue = this.selectedFilterValue;
       const token = localStorage.getItem("token");
       if (!filterValue) {
-        this.getAll();
+        this.getSupplier();
       }
       const data = await http.get(`/supliers?search=${filterValue}`).set({ 'authorization': `Bearer ${token}` });
       this.data = data.body.data;

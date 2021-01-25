@@ -10,13 +10,13 @@ import {
 } from 'antd';
 import {
   DeleteOutlined,
+  FilterOutlined,
   EditOutlined,
   PlusOutlined
 } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../utils/useStores";
 import { observer } from "mobx-react-lite";
-import { appConfig } from "../config/app";
 import moment from "moment";
 
 function cancel(e) {
@@ -28,11 +28,13 @@ export const WarehouseScreen = observer((initialData) => {
   const store = useStore();
   const history = useHistory();
   const [form] = Form.useForm();
-  const [wId, setWid] = useState('')
-  const [datasSource, setDatasSource] = useState([])
+  const [wId, setWid] = useState('');
   const [state, setState] = useState({
     success: false,
+    warehouseID: ''
   });
+  const [filterModal, setFilterModal] = useState(false);
+  const [filterQuery, setFilterQuery] = useState({});
 
   const [items, setItems] = useState([])
   useEffect(() => {
@@ -40,49 +42,53 @@ export const WarehouseScreen = observer((initialData) => {
     http.get(`/warehouse`).set({ 'authorization': `Bearer ${token}` }).then((r) => {
       setItems(r.body.data)
     })
-    store.warehouse.getWarehouse()
+    fetchData();
+    return () => {
+      store.warehouse.query.pg = 1;
+      store.warehouse.query.lm = 10;
+    }
     // eslint - disable - next - line react - hooks / exhaustive - deps
-  }, []);
+  }, [filterQuery]);
+
   async function fetchData() {
     await store.warehouse.getWarehouse();
   }
-
 
   function checkWarehouse(id) {
     const datas = id._id === wId
     return datas
   }
   const selectedWarehouse = items.find(checkWarehouse)
-  console.log(selectedWarehouse?.items)
+  console.log(selectedWarehouse);
 
 
 
-  const hero = selectedWarehouse?.items.map(r => {
-    const myhero = {
+
+  let hero = selectedWarehouse?.items.map(r => {
+    return {
+      _id: r.product._id,
       createdAt: r.product.createdAt,
-      // grosirPrice: r.product.grosirPrice,
-      // location: r.product.location,
-      // pricePerUnit: r.product.pricePerUnit,
-      // productImage: r.product.productImage,
+      grosirPrice: r.product.grosirPrice,
+      location: r.product.location,
+      pricePerUnit: r.product.pricePerUnit,
+      productImage: r.product.productImage,
       productName: r.product.productName,
-      // productType: r.product.productType,
-      quantity: r.product.quantity,
-      // rack: r.product.rack,
-      // selfing: r.product.selfing,
-      // sku: r.product.sku,
-      // suplierId: r.product.suplierId,
-      // updatedAt: r.product.updatedAt,
-      // userId: r.product.userId,
-      // warehouseId: r.product.warehouseId,
-      // warehouseName: r.product.warehouseName,
+      productType: r.product.productType,
+      quantity: r.quantity,
+      rack: r.product.rack,
+      selfing: r.product.selfing,
+      sku: r.product.sku,
+      suplierId: r.product.suplierId,
+      updatedAt: r.product.updatedAt,
+      userId: r.product.userId,
+      warehouseId: r.product.warehouseId,
+      warehouseName: r.product.warehouseName,
       status: r.status
     }
-    console.log(myhero,'tet')
-    return myhero
   })
 
   function confirm(_id) {
-    store.warehouse.deleteWarehouse(_id).then((res) => {
+    store.warehouse.deleteWarehouse(selectedWarehouse?._id).then((res) => {
       message.success('Success delete Warehouse')
       history.push('/app/data-warehouse');
       fetchData();
@@ -98,6 +104,7 @@ export const WarehouseScreen = observer((initialData) => {
   const { Search } = Input;
 
   const setEditMode = (value) => {
+    console.log(value)
     setState(prevState => ({
       ...prevState,
       success: true
@@ -114,6 +121,59 @@ export const WarehouseScreen = observer((initialData) => {
       success: !state.success,
     });
   })
+
+  function onOkFilter(value) {
+    // console.log(value)
+    // store.products.query.warehouseID = state.warehouseID;
+    // setFilterQuery({
+    //   ...filterQuery,
+    //   warehouseID: state.warehouseID
+    // })
+  }
+
+  function resetFilter() {
+    form.validateFields().then((values) => {
+      console.log(values)
+      form.resetFields();
+    });
+
+    setState({
+      warehouseID: '',
+    });
+    store.products.query.warehouseID = ''
+    delete filterQuery['warehouse']
+    setFilterQuery({
+      ...filterQuery,
+    })
+    setFilterModal(false);
+  }
+
+  function modalFilter() {
+    return <Modal
+      maskClosable={false}
+      closable={false}
+      title={"Filter"}
+      visible={filterModal}
+      footer={[
+        <Button key="back" onClick={() => {
+          setFilterModal(false)
+        }}>
+          Cancel
+        </Button>,
+      ]}
+    >
+      <Form initialValues={initialData} form={form} layout="vertical">
+        <Form.Item label="Warehouse" name="_id" >
+          <Select placeholder="Select Warehouse" style={{ width: '97%' }} onChange={(value) => {
+            setWid(value)
+            setFilterModal(false)
+          }}>
+            {items.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
+          </Select>
+        </Form.Item>
+      </Form>
+    </Modal>
+  }
 
   async function editData(e) {
     const data = {
@@ -136,11 +196,11 @@ export const WarehouseScreen = observer((initialData) => {
 
   {
     const columns = [
+
       {
         title: 'Nama Barang',
         dataIndex: 'productName',
         key: 'productName',
-        render: (record) => <span>{record}</span>
       },
       {
         title: 'Quantity',
@@ -156,7 +216,13 @@ export const WarehouseScreen = observer((initialData) => {
         title: 'Created at',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        render: (text) => moment(text).format("DD-MMM-YYYY HH:mm")
+        render: (record) => moment(record).format("DD/MM/YY, H:mm:ss") || "-"
+      },
+      {
+        title: 'Updated at',
+        dataIndex: 'updatedAt',
+        key: 'updatedAt',
+        render: (record) => moment(record).format("DD/MM/YY, H:mm:ss") || "-"
       },
       {
         title: 'Action',
@@ -166,22 +232,15 @@ export const WarehouseScreen = observer((initialData) => {
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               <div>
                 <EditOutlined onClick={() => {
+                  console.log(record)
                   setEditMode(record)
                 }} />
               </div>
-              <Popconfirm
-                title="Apakah Anda Yakin Untuk Hapus Data ini ....."
-                onConfirm={() => {
+              <div>
+                <DeleteOutlined onClick={() => {
                   deleteClick(record._id)
-                }}
-                onCancel={cancel}
-                okText="Yes"
-                cancelText="No"
-              >
-                <div style={{ marginLeft: 8 }}>
-                  <DeleteOutlined />
-                </div>
-              </Popconfirm>
+                }} style={{marginLeft: 6}}/>
+              </div>
             </div>
           </Space>
         ),
@@ -209,6 +268,15 @@ export const WarehouseScreen = observer((initialData) => {
               placeholder="Search...."
               style={{ width: 200 }}
               key={row => row._id}
+              onSearch={(value) => {
+                store.warehouse.selectedFilterValue = value;
+                store.warehouse.setPage(1);
+                // store.member.search(value);
+              }}
+              onChange={event => {
+                store.warehouse.selectedFilterValue = event.target.value;
+                store.warehouse.setPageDebounced();
+              }}
             />,
             <Button
               key="1"
@@ -218,12 +286,14 @@ export const WarehouseScreen = observer((initialData) => {
             >
               <PlusOutlined /> New
               </Button>,
-            <Select placeholder="Select Warehouse" style={{ width: 100 }} onChange={(value) => setWid(value)}>
-              {/* {store.warehouse.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)} */}
-              {items.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
-            </Select>
+            <Button
+              onClick={() => setFilterModal(true)}
+            >
+              <FilterOutlined /> Filter
+            </Button>
           ]}
         />
+        {modalFilter()}
         {renderModal()}
         <Table
           rowKey={record => record._id}
@@ -232,6 +302,17 @@ export const WarehouseScreen = observer((initialData) => {
           size={"small"}
           columns={columns}
           dataSource={hero}
+          onChange={(page) => {
+            store.warehouse.setPage(page.current);
+          }}
+          current={store.warehouse.currentPage}
+          pagination={{
+            total: store.warehouse.maxLength,
+            onShowSizeChange: (current, pageSize) => {
+              store.warehouse.setCurrentPage(pageSize);
+            }
+          }}
+          loading={store.warehouse.isLoading}
         />
       </Card>
     </div>
@@ -254,7 +335,8 @@ export const WarehouseScreen = observer((initialData) => {
         form
           .validateFields()
           .then(values => {
-            editData(values);
+            editData(values)
+            console.log(values)
           })
           .catch(info => {
             // console.log('Validate Failed:', info);

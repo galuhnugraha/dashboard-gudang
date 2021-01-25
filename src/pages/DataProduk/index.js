@@ -33,7 +33,6 @@ export const DataProdukScreen = observer((initialData) => {
   const history = useHistory();
   const [imgData, setImgData] = useState(null);
   const [xImg, setXImg] = useState('')
-  const [wid, setWid] = useState([])
   const [filterModal, setFilterModal] = useState(false);
   const [filterQuery, setFilterQuery] = useState({});
 
@@ -383,6 +382,7 @@ export const DataProdukScreen = observer((initialData) => {
           .validateFields()
           .then(values => {
             editData(values);
+            console.log(values,'data')
           })
           .catch(info => {
             // console.log('Validate Failed:', info);

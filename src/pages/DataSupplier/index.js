@@ -219,7 +219,8 @@ export const DataSupplierScreen = observer((initialData) => {
         />
         {renderModal()}
         <Table
-          rowKey={record => record._id}
+          // rowKey={record => record._id}
+          key={record => record._id}
           hasEmpty
           style={{ paddingLeft: '12px' }}
           size={"middle"}
