@@ -4,7 +4,8 @@ import * as qs from "querystring";
 import debounce from "lodash.debounce";
 
 export class WarehouseStore {
-  baseUrl = "/warehouse";
+  baseUrl = "/dataWarehouse";
+  warehouse = "/warehouse";
 
   @observable isLoading = false;
   @observable data = [];
@@ -14,9 +15,7 @@ export class WarehouseStore {
   @observable maxLength = 0;
   @observable selectedFilterValue = '';
   @observable query = {
-    pg: 1,
-    lm: 10,
-    warehouseID: '',
+    warehouseId: ''
   }
 
   @action
@@ -43,12 +42,12 @@ export class WarehouseStore {
 
   @action
   async getWarehouse(filter) {
-    if (filter != null) {
-      this.query.filter = filter;
-    }
+    // if (filter != null) {
+    //   this.query.filter = filter;
+    // }
     this.isLoading = true;
     const token = localStorage.getItem("token")
-    const data = await http.get(this.baseUrl + '?' + qs.stringify(this.query)).set({ 'authorization': `Bearer ${token}` });
+    const data = await http.get(this.baseUrl).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
     this.maxLength = data.body.totalData;
     this.isLoading = false;
@@ -73,7 +72,7 @@ export class WarehouseStore {
   updateWarehouse = async (productId, data) => {
     this.isLoading = true;
     const token = localStorage.getItem("token")
-    return http.put(`/warehouse/ProductOut/${productId}`).set({ 'authorization': `Bearer ${token}` }).send(data)
+    return http.post(`/warehouse/ProductOut/${productId}`).set({ 'authorization': `Bearer ${token}` }).send(data)
       .then((res) => {
         this.isLoading = false;
         return res;
@@ -107,6 +106,19 @@ export class WarehouseStore {
     }
     const data = await http.get(`/warehouse?search=${filterValue}`).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
+    this.isLoading = false;
+  }
+
+  @action
+  async getDropdown(filter) {
+    // if (filter != null) {
+    //   this.query.filter = filter;
+    // }
+    this.isLoading = true;
+    const token = localStorage.getItem("token")
+    const data = await http.get(this.warehouse).set({ 'authorization': `Bearer ${token}` });
+    this.data = data.body.data;
+    this.maxLength = data.body.totalData;
     this.isLoading = false;
   }
 }

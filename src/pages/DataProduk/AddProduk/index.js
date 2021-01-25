@@ -23,7 +23,7 @@ export const AddProduk = observer(() => {
     });
 
     useEffect(() => {
-        store.warehouse.getWarehouse();
+        store.warehouse.getDropdown();
         store.supliers.getSupplier();
         console.log(store.products.data, 'test')
     }, [])

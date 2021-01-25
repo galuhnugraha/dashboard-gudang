@@ -107,4 +107,19 @@ export class ProdukStore {
     this.data = data.body.data;
     this.isLoading = false;
   }
+
+  @action
+  AddProductOut = async (data,id) => {
+    this.isLoading = true;
+    const token = localStorage.getItem("token")
+    return http.post(`/dataWarehouse/createProductOut/${id}`).set({ 'authorization': `Bearer ${token}` }).send(data)
+      .then((res) => {
+        this.isLoading = false;
+        return res;
+      })
+      .catch((err) => {
+        this.isLoading = false;
+        throw err;
+      });
+  }
 }

@@ -12,7 +12,8 @@ import {
   DeleteOutlined,
   EditOutlined,
   PlusOutlined,
-  FilterOutlined
+  FilterOutlined,
+  MinusOutlined
 } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../utils/useStores";
@@ -35,6 +36,8 @@ export const DataProdukScreen = observer((initialData) => {
   const [xImg, setXImg] = useState('')
   const [filterModal, setFilterModal] = useState(false);
   const [filterQuery, setFilterQuery] = useState({});
+  const [filterProduct, setFilterProduct] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [state, setState] = useState({
     success: false,
@@ -108,6 +111,80 @@ export const DataProdukScreen = observer((initialData) => {
     }
   }
 
+  const onFinish = values => {
+    enterLoading(values);
+    console.log(values);
+  };
+
+  const enterLoading = (e) => {
+    console.log(e);
+    setLoading(true);
+    const data = {
+      quantity: e.quantity,
+      location: e.location
+    }
+    console.log(data, 'data guys');
+    store.products.AddProductOut(data,e._id).then(res => {
+      message.success('Berhasil Add Product');
+      setLoading(false);
+      history.push("/app/data-produk");
+    }).catch(err => {
+      message.error(err.message);
+      setLoading(false);
+    });
+  }
+
+  function modalProduct() {
+    return <Modal
+      maskClosable={false}
+      closable={false}
+      title={"Product Out"}
+      visible={filterProduct}
+      footer={[
+        <Button key="back" onClick={() => {
+          setFilterProduct(false)
+        }}>
+          Cancel
+        </Button>,
+        <Button key="button" type="primary" onClick={onFinish}>
+          Save
+        </Button>
+      ]}
+    >
+      <Form layout="vertical">
+        <Form.Item name="isEdit" hidden={true}>
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="quantity"
+          label="Quantity"
+
+          rules={[
+            {
+              required: true,
+              message: 'Please Input Your Quantity!',
+            },
+          ]}
+        >
+          <Input type="number" style={{ width: '98%' }} />
+        </Form.Item>
+        <Form.Item
+          name="location"
+          label="Location"
+
+          rules={[
+            {
+              required: true,
+              message: 'Please Input Your Location!',
+            },
+          ]}
+        >
+          <Input style={{ width: '98%' }} />
+        </Form.Item>
+      </Form>
+    </Modal>
+  }
+
   const setEditMode = (value) => {
     setXImg(value.productImage)
     setState(prevState => ({
@@ -136,7 +213,7 @@ export const DataProdukScreen = observer((initialData) => {
     });
   })
 
-  function onOkFilter(value) {
+  function onOkFilter() {
     // console.log(value)
     store.products.query.warehouseID = state.warehouseID;
     setFilterQuery({
@@ -190,7 +267,7 @@ export const DataProdukScreen = observer((initialData) => {
       <Form initialValues={initialData} form={form} layout="vertical">
         <Form.Item label="Warehouse" name="_id" >
           <Select placeholder="Select Warehouse" style={{ width: '97%' }} onChange={(value) => {
-            setState({warehouseID: value});
+            setState({ warehouseID: value });
           }}>
             {store.warehouse.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
           </Select>
@@ -287,6 +364,11 @@ export const DataProdukScreen = observer((initialData) => {
                   <DeleteOutlined />
                 </div>
               </Popconfirm>
+              <div style={{ marginLeft: 8 }}>
+                <MinusOutlined onClick={() => {
+                  setFilterProduct(true)
+                }} />
+              </div>
             </div>
           </Space>
         ),
@@ -338,6 +420,7 @@ export const DataProdukScreen = observer((initialData) => {
         </Button>
           ]}
         />
+        {modalProduct()}
         {modalFilter()}
         {renderModal()}
         <Table
@@ -382,7 +465,7 @@ export const DataProdukScreen = observer((initialData) => {
           .validateFields()
           .then(values => {
             editData(values);
-            console.log(values,'data')
+            console.log(values, 'data')
           })
           .catch(info => {
             // console.log('Validate Failed:', info);
