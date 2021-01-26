@@ -31,11 +31,10 @@ export const WarehouseScreen = observer((initialData) => {
   const [wId, setWid] = useState('');
   const [state, setState] = useState({
     success: false,
-    warehouseID: ''
+    warehouseId: '',
   });
   const [filterModal, setFilterModal] = useState(false);
   const [filterQuery, setFilterQuery] = useState({});
-
 
   useEffect(() => {
     fetchData();
@@ -43,12 +42,22 @@ export const WarehouseScreen = observer((initialData) => {
       store.warehouse.query.pg = 1;
       store.warehouse.query.lm = 10;
     }
-    // eslint - disable - next - line react - hooks / exhaustive - deps
   }, [filterQuery]);
 
   async function fetchData() {
     await store.warehouse.getWarehouse();
+    await store.barang.getDropdown();
   }
+
+  const data = store.warehouse.data.map((e) => {
+    return {
+      productName: e.product?.productName,
+      status: e.status,
+      quantity: e.product?.quantity,
+      createdAt: e.createdAt,
+      updatedAt: e.updatedAt
+    }
+  })
 
   function confirm(_id) {
     store.warehouse.deleteWarehouse(_id).then((res) => {
@@ -63,16 +72,6 @@ export const WarehouseScreen = observer((initialData) => {
   const deleteClick = (_id) => {
     confirm(_id);
   }
-
-  const data = store.warehouse.data.map((e) => {
-    return {
-      productName: e.product?.productName,
-      status: e.status,
-      quantity: e.product?.quantity
-    }
-  })
-
-  console.log(data,'test')
 
   const { Search } = Input;
 
@@ -95,6 +94,29 @@ export const WarehouseScreen = observer((initialData) => {
     });
   })
 
+  function onOkFilter() {
+    // console.log(value)
+    console.log(state)
+    store.warehouse.query.warehouseId = state.warehouseId;
+    setFilterQuery({
+      ...filterQuery,
+      warehouseId: state.warehouseId,
+    })
+    setFilterModal(false);
+  }
+
+  function resetFilter() {
+    setState({
+      warehouseId: '',
+    });
+    store.warehouse.query.warehouseId = ''
+    delete filterQuery['warehouseId']
+    setFilterQuery({
+      ...filterQuery,
+    })
+    setFilterModal(false);
+  }
+
   function modalFilter() {
     return <Modal
       maskClosable={false}
@@ -102,20 +124,23 @@ export const WarehouseScreen = observer((initialData) => {
       title={"Filter"}
       visible={filterModal}
       footer={[
-        <Button key="back" onClick={() => {
-          setFilterModal(false)
-        }}>
+        <Button onClick={() => {
+          resetFilter()
+        }}>Reset Filter</Button>,
+        <Button key="back" onClick={() => setFilterModal(false)}>
           Cancel
-        </Button>,
+      </Button>,
+        <Button key="button" type="primary" onClick={onOkFilter}>
+          Filter
+      </Button>,
       ]}
     >
       <Form initialValues={initialData} form={form} layout="vertical">
         <Form.Item label="Warehouse" name="_id" >
           <Select placeholder="Select Warehouse" style={{ width: '97%' }} onChange={(value) => {
-            // setWid(value)
-            setFilterModal(false)
+            setState({ warehouseId: value });
           }}>
-            {/* {items.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)} */}
+            {store.barang.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
           </Select>
         </Form.Item>
       </Form>
@@ -165,13 +190,13 @@ export const WarehouseScreen = observer((initialData) => {
         title: 'Created at',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        render: (record) => moment(record).format("DD/MM/YY, H:mm:ss") || "-"
+        render: (record) => moment(record).format("DD/MM/YY, H:mm:ss")
       },
       {
         title: 'Updated at',
         dataIndex: 'updatedAt',
         key: 'updatedAt',
-        render: (record) => moment(record).format("DD/MM/YY, H:mm:ss") || "-"
+        render: (record) => moment(record).format("DD/MM/YY, H:mm:ss")
       },
       {
         title: 'Action',
@@ -182,7 +207,7 @@ export const WarehouseScreen = observer((initialData) => {
               <div>
                 <DeleteOutlined onClick={() => {
                   deleteClick(record._id)
-                }} style={{marginLeft: 6}}/>
+                }} style={{ marginLeft: 6 }} />
               </div>
             </div>
           </Space>
@@ -229,11 +254,11 @@ export const WarehouseScreen = observer((initialData) => {
             >
               <PlusOutlined /> New
               </Button>,
-            // <Button
-            //   onClick={() => setFilterModal(true)}
-            // >
-            //   <FilterOutlined /> Filter
-            // </Button>
+            <Button
+              onClick={() => setFilterModal(true)}
+            >
+              <FilterOutlined /> Filter
+            </Button>
           ]}
         />
         {modalFilter()}

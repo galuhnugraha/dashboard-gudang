@@ -15,7 +15,9 @@ export class WarehouseStore {
   @observable maxLength = 0;
   @observable selectedFilterValue = '';
   @observable query = {
-    warehouseId: ''
+    pg: 1,
+    lm: 10,
+    warehouseId: '',
   }
 
   @action
@@ -42,12 +44,13 @@ export class WarehouseStore {
 
   @action
   async getWarehouse(filter) {
-    // if (filter != null) {
-    //   this.query.filter = filter;
-    // }
+    if (filter != null) {
+      this.query.filter = filter;
+    }
+    console.log(this.query)
     this.isLoading = true;
     const token = localStorage.getItem("token")
-    const data = await http.get(this.baseUrl).set({ 'authorization': `Bearer ${token}` });
+    const data = await http.get(this.baseUrl + '?' + qs.stringify(this.query)).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
     this.maxLength = data.body.totalData;
     this.isLoading = false;
@@ -87,7 +90,7 @@ export class WarehouseStore {
   deleteWarehouse = async (_id) => {
     this.isLoading = true;
     const token = localStorage.getItem("token")
-    return http.del(`/warehouse/deleteWarehouse/${_id}`).set({ 'authorization': `Bearer ${token}` }).then(res => {
+    return http.del(`/dataWarehouse/deleteDataProduct/${_id}`).set({ 'authorization': `Bearer ${token}` }).then(res => {
       this.delete = res.body.data;
       this.isLoading = false;
       return res;
@@ -110,7 +113,7 @@ export class WarehouseStore {
   }
 
   @action
-  async getDropdown(filter) {
+  async getDropdown() {
     // if (filter != null) {
     //   this.query.filter = filter;
     // }

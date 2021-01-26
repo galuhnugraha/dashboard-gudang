@@ -42,21 +42,21 @@ export const DataProdukScreen = observer((initialData) => {
 
   const [state, setState] = useState({
     success: false,
-    warehouseID: '',
+    warehouseId: '',
   });
 
 
   async function fetchData() {
-    store.products.getAll();
-    store.warehouse.getWarehouse()
+    await store.products.getAll();
+    await store.warehouse.getWarehouse()
+    await store.barang.getDropdown();
   }
 
   useEffect(() => {
     fetchData();
     return () => {
-      store.products.query.pg = 1;
-      store.products.query.lm = 10;
-
+      // store.products.query.pg = 1;
+      // store.products.query.lm = 10;
     }
   }, [filterQuery]);
 
@@ -133,24 +133,6 @@ export const DataProdukScreen = observer((initialData) => {
     setFilterProduct(false)
   };
 
-  // const enterLoading = (e) => {
-  //   console.log(e.quantity);
-  //   setLoading(true);
-  //   const data = {
-  //     quantity: e.quantity,
-  //     location: e.location
-  //   }
-
-  //   store.products.AddProductOut(data, e._id).then(res => {
-  //     message.success('Berhasil Add Product');
-  //     setLoading(false);
-  // history.push("/app/data-produk");
-  //   }).catch(err => {
-  //     message.error(err.message);
-  //     setLoading(false);
-  //   });
-  // }
-
   function modalProduct() {
     return <Modal
       maskClosable={false}
@@ -221,37 +203,6 @@ export const DataProdukScreen = observer((initialData) => {
             </Form.Item>
           </Col>
         </Row>
-        {/* <Row>
-          <Col lg={8}>
-            <Form.Item
-              style={{
-                marginBottom: 25,
-                width: 100
-              }}>
-              <Button key="back" onClick={() => {
-                setFilterProduct(false)
-              }}>
-                Cancel
-              </Button>
-            </Form.Item>
-          </Col>
-          <Col lg={2} />
-          <Col lg={8}>
-            <Form.Item
-              style={{
-                marginBottom: 25,
-                width: 100
-              }}>
-              <Button style={{ backgroundColor: '#132743', color: 'white', borderRadius: 5 }}
-                block
-                htmlType="submit"
-                size={'large'}
-              >
-                Submit
-				    	</Button>
-            </Form.Item>
-          </Col>
-        </Row> */}
       </Form>
     </Modal>
   }
@@ -288,10 +239,10 @@ export const DataProdukScreen = observer((initialData) => {
 
   function onOkFilter() {
     // console.log(value)
-    store.products.query.warehouseID = state.warehouseID;
+    store.warehouse.query.warehouseId = state.warehouseId;
     setFilterQuery({
       ...filterQuery,
-      warehouseID: state.warehouseID
+      warehouseId: state.warehouseId
     })
 
     setFilterModal(false);
@@ -340,9 +291,9 @@ export const DataProdukScreen = observer((initialData) => {
       <Form initialValues={initialData} form={form} layout="vertical">
         <Form.Item label="Warehouse" name="_id" >
           <Select placeholder="Select Warehouse" style={{ width: '97%' }} onChange={(value) => {
-            setState({ warehouseID: value });
+            setState({ warehouseId: value });
           }}>
-            {store.warehouse.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
+            {store.barang.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
           </Select>
         </Form.Item>
       </Form>
@@ -355,14 +306,13 @@ export const DataProdukScreen = observer((initialData) => {
       {
         title: 'Product Name',
         dataIndex: 'productName',
-        width: 150,
+        width: 140,
         fixed: 'left',
         key: 'productName',
       },
       {
         title: 'Product Type',
         dataIndex: 'productType',
-        fixed: 'left',
         width: 150,
         key: 'productType',
       },
@@ -379,6 +329,7 @@ export const DataProdukScreen = observer((initialData) => {
         title: 'Quantity',
         dataIndex: 'quantity',
         key: 'quantity',
+        width: 120,
       },
       {
         title: 'SKU',
@@ -500,8 +451,8 @@ export const DataProdukScreen = observer((initialData) => {
         <Table
           rowKey={record => record._id}
           hasEmpty
-          style={{ paddingLeft: '12px' }}
-          size={"middle"}
+          // style={{ paddingLeft: '12px' }}
+          size={"large"}
           columns={columns}
           scroll={{ x: 1200 }}
           dataSource={store.products.data.slice()}

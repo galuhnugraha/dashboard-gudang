@@ -88,7 +88,7 @@ export const App = () => {
           style={{
             backgroundColor: "transparent",
             borderRightWidth: 0,
-            fontWeight: 400,
+            // fontWeight: 400,
             paddingLeft: 0,
           }}
         >
