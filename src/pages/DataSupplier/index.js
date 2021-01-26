@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Breadcrumb, PageHeader, Select, Input, Form, Modal, Card, Button, Space, message, Popconfirm } from 'antd';
+import { Table, Breadcrumb, PageHeader,Input, Form, Modal, Card, Button, Space, message, Popconfirm } from 'antd';
 import {
   PlusOutlined,
   EditOutlined,
@@ -51,12 +51,12 @@ export const DataSupplierScreen = observer((initialData) => {
       success: true
     }))
     const halo = value.suplierProduct.map(result => {
-      const product = [
-        {
-          productName: result.productName,
-          price: result.price
-        }
-      ]
+      // const product = [
+      //   {
+      //     productName: result.productName,
+      //     price: result.price
+      //   }
+      // ]
       return result.productName
     })
     form.setFieldsValue(
@@ -137,7 +137,7 @@ export const DataSupplierScreen = observer((initialData) => {
         dataIndex: 'suplierProduct',
         key: 'suplierProduct',
         render: (text, record) => <span >{record.suplierProduct.map((e) => {
-          return <p style={{ width: 250 }}>{e.productName}</p>
+          return <p style={{ width: 250 }} key="1">{e.productName}</p>
         })}</span>
       },
       {
@@ -212,8 +212,7 @@ export const DataSupplierScreen = observer((initialData) => {
         />
         {renderModal()}
         <Table
-          // rowKey={record => record._id}
-          key={record => record._id}
+          rowKey={record => record._id}
           hasEmpty
           style={{ paddingLeft: '12px' }}
           size={"middle"}

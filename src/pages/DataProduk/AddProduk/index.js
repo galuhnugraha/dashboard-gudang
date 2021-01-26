@@ -28,7 +28,8 @@ export const AddProduk = observer(() => {
     }, [])
 
     const enterLoading = (e) => {
-        setLoading(true);
+        // setLoading(true);
+        loading(true);
         const data = {
             productName: e.productName,
             productType: e.productType,

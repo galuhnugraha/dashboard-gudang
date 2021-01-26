@@ -9,7 +9,6 @@ import { AddProduk } from "../pages/DataProduk/AddProduk";
 import { WarehouseScreen } from "../pages/Warehouse";
 import {AddWarehouse} from "../pages/Warehouse/addWarehouse";
 import {AddSupplierScreen} from "../pages/DataSupplier/AddSupplier";
-import { AddProductOut } from "../pages/DataProduk/AddProductOut";
 
 export const AppRoutes = () => {
   return <Switch>
@@ -42,9 +41,6 @@ export const AppRoutes = () => {
     </Route>
     <Route path="/app/input-warehouse">
       <AddWarehouse />
-    </Route>
-    <Route path="/app/input-product-out">
-      <AddProductOut />
     </Route>
   </Switch>
 };

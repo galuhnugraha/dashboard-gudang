@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Select, Row, Col, Form, Input, Breadcrumb, message, PageHeader, Card, Button } from 'antd';
+import React, { useState } from "react";
+import {Form, Input, Breadcrumb, message, PageHeader, Card, Button } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
 import { observer } from "mobx-react-lite";
@@ -14,7 +14,7 @@ export const AddSupplierScreen = observer(() => {
 
 
     const enterLoading = (e) => {
-        setLoading(true);
+        loading(true);
         const suplierProduct2 = [{
             productName: e.suplierProduct,
             price: 12312312313

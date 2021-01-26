@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { http } from "../../utils/http";
 import {
   Table,
   Space,
@@ -11,7 +10,6 @@ import {
 import {
   DeleteOutlined,
   FilterOutlined,
-  EditOutlined,
   PlusOutlined
 } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
@@ -19,11 +17,15 @@ import { useStore } from "../../utils/useStores";
 import { observer } from "mobx-react-lite";
 import moment from "moment";
 
+
+function cancel(e) {
+  message.error('Anda Tidak Jadi Hapus Data Ini!');
+}
+
 export const WarehouseScreen = observer((initialData) => {
   const store = useStore();
   const history = useHistory();
   const [form] = Form.useForm();
-  const [wId, setWid] = useState('');
   const [state, setState] = useState({
     success: false,
     warehouseId: '',
@@ -34,8 +36,8 @@ export const WarehouseScreen = observer((initialData) => {
   useEffect(() => {
     fetchData();
     return () => {
-      store.warehouse.query.pg = 1;
-      store.warehouse.query.lm = 10;
+      // store.warehouse.query.pg = 1;
+      // store.warehouse.query.lm = 10;
     }
   }, [filterQuery]);
 
@@ -46,6 +48,7 @@ export const WarehouseScreen = observer((initialData) => {
 
   const data = store.warehouse.data.map((e) => {
     return {
+      key: e._id,
       productName: e.product?.productName,
       status: e.status,
       quantity: e.product?.quantity,
@@ -70,17 +73,17 @@ export const WarehouseScreen = observer((initialData) => {
 
   const { Search } = Input;
 
-  const setEditMode = (value) => {
-    setState(prevState => ({
-      ...prevState,
-      success: true
-    }))
-    form.setFieldsValue({
-      isEdit: value._id,
-      success: true,
-      quantity: value.quantity,
-    })
-  }
+  // const setEditMode = (value) => {
+  //   setState(prevState => ({
+  //     ...prevState,
+  //     success: true
+  //   }))
+  //   form.setFieldsValue({
+  //     isEdit: value._id,
+  //     success: true,
+  //     quantity: value.quantity,
+  //   })
+  // }
 
   const toggleSuccess = (() => {
     setState({
@@ -132,7 +135,7 @@ export const WarehouseScreen = observer((initialData) => {
           <Select placeholder="Select Warehouse" style={{ width: '97%' }} onChange={(value) => {
             setState({ warehouseId: value });
           }}>
-            {store.barang.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
+            {store.barang.data.map(d => <Select.Option value={d._id} key={d._id}>{d.warehouseName}</Select.Option>)}
           </Select>
         </Form.Item>
       </Form>
@@ -196,11 +199,17 @@ export const WarehouseScreen = observer((initialData) => {
         render: (text, record) => (
           <Space size="middle">
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <div>
-                <DeleteOutlined onClick={() => {
+              <Popconfirm
+                title="Apakah Anda Yakin Ingin Hapus Data Ini?"
+                onConfirm={() => {
                   deleteClick(record._id)
-                }} style={{ marginLeft: 6 }} />
-              </div>
+                }}
+                onCancel={cancel}
+                okText="Yes"
+                cancelText="No"
+              >
+                <DeleteOutlined style={{ marginLeft: 6 }} />
+              </Popconfirm>,
             </div>
           </Space>
         ),
@@ -247,6 +256,7 @@ export const WarehouseScreen = observer((initialData) => {
               <PlusOutlined /> New
               </Button>,
             <Button
+            key="2"
               onClick={() => setFilterModal(true)}
             >
               <FilterOutlined /> Filter
@@ -256,7 +266,7 @@ export const WarehouseScreen = observer((initialData) => {
         {modalFilter()}
         {renderModal()}
         <Table
-          rowKey={record => record._id}
+          key={"1"}
           hasEmpty
           style={{ paddingLeft: '12px' }}
           size={"small"}

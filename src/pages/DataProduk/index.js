@@ -25,8 +25,6 @@ function cancel(e) {
   message.error('Click on No');
 }
 
-// const { Search } = Input;
-
 export const DataProdukScreen = observer((initialData) => {
   const store = useStore();
   const [form] = Form.useForm();
@@ -84,6 +82,7 @@ export const DataProdukScreen = observer((initialData) => {
   })
 
   function ProductOut(e) {
+    loading(true);
     const data = {
       quantity: e.quantity,
       location: e.location
@@ -277,10 +276,10 @@ export const DataProdukScreen = observer((initialData) => {
         <Button onClick={() => {
           resetFilter()
         }}>Reset Filter</Button>,
-        <Button key="back" onClick={() => setFilterModal(false)}>
+        <Button key="2" onClick={() => setFilterModal(false)}>
           Cancel
       </Button>,
-        <Button key="button" type="primary" onClick={onOkFilter}>
+        <Button key="1" type="primary" onClick={onOkFilter}>
           Filter
       </Button>,
       ]}
@@ -290,7 +289,7 @@ export const DataProdukScreen = observer((initialData) => {
           <Select placeholder="Select Warehouse" style={{ width: '97%' }} onChange={(value) => {
             setState({ warehouseId: value });
           }}>
-            {store.barang.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
+            {store.barang.data.map(d => <Select.Option value={d._id} key={d._id}>{d.warehouseName}</Select.Option>)}
           </Select>
         </Form.Item>
       </Form>
@@ -319,7 +318,7 @@ export const DataProdukScreen = observer((initialData) => {
         width: 150,
         key: 'productImage',
         render: (photo) => {
-          return <img src={`${appConfig.apiImage}/` + photo} style={{ width: 60, height: 60 }} />
+          return <img src={`${appConfig.apiImage}/` + photo} alt={photo} style={{ width: 60, height: 60 }} />
         }
       },
       {
@@ -412,6 +411,7 @@ export const DataProdukScreen = observer((initialData) => {
           className={"card-page-header"}
           subTitle=""
           title={"Produk"}
+          key={"1"}
           extra={[
             <Search
               placeholder="Search...."
@@ -428,7 +428,7 @@ export const DataProdukScreen = observer((initialData) => {
               }}
             />,
             <Button
-              key="1"
+              key="2"
               onClick={() => {
                 history.push("/app/input-product")
               }}
@@ -436,6 +436,7 @@ export const DataProdukScreen = observer((initialData) => {
               <PlusOutlined /> New
           </Button>,
             <Button
+             key="3"
               onClick={() => setFilterModal(true)}
             >
               <FilterOutlined /> Filter
