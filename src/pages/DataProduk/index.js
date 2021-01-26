@@ -37,6 +37,7 @@ export const DataProdukScreen = observer((initialData) => {
   const [filterModal, setFilterModal] = useState(false);
   const [filterQuery, setFilterQuery] = useState({});
   const [filterProduct, setFilterProduct] = useState(false);
+  const [prOutId, setPrOut] = useState('')
   const [loading, setLoading] = useState(false);
 
   const [state, setState] = useState({
@@ -83,6 +84,22 @@ export const DataProdukScreen = observer((initialData) => {
     reader.onerror = error => reject(error);
   })
 
+  function ProductOut(e) {
+    const data = {
+      quantity: e.quantity,
+      location: e.location
+    }
+    store.products.AddProductOut(prOutId, data).then(res => {
+      message.success('Data Produk Di Update!');
+      setLoading(false);
+    }).catch(err => {
+      message.error(`Error on Updating Member, ${err.message}`);
+      message.error(err.message);
+      setLoading(false);
+    })
+
+  }
+
   async function editData(e) {
     const data = {
       productType: e.productType,
@@ -112,27 +129,27 @@ export const DataProdukScreen = observer((initialData) => {
   }
 
   const onFinish = values => {
-    enterLoading(values);
-    console.log(values);
+    ProductOut(values)
+    setFilterProduct(false)
   };
 
-  const enterLoading = (e) => {
-    console.log(e);
-    setLoading(true);
-    const data = {
-      quantity: e.quantity,
-      location: e.location
-    }
-    console.log(data, 'data guys');
-    store.products.AddProductOut(data,e._id).then(res => {
-      message.success('Berhasil Add Product');
-      setLoading(false);
-      history.push("/app/data-produk");
-    }).catch(err => {
-      message.error(err.message);
-      setLoading(false);
-    });
-  }
+  // const enterLoading = (e) => {
+  //   console.log(e.quantity);
+  //   setLoading(true);
+  //   const data = {
+  //     quantity: e.quantity,
+  //     location: e.location
+  //   }
+
+  //   store.products.AddProductOut(data, e._id).then(res => {
+  //     message.success('Berhasil Add Product');
+  //     setLoading(false);
+  // history.push("/app/data-produk");
+  //   }).catch(err => {
+  //     message.error(err.message);
+  //     setLoading(false);
+  //   });
+  // }
 
   function modalProduct() {
     return <Modal
@@ -140,25 +157,24 @@ export const DataProdukScreen = observer((initialData) => {
       closable={false}
       title={"Product Out"}
       visible={filterProduct}
-      footer={[
-        <Button key="back" onClick={() => {
-          setFilterProduct(false)
-        }}>
-          Cancel
-        </Button>,
-        <Button key="button" type="primary" onClick={onFinish}>
-          Save
-        </Button>
-      ]}
+    // footer={[
+    //   <Button key="back" onClick={() => {
+    //     setFilterProduct(false)
+    //   }}>
+    //     Cancel
+    //   </Button>,
+    //   <Button key="button" type="primary" onClick={onFinish}>
+    //     Save
+    //   </Button>
+    // ]}
     >
-      <Form layout="vertical">
-        <Form.Item name="isEdit" hidden={true}>
-          <Input />
-        </Form.Item>
+      <Form
+        layout="vertical"
+        onFinish={onFinish}
+      >
         <Form.Item
           name="quantity"
           label="Quantity"
-
           rules={[
             {
               required: true,
@@ -171,7 +187,6 @@ export const DataProdukScreen = observer((initialData) => {
         <Form.Item
           name="location"
           label="Location"
-
           rules={[
             {
               required: true,
@@ -181,9 +196,33 @@ export const DataProdukScreen = observer((initialData) => {
         >
           <Input style={{ width: '98%' }} />
         </Form.Item>
+        <Form.Item
+          style={{
+            marginBottom: 25,
+            width: 100
+          }}>
+          <Row>
+            <Col>
+              <Button key="back" onClick={() => {
+                setFilterProduct(false)
+              }}>
+                Cancel
+              </Button>
+            </Col>
+            <Col>
+              <Button
+                htmlType="submit"
+              >
+                Submit
+					    </Button>
+            </Col>
+          </Row>
+        </Form.Item>
       </Form>
     </Modal>
   }
+
+
 
   const setEditMode = (value) => {
     setXImg(value.productImage)
@@ -366,6 +405,7 @@ export const DataProdukScreen = observer((initialData) => {
               </Popconfirm>
               <div style={{ marginLeft: 8 }}>
                 <MinusOutlined onClick={() => {
+                  setPrOut(record._id)
                   setFilterProduct(true)
                 }} />
               </div>

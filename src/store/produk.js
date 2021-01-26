@@ -40,8 +40,8 @@ export class ProdukStore {
 
   @action
   async getAll(filter) {
-    if(filter != null){
-      this.query.filter = filter; 
+    if (filter != null) {
+      this.query.filter = filter;
     }
     this.isLoading = true;
     console.log(qs.stringify(this.query));
@@ -109,7 +109,7 @@ export class ProdukStore {
   }
 
   @action
-  AddProductOut = async (data,id) => {
+  AddProductOut = async (id, data) => {
     this.isLoading = true;
     const token = localStorage.getItem("token")
     return http.post(`/dataWarehouse/createProductOut/${id}`).set({ 'authorization': `Bearer ${token}` }).send(data)
