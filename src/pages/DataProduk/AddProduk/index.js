@@ -7,7 +7,6 @@ import { observer } from "mobx-react-lite";
 export const AddProduk = observer(() => {
     const store = useStore();
     const history = useHistory();
-    const [loading, setLoading] = useState(false);
     const [imgData, setImgData] = useState(null);
 
     const onFinish = values => {
@@ -23,12 +22,15 @@ export const AddProduk = observer(() => {
     });
 
     useEffect(() => {
-        store.warehouse.getDropdown();
-        store.supliers.getSupplier();
-    }, [])
+        fetchData()
+    })
+
+    async function fetchData() {
+        await store.warehouse.getDropdown();
+        await store.supliers.getSupplier();
+    }
 
     const enterLoading = (e) => {
-        setLoading(true);
         const data = {
             productName: e.productName,
             productType: e.productType,
@@ -45,11 +47,9 @@ export const AddProduk = observer(() => {
         }
         store.products.AddProduct(data).then(res => {
             message.success('Berhasil Add Product');
-            setLoading(false);
             history.push("/app/data-produk");
         }).catch(err => {
             message.error(err.message);
-            setLoading(false);
         });
     }
 

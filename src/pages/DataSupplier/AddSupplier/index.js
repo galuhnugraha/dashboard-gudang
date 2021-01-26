@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {Form, Input, Breadcrumb, message, PageHeader, Card, Button } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
@@ -7,14 +7,12 @@ import { observer } from "mobx-react-lite";
 export const AddSupplierScreen = observer(() => {
     const store = useStore();
     const history = useHistory();
-    const [loading, setLoading] = useState(false);
     const onFinish = values => {
         enterLoading(values);
     };
 
 
     const enterLoading = (e) => {
-        setLoading(true);
         const suplierProduct2 = [{
             productName: e.suplierProduct,
             price: 12312312313
@@ -32,11 +30,9 @@ export const AddSupplierScreen = observer(() => {
         // data.suplierProduct = suplierProduct
         store.supliers.AddSupplier(data).then(res => {
             message.success('Berhasil Add Product');
-            setLoading(false);
             history.push("/app/data-supplier");
         }).catch(err => {
             message.error(err.message);
-            setLoading(false);
         });
     }
 

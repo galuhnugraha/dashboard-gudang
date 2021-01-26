@@ -39,6 +39,7 @@ export const WarehouseScreen = observer((initialData) => {
       // store.warehouse.query.pg = 1;
       // store.warehouse.query.lm = 10;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterQuery]);
 
   async function fetchData() {
@@ -48,7 +49,6 @@ export const WarehouseScreen = observer((initialData) => {
 
   const data = store.warehouse.data.map((e) => {
     return {
-      key: e._id,
       productName: e.product?.productName,
       status: e.status,
       quantity: e.product?.quantity,
@@ -119,13 +119,13 @@ export const WarehouseScreen = observer((initialData) => {
       title={"Filter"}
       visible={filterModal}
       footer={[
-        <Button onClick={() => {
+        <Button key="reset" onClick={() => {
           resetFilter()
         }}>Reset Filter</Button>,
         <Button key="back" onClick={() => setFilterModal(false)}>
           Cancel
       </Button>,
-        <Button key="button" type="primary" onClick={onOkFilter}>
+        <Button key="button" style={{backgroundColor: '#132743',color: 'white'}} onClick={onOkFilter}>
           Filter
       </Button>,
       ]}
@@ -227,7 +227,7 @@ export const WarehouseScreen = observer((initialData) => {
           <span style={{ color: "#132743" }}>Data Warehouse</span>
         </Breadcrumb.Item>
       </Breadcrumb>
-      <Card bordered={false} className={"shadow"} bodyStyle={{ padding: 0, marginTop: 25, borderRadius: 10, boxShadow: '0 0 10px  0  rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.10)' }}>
+      <Card key="snoopDog" bordered={false} className={"shadow"} bodyStyle={{ padding: 0, marginTop: 25, borderRadius: 10, boxShadow: '0 0 10px  0  rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.10)' }}>
         <PageHeader
           className={"card-page-header"}
           subTitle=""
@@ -248,7 +248,7 @@ export const WarehouseScreen = observer((initialData) => {
               }}
             />,
             <Button
-              key="1"
+              key="butonPushHistory"
               onClick={() => {
                 history.push("/app/input-warehouse")
               }}
@@ -256,7 +256,8 @@ export const WarehouseScreen = observer((initialData) => {
               <PlusOutlined /> New
               </Button>,
             <Button
-            key="2"
+            key="buttonFilter"
+            htmlType={"button"}
               onClick={() => setFilterModal(true)}
             >
               <FilterOutlined /> Filter
@@ -266,7 +267,7 @@ export const WarehouseScreen = observer((initialData) => {
         {modalFilter()}
         {renderModal()}
         <Table
-          key={"1"}
+          key="AldinMotherFucker"
           hasEmpty
           style={{ paddingLeft: '12px' }}
           size={"small"}

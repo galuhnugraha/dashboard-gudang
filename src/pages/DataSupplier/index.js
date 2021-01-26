@@ -25,6 +25,7 @@ export const DataSupplierScreen = observer((initialData) => {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function fetchData() {

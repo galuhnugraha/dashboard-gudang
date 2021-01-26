@@ -35,8 +35,6 @@ export const DataProdukScreen = observer((initialData) => {
   const [filterQuery, setFilterQuery] = useState({});
   const [filterProduct, setFilterProduct] = useState(false);
   const [prOutId, setPrOut] = useState('')
-  const [loading, setLoading] = useState(false);
-
   const [state, setState] = useState({
     success: false,
     warehouseID: '',
@@ -55,7 +53,8 @@ export const DataProdukScreen = observer((initialData) => {
       store.products.query.pg = 1;
       store.products.query.lm = 10;
     }
-  }, [filterQuery]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[filterQuery]);
 
   const { Search } = Input;
 
@@ -88,11 +87,9 @@ export const DataProdukScreen = observer((initialData) => {
     }
     store.products.AddProductOut(prOutId, data).then(res => {
       message.success('Data Produk Di Update!');
-      setLoading(false);
     }).catch(err => {
       message.error(`Error on Updating Member, ${err.message}`);
       message.error(err.message);
-      setLoading(false);
     })
 
   }
@@ -186,7 +183,7 @@ export const DataProdukScreen = observer((initialData) => {
                 marginBottom: 25,
                 width: 100
               }}>
-              <Button htmlType="submit" style={{ backgroundColor: '#132743', color: 'white'}}>Submit</Button>
+              <Button htmlType="submit" style={{ backgroundColor: '#132743', color: 'white' }}>Submit</Button>
             </Form.Item>
           </Col>
         </Row>
@@ -262,13 +259,13 @@ export const DataProdukScreen = observer((initialData) => {
       title={"Filter"}
       visible={filterModal}
       footer={[
-        <Button onClick={() => {
+        <Button key="reset" onClick={() => {
           resetFilter()
         }}>Reset Filter</Button>,
         <Button key="2" onClick={() => setFilterModal(false)}>
           Cancel
       </Button>,
-        <Button key="1" type="primary" onClick={onOkFilter}>
+        <Button key="1" style={{backgroundColor: '#132743',color: 'white'}} onClick={onOkFilter}>
           Filter
       </Button>,
       ]}
@@ -400,7 +397,6 @@ export const DataProdukScreen = observer((initialData) => {
           className={"card-page-header"}
           subTitle=""
           title={"Produk"}
-          key={"1"}
           extra={[
             <Search
               placeholder="Search...."
@@ -417,7 +413,7 @@ export const DataProdukScreen = observer((initialData) => {
               }}
             />,
             <Button
-              key="2"
+              key={"1"}
               onClick={() => {
                 history.push("/app/input-product")
               }}
@@ -425,7 +421,7 @@ export const DataProdukScreen = observer((initialData) => {
               <PlusOutlined /> New
           </Button>,
             <Button
-             key="3"
+              key={"2"}
               onClick={() => setFilterModal(true)}
             >
               <FilterOutlined /> Filter
@@ -445,15 +441,22 @@ export const DataProdukScreen = observer((initialData) => {
           dataSource={store.products.data.slice()}
           pagination={{
             total: store.products.maxLength,
-            onShowSizeChange: (current, pageSize) => {
-              store.products.setCurrentPage(pageSize);
-            }
+            // onShowSizeChange: (current, pageSize) => {
+            //   store.products.setCurrentPage(pageSize);
+            // }
           }}
           loading={store.products.isLoading}
           onChange={(page) => {
-            store.products.setPage(page.current);
-          }}
-          current={store.products.currentPage}
+            store.products.query.pg = page.current;
+            store.products.query.lms = page.pageSize;
+            fetchData()
+          }} 
+          current={store.products.query.page} 
+
+          // onChange={(page) => {
+          //   store.products.setPage(page.current);
+          // }}
+          // current={store.products.currentPage}
         />
       </Card>
     </div>
@@ -588,7 +591,6 @@ export const DataProdukScreen = observer((initialData) => {
         </Form.Item>
         <Form.Item
           label="Product Image"
-          name="productImage"
         >
           {imgData ? <img src={imgData} alt="avatar" style={{ width: 180, height: 140, objectFit: 'contain', marginBottom: 15, borderRadius: 6 }} /> :
             <img src={`${appConfig.apiImage}/${xImg}`} alt="avatar" style={{ width: 110, height: 110, marginBottom: 10, borderRadius: 4 }} />}

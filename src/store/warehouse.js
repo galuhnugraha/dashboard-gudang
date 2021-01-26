@@ -22,13 +22,13 @@ export class WarehouseStore {
 
   @action
   setPage(page = 1) {
-    this.currentPage = page;
+    this.query.pg = page;
     this.getWarehouse();
   }
 
   @action
   setCurrentPage(current = 10) {
-    this.pageSize = current;
+    this.query.lm = current;
     this.getWarehouse();
   }
 

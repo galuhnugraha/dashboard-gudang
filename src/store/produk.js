@@ -16,18 +16,6 @@ export class ProdukStore {
     warehouseID: '',
   }
 
-  @action
-  setPage(page = 1) {
-    this.currentPage = page;
-    this.getAll();
-  }
-
-  @action
-  setCurrentPage(current = 10) {
-    this.pageSize = current;
-    this.getAll();
-  }
-
   setPageDebounced = debounce((page) => {
     this.setSearch(page);
   }, 300);
