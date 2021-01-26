@@ -49,11 +49,12 @@ export const WarehouseScreen = observer((initialData) => {
 
   const data = store.warehouse.data.map((e) => {
     return {
-      productName: e.product?.productName,
+      productName: e.productName,
       status: e.status,
-      quantity: e.product?.quantity,
+      quantity: e.quantity,
       createdAt: e.createdAt,
-      updatedAt: e.updatedAt
+      updatedAt: e.updatedAt,
+      _id: e._id
     }
   })
 
@@ -209,7 +210,7 @@ export const WarehouseScreen = observer((initialData) => {
                 cancelText="No"
               >
                 <DeleteOutlined style={{ marginLeft: 6 }} />
-              </Popconfirm>,
+              </Popconfirm>
             </div>
           </Space>
         ),

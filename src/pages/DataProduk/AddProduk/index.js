@@ -1,4 +1,4 @@
-import React, {useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Select, Row, Col, Form, Input, Breadcrumb, message, PageHeader, Card, Button } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
@@ -8,7 +8,7 @@ export const AddProduk = observer(() => {
     const store = useStore();
     const history = useHistory();
     const [imgData, setImgData] = useState(null);
-    const [loading,setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const onFinish = values => {
         enterLoading(values);
@@ -22,15 +22,12 @@ export const AddProduk = observer(() => {
         reader.onerror = error => reject(error);
     });
 
-    React.useEffect(() => {
-        fetchData();
-         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+    useEffect(() => {
+        store.warehouse.getDropdown();
+        store.supliers.getSupplier();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
-    async function fetchData() {
-        await store.warehouse.getDropdown();
-        await store.supliers.getSupplier();
-    }
 
     const enterLoading = (e) => {
         setLoading(true)
@@ -205,7 +202,7 @@ export const AddProduk = observer(() => {
                     </Col>
                 </Row>
                 <Form.Item label="Product Image" rules={[{ required: true, message: 'Please input file Image!' }]} >
-                    <input type='file' name="file" onChange={addImage}/>
+                    <input type='file' id="files" onChange={addImage} />
                 </Form.Item>
 
                 <Form.Item

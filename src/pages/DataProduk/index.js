@@ -87,6 +87,7 @@ export const DataProdukScreen = observer((initialData) => {
     }
     store.products.AddProductOut(prOutId, data).then(res => {
       message.success('Data Produk Di Update!');
+      fetchData();
     }).catch(err => {
       message.error(`Error on Updating Member, ${err.message}`);
       message.error(err.message);
@@ -288,20 +289,20 @@ export const DataProdukScreen = observer((initialData) => {
       {
         title: 'Product Name',
         dataIndex: 'productName',
-        width: 140,
+        // width: 140,
         fixed: 'left',
         key: 'productName',
       },
       {
         title: 'Product Type',
         dataIndex: 'productType',
-        width: 150,
+        // width: 150,
         key: 'productType',
       },
       {
         title: 'Product Image',
         dataIndex: 'productImage',
-        width: 150,
+        // width: 150,
         key: 'productImage',
         render: (photo) => {
           return <img src={`${appConfig.apiImage}/` + photo} alt={photo} style={{ width: 60, height: 60 }} />
@@ -311,7 +312,7 @@ export const DataProdukScreen = observer((initialData) => {
         title: 'Quantity',
         dataIndex: 'quantity',
         key: 'quantity',
-        width: 120,
+        // width: 120,
       },
       {
         title: 'SKU',
@@ -320,13 +321,13 @@ export const DataProdukScreen = observer((initialData) => {
       },
       {
         title: 'Price Per Unit',
-        width: 120,
+        // width: 120,
         dataIndex: 'pricePerUnit',
         key: 'pricePerUnit',
       },
       {
         title: 'Grosir Price',
-        width: 100,
+        // width: 100,
         dataIndex: 'grosirPrice',
         key: 'grosirPrice',
       },
