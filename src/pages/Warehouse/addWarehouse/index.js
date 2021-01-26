@@ -19,7 +19,6 @@ export const AddWarehouse = observer(() => {
             warehouseName: e.warehouseName,
             warehosueLocation: e.warehosueLocation,
         }
-        console.log(data, 'data guys');
         store.warehouse.AddWarehouse(data).then(res => {
             message.success('Berhasil Add Product');
             setLoading(false);

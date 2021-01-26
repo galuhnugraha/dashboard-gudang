@@ -47,7 +47,6 @@ export class WarehouseStore {
     if (filter != null) {
       this.query.filter = filter;
     }
-    console.log(this.query)
     this.isLoading = true;
     const token = localStorage.getItem("token")
     const data = await http.get(this.baseUrl + '?' + qs.stringify(this.query)).set({ 'authorization': `Bearer ${token}` });

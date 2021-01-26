@@ -22,7 +22,6 @@ import { appConfig } from "../config/app";
 
 
 function cancel(e) {
-  console.log(e);
   message.error('Click on No');
 }
 
@@ -238,7 +237,6 @@ export const DataProdukScreen = observer((initialData) => {
   })
 
   function onOkFilter() {
-    // console.log(value)
     store.warehouse.query.warehouseId = state.warehouseId;
     setFilterQuery({
       ...filterQuery,
@@ -250,7 +248,6 @@ export const DataProdukScreen = observer((initialData) => {
 
   function resetFilter() {
     form.validateFields().then((values) => {
-      console.log(values)
       form.resetFields();
     });
 
@@ -490,10 +487,8 @@ export const DataProdukScreen = observer((initialData) => {
           .validateFields()
           .then(values => {
             editData(values);
-            console.log(values, 'data')
           })
           .catch(info => {
-            // console.log('Validate Failed:', info);
           });
       }}
     >

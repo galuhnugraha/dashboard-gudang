@@ -25,7 +25,6 @@ export const AddProduk = observer(() => {
     useEffect(() => {
         store.warehouse.getDropdown();
         store.supliers.getSupplier();
-        console.log(store.products.data, 'test')
     }, [])
 
     const enterLoading = (e) => {
@@ -44,7 +43,6 @@ export const AddProduk = observer(() => {
             warehouseId: e._id,
             suplierId: e.suplierId
         }
-        console.log(data, 'data guys');
         store.products.AddProduct(data).then(res => {
             message.success('Berhasil Add Product');
             setLoading(false);

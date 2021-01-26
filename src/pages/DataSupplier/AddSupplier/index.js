@@ -30,7 +30,6 @@ export const AddSupplierScreen = observer(() => {
             suplierProduct: suplierProduct2
         }
         // data.suplierProduct = suplierProduct
-        console.log(data, 'data guys');
         store.supliers.AddSupplier(data).then(res => {
             message.success('Berhasil Add Product');
             setLoading(false);

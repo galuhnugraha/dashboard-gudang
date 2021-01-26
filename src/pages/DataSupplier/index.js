@@ -9,13 +9,8 @@ import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../utils/useStores";
 import { observer } from "mobx-react-lite";
 
-function confirm(e) {
-  console.log(e);
-  message.success('Click on Yes');
-}
 
 function cancel(e) {
-  console.log(e);
   message.error('Click on No');
 }
 
@@ -62,7 +57,6 @@ export const DataSupplierScreen = observer((initialData) => {
           price: result.price
         }
       ]
-      console.log(product)
       return result.productName
     })
     form.setFieldsValue(
@@ -75,7 +69,6 @@ export const DataSupplierScreen = observer((initialData) => {
         suplierPhone: value.suplierPhone,
         suplierProduct: halo
       })
-    console.log(typeof value.suplierName)
   }
 
   const toggleSuccess = (() => {
@@ -263,7 +256,7 @@ export const DataSupplierScreen = observer((initialData) => {
             editData(values);
           })
           .catch(info => {
-            // console.log('Validate Failed:', info);
+
           });
       }}
     >

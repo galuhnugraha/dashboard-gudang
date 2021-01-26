@@ -19,11 +19,6 @@ import { useStore } from "../../utils/useStores";
 import { observer } from "mobx-react-lite";
 import moment from "moment";
 
-function cancel(e) {
-  console.log(e);
-  message.error('Click on No');
-}
-
 export const WarehouseScreen = observer((initialData) => {
   const store = useStore();
   const history = useHistory();
@@ -76,7 +71,6 @@ export const WarehouseScreen = observer((initialData) => {
   const { Search } = Input;
 
   const setEditMode = (value) => {
-    console.log(value)
     setState(prevState => ({
       ...prevState,
       success: true
@@ -95,8 +89,6 @@ export const WarehouseScreen = observer((initialData) => {
   })
 
   function onOkFilter() {
-    // console.log(value)
-    console.log(state)
     store.warehouse.query.warehouseId = state.warehouseId;
     setFilterQuery({
       ...filterQuery,
@@ -304,10 +296,9 @@ export const WarehouseScreen = observer((initialData) => {
           .validateFields()
           .then(values => {
             editData(values)
-            console.log(values)
           })
           .catch(info => {
-            // console.log('Validate Failed:', info);
+
           });
       }}
     >

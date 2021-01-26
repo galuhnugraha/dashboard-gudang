@@ -44,7 +44,6 @@ export class ProdukStore {
       this.query.filter = filter;
     }
     this.isLoading = true;
-    console.log(qs.stringify(this.query));
     const token = localStorage.getItem("token")
     const data = await http.get(this.baseUrl + '?' + qs.stringify(this.query)).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
