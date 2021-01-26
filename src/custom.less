@@ -1,0 +1,294 @@
+@import '~antd/dist/antd.less';
+
+.selector {
+  color: @blue-5;
+  background-color: #e3e8ee;
+}
+
+@font-size-base: 12px; // major text font size
+//@primary-color: #ffd037; // primary color for all components
+@primary-color: #ffd400; // primary color for all components
+//@link-color: #58585b; // link color
+@link-color: #196bb1; // link color
+@success-color: #52c41a; // success state color
+@warning-color: #faad14; // warning state color
+@error-color: #f5222d; // error state color
+@heading-color: rgba(0, 0, 0, 0.85); // heading text color
+@text-color: #1a1f36; // major text color
+@text-color-secondary: #4f566b; // secondary text color
+@disabled-color: #697386; // disable state color
+@border-radius-base: 6px; // major border radius
+@border-color-base: #d9d9d9; // major border color
+@box-shadow-base: @shadow-2; // major shadow for layers
+//@background-color-base: #e3e8ee;
+@background-color-base: #ebebeb;
+@link-decoration: none;
+
+body {
+  font-family: 'Noto Sans SC','Arial','Helvetica', 'Poppins';
+  -webkit-font-smoothing: antialiased;
+  background-color: @background-color-base;
+  font-weight: 300;
+  color: #1a1f36;
+}
+
+// Layout
+@layout-body-background: #e3e8ee;
+@layout-header-background: #001529;
+@layout-header-height: 64px;
+@layout-header-padding: 0 50px;
+@layout-header-color: @text-color;
+@layout-footer-padding: 24px 50px;
+@layout-footer-background: @layout-body-background;
+@layout-sider-background: @layout-header-background;
+@layout-trigger-height: 48px;
+@layout-trigger-background: #002140;
+@layout-trigger-color: #fff;
+@layout-zero-trigger-width: 36px;
+@layout-zero-trigger-height: 42px;
+
+
+// Statistic
+// ---
+
+@statistic-content-font-size: 1.5vh;
+@statistic-unit-font-size: 1vh;
+@statistic-title-font-size: 1.2vh;
+
+//@font-size-lg: 3vw;
+//@font-size-sm: 3vw;
+
+// Typography
+// ---
+@typography-title-font-weight: 100;
+
+@menu-collapsed-width: 40px;
+@layout-header-padding: 0 24px;
+
+
+@card-shadow: 0 7px 14px 0 rgba(60, 66, 87, 0.12), 0 3px 6px 0 rgba(0, 0, 0, 0.12);
+
+@select-item-selected-bg: transparent;
+@menu-item-active-bg: transparent;
+@layout-header-background: @layout-body-background;
+
+@menu-item-active-border-width: 0;
+@select-selection-item-border-color: transparent;
+@menu-inline-toplevel-item-height: 20px;
+@menu-item-height: 20px;
+@shadow-2: 0 7px 14px 0 rgba(60, 66, 87, 0.5), 0 3px 6px 0 rgba(241, 241, 241, 0.5);
+
+// Menu
+// ---
+
+@menu-bg: transparent;
+
+//Dropdown
+@dropdown-menu-bg: transparent;
+@btn-border-width: 0;
+@btn-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.12) 0px 1px 1px 0px, rgba(60, 66, 87, 0.16) 0px 0px 0px 1px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(60, 66, 87, 0.12) 0px 2px 5px 0px;
+
+// Button
+@btn-height-base: 28px;
+
+@btn-padding-horizontal-base: 8px;
+
+@form-vertical-label-padding: 0 0 4px;
+@page-header-padding: 16px 20px;
+
+@no-shadow: none;
+
+
+@table-header-bg: #f7fafc;
+
+
+#root {
+  display: flex;
+}
+
+.ant-table.ant-table-small .ant-table-thead > tr > th {
+  box-shadow: inset 0 -1px 0 0 #e3e8ee;
+  border-bottom: 0;
+}
+
+.ant-pagination.ant-table-pagination.ant-table-pagination-right.mini {
+  margin-right: 20px !important;
+}
+
+.ant-menu-item a {
+  font-weight: 400;
+}
+
+.ant-menu-item-selected > a {
+  font-weight: 700;
+}
+
+.ant-menu-submenu-item a {
+  font-weight: 300;
+}
+
+.ant-menu-submenu-item-selected > a {
+  font-weight: 300;
+}
+
+.small-shadow {
+  box-shadow: 0 2px 5px 0 rgba(60, 66, 87, 0.12), 0 1px 1px 0 rgba(0, 0, 0, 0.12);
+}
+
+.medium-shadow {
+  box-shadow: 0 7px 14px 0 rgba(60, 66, 87, 0.12), 0 3px 6px 0 rgba(0, 0, 0, 0.12);
+}
+
+.shadow {
+  //box-shadow: @shadow-2;
+}
+
+.card-page-header {
+  padding: 16px 20px;
+  box-shadow: inset 0 -1px #e3e8ee;
+}
+
+.no-shadow {
+  box-shadow: none !important;
+}
+
+.ant-page-header-heading-title {
+  display: block;
+  float: left;
+  font-weight: 700;
+  font-size: 2.2vh;
+  line-height: 20px;
+}
+
+.ant-page-header-content {
+  padding: 0
+}
+
+.menu-flex {
+  width: 100%;
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.btn-shadow {
+  box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.12) 0px 1px 1px 0px, rgba(60, 66, 87, 0.16) 0px 0px 0px 1px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(60, 66, 87, 0.12) 0px 2px 5px 0px;
+}
+
+.ant-menu-horizontal > .ant-menu-item {
+  display: block;
+  width: 100% !important;
+}
+
+.ant-table {
+  //font-size: 0.8vw;
+}
+
+.modal-full {
+  overflow: hidden;
+}
+
+.modal-draft {
+  padding: 0;
+}
+
+.modal-draft .ant-modal-content {
+  box-shadow: @no-shadow;
+  border-radius: 0;
+  overflow-x: auto;
+  height: 100vh;
+}
+
+.ant-modal-footer {
+  border-top: 0;
+}
+
+.modal-draft .ant-modal-footer .ant-modal-footer-div {
+  padding: 10px 16px;
+}
+
+.modal-draft .ant-modal-header {
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+}
+
+.login-form {
+  max-width: 350px;
+}
+
+.login-form-forgot {
+  float: right;
+  margin-top: 5px;
+}
+
+.ant-col-rtl .login-form-forgot {
+  float: left;
+}
+
+th.align-right,
+td.align-right {
+  text-align: right !important;
+}
+
+th.align-center,
+td.align-center {
+  text-align: center !important;
+}
+
+
+.select-custom {
+  border-radius: 6px;
+  height: 24px;
+  box-shadow: rgba(0, 0, 0, 0) 0 0 0 0,
+  rgba(0, 0, 0, 0) 0 0 0 0,
+  rgba(0, 0, 0, 0.12) 0px 1px 1px 0px,
+  rgba(60, 66, 87, 0.16) 0px 0px 0px 1px,
+  rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+  rgba(0, 0, 0, 0) 0 0 0px 0px,
+  rgba(60, 66, 87, 0.12) 0 2px 5px 0px;
+};
+
+.select-dropdown-custom {
+  top: 115px !important;
+}
+
+.select-dropdown-custom .ant-select-item {
+  min-height: 20px !important;
+  line-height: normal;
+  padding: 0 12px;
+}
+
+//.ant-select-arrow {
+//  font-size: 1vw;
+//}
+
+.ant-select-single .ant-select-selector .ant-select-selection-item {
+  line-height: 25px;
+}
+
+.custom-form .ant-form-item-label > label {
+  height: 18px !important;
+  font-size: 12px;
+}
+
+.cariparkir-container {
+  padding: 14px 14px 14px 14px;
+}
+
+.detail-container {
+  background-color: white;
+  padding: 14px;
+  width : 100%;
+  border-radius: .4rem;
+  height: 70vh;
+  box-shadow: inset 0 -1px #e3e8ee;
+}
+
+.col-detail-card {
+  box-shadow: '0 35px 60px -15px rgba(0, 0, 0, .3)';
+  border-radius: .5rem;
+  cursor : pointer
+}

@@ -87,7 +87,6 @@ export const DataProdukScreen = observer((initialData) => {
     }
     store.products.AddProductOut(prOutId, data).then(res => {
       message.success('Data Produk Di Update!');
-      fetchData();
     }).catch(err => {
       message.error(`Error on Updating Member, ${err.message}`);
       message.error(err.message);
