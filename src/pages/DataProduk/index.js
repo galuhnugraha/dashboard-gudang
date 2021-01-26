@@ -157,6 +157,7 @@ export const DataProdukScreen = observer((initialData) => {
       closable={false}
       title={"Product Out"}
       visible={filterProduct}
+      footer={null}
     // footer={[
     //   <Button key="back" onClick={() => {
     //     setFilterProduct(false)
@@ -196,28 +197,61 @@ export const DataProdukScreen = observer((initialData) => {
         >
           <Input style={{ width: '98%' }} />
         </Form.Item>
-        <Form.Item
-          style={{
-            marginBottom: 25,
-            width: 100
-          }}>
-          <Row>
-            <Col>
+        <Row>
+          <Col span={4}>
+            <Form.Item
+              style={{
+                marginBottom: 25,
+                width: 100
+              }}>
               <Button key="back" onClick={() => {
                 setFilterProduct(false)
               }}>
                 Cancel
               </Button>
-            </Col>
-            <Col>
-              <Button
+            </Form.Item>
+          </Col>
+          <Col span={4}>
+            <Form.Item
+              style={{
+                marginBottom: 25,
+                width: 100
+              }}>
+              <Button htmlType="submit" style={{ backgroundColor: '#132743', color: 'white'}}>Submit</Button>
+            </Form.Item>
+          </Col>
+        </Row>
+        {/* <Row>
+          <Col lg={8}>
+            <Form.Item
+              style={{
+                marginBottom: 25,
+                width: 100
+              }}>
+              <Button key="back" onClick={() => {
+                setFilterProduct(false)
+              }}>
+                Cancel
+              </Button>
+            </Form.Item>
+          </Col>
+          <Col lg={2} />
+          <Col lg={8}>
+            <Form.Item
+              style={{
+                marginBottom: 25,
+                width: 100
+              }}>
+              <Button style={{ backgroundColor: '#132743', color: 'white', borderRadius: 5 }}
+                block
                 htmlType="submit"
+                size={'large'}
               >
                 Submit
-					    </Button>
-            </Col>
-          </Row>
-        </Form.Item>
+				    	</Button>
+            </Form.Item>
+          </Col>
+        </Row> */}
       </Form>
     </Modal>
   }

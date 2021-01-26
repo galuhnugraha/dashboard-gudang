@@ -180,12 +180,6 @@ export const WarehouseScreen = observer((initialData) => {
           <Space size="middle">
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               <div>
-                <EditOutlined onClick={() => {
-                  console.log(record)
-                  setEditMode(record)
-                }} />
-              </div>
-              <div>
                 <DeleteOutlined onClick={() => {
                   deleteClick(record._id)
                 }} style={{marginLeft: 6}}/>
@@ -235,11 +229,11 @@ export const WarehouseScreen = observer((initialData) => {
             >
               <PlusOutlined /> New
               </Button>,
-            <Button
-              onClick={() => setFilterModal(true)}
-            >
-              <FilterOutlined /> Filter
-            </Button>
+            // <Button
+            //   onClick={() => setFilterModal(true)}
+            // >
+            //   <FilterOutlined /> Filter
+            // </Button>
           ]}
         />
         {modalFilter()}

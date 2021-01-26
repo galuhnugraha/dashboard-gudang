@@ -104,7 +104,7 @@ export class WarehouseStore {
     if (!filterValue) {
       this.getWarehouse();
     }
-    const data = await http.get(`/warehouse?search=${filterValue}`).set({ 'authorization': `Bearer ${token}` });
+    const data = await http.get(`/dataWarehouse?search=${filterValue}`).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
     this.isLoading = false;
   }
