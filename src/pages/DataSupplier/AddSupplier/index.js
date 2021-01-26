@@ -14,7 +14,7 @@ export const AddSupplierScreen = observer(() => {
 
 
     const enterLoading = (e) => {
-        loading(true);
+        setLoading(true);
         const suplierProduct2 = [{
             productName: e.suplierProduct,
             price: 12312312313

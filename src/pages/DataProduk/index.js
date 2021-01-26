@@ -39,7 +39,7 @@ export const DataProdukScreen = observer((initialData) => {
 
   const [state, setState] = useState({
     success: false,
-    warehouseId: '',
+    warehouseID: '',
   });
 
 
@@ -52,8 +52,8 @@ export const DataProdukScreen = observer((initialData) => {
   useEffect(() => {
     fetchData();
     return () => {
-      // store.products.query.pg = 1;
-      // store.products.query.lm = 10;
+      store.products.query.pg = 1;
+      store.products.query.lm = 10;
     }
   }, [filterQuery]);
 
@@ -82,7 +82,6 @@ export const DataProdukScreen = observer((initialData) => {
   })
 
   function ProductOut(e) {
-    loading(true);
     const data = {
       quantity: e.quantity,
       location: e.location
@@ -138,16 +137,6 @@ export const DataProdukScreen = observer((initialData) => {
       title={"Product Out"}
       visible={filterProduct}
       footer={null}
-    // footer={[
-    //   <Button key="back" onClick={() => {
-    //     setFilterProduct(false)
-    //   }}>
-    //     Cancel
-    //   </Button>,
-    //   <Button key="button" type="primary" onClick={onFinish}>
-    //     Save
-    //   </Button>
-    // ]}
     >
       <Form
         layout="vertical"
@@ -236,10 +225,10 @@ export const DataProdukScreen = observer((initialData) => {
   })
 
   function onOkFilter() {
-    store.warehouse.query.warehouseId = state.warehouseId;
+    store.products.query.warehouseID = state.warehouseID;
     setFilterQuery({
       ...filterQuery,
-      warehouseId: state.warehouseId
+      warehouseID: state.warehouseID
     })
 
     setFilterModal(false);
@@ -287,7 +276,7 @@ export const DataProdukScreen = observer((initialData) => {
       <Form initialValues={initialData} form={form} layout="vertical">
         <Form.Item label="Warehouse" name="_id" >
           <Select placeholder="Select Warehouse" style={{ width: '97%' }} onChange={(value) => {
-            setState({ warehouseId: value });
+            setState({ warehouseID: value });
           }}>
             {store.barang.data.map(d => <Select.Option value={d._id} key={d._id}>{d.warehouseName}</Select.Option>)}
           </Select>

@@ -28,8 +28,7 @@ export const AddProduk = observer(() => {
     }, [])
 
     const enterLoading = (e) => {
-        // setLoading(true);
-        loading(true);
+        setLoading(true);
         const data = {
             productName: e.productName,
             productType: e.productType,
@@ -178,7 +177,7 @@ export const AddProduk = observer(() => {
                             ]}
                         >
                             <Select placeholder="Select Supplier" style={{ width: '98%' }}>
-                                {store.supliers.data.map(d => <Select.Option value={d._id}>{d.suplierName}</Select.Option>)}
+                                {store.supliers.data.map(d => <Select.Option value={d._id} key={d._id}>{d.suplierName}</Select.Option>)}
                             </Select>
                         </Form.Item>
                     </Col>
@@ -195,13 +194,13 @@ export const AddProduk = observer(() => {
                             ]}
                         >
                             <Select placeholder="Select Warehouse" style={{ width: '98%' }}>
-                                {store.warehouse.data.map(d => <Select.Option value={d._id}>{d.warehouseName}</Select.Option>)}
+                                {store.warehouse.data.map(d => <Select.Option value={d._id} key={d._id}>{d.warehouseName}</Select.Option>)}
                             </Select>
                         </Form.Item>
                     </Col>
                 </Row>
                 <Form.Item label="Product Image" name="productImage" rules={[{ required: true, message: 'Please input file Image!' }]} >
-                    <input type='file' name="file" onChange={addImage} />
+                    <input type='file' name="file" onChange={addImage} key="file"/>
                 </Form.Item>
 
                 <Form.Item

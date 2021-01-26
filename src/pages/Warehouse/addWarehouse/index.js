@@ -14,7 +14,7 @@ export const AddWarehouse = observer(() => {
     };
 
     const enterLoading = (e) => {
-        loading(true);
+        setLoading(true);
         const data = {
             warehouseName: e.warehouseName,
             warehosueLocation: e.warehosueLocation,
