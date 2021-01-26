@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import { Select, Row, Col, Form, Input, Breadcrumb, message, PageHeader, Card, Button } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
@@ -8,6 +8,7 @@ export const AddProduk = observer(() => {
     const store = useStore();
     const history = useHistory();
     const [imgData, setImgData] = useState(null);
+    const [loading,setLoading] = useState(false);
 
     const onFinish = values => {
         enterLoading(values);
@@ -21,9 +22,10 @@ export const AddProduk = observer(() => {
         reader.onerror = error => reject(error);
     });
 
-    useEffect(() => {
-        fetchData()
-    })
+    React.useEffect(() => {
+        fetchData();
+         // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
 
     async function fetchData() {
         await store.warehouse.getDropdown();
@@ -31,6 +33,7 @@ export const AddProduk = observer(() => {
     }
 
     const enterLoading = (e) => {
+        setLoading(true)
         const data = {
             productName: e.productName,
             productType: e.productType,
@@ -48,8 +51,10 @@ export const AddProduk = observer(() => {
         store.products.AddProduct(data).then(res => {
             message.success('Berhasil Add Product');
             history.push("/app/data-produk");
+            setLoading(false);
         }).catch(err => {
             message.error(err.message);
+            setLoading(false);
         });
     }
 
@@ -199,8 +204,8 @@ export const AddProduk = observer(() => {
                         </Form.Item>
                     </Col>
                 </Row>
-                <Form.Item label="Product Image" name="productImage" rules={[{ required: true, message: 'Please input file Image!' }]} >
-                    <input type='file' name="file" onChange={addImage} key="file"/>
+                <Form.Item label="Product Image" rules={[{ required: true, message: 'Please input file Image!' }]} >
+                    <input type='file' name="file" onChange={addImage}/>
                 </Form.Item>
 
                 <Form.Item
@@ -212,6 +217,7 @@ export const AddProduk = observer(() => {
                         block
                         htmlType="submit"
                         size={'large'}
+                        loading={loading}
                     >
                         Submit
 					</Button>
