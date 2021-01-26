@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, observable,computed } from 'mobx';
 import { http } from "../utils/http";
 
 
@@ -24,6 +24,18 @@ export class UserStore {
     this.pageSize = current;
     this.getAll();
   }
+
+  @computed
+  get userData() {
+    if (!this.context.token) {
+      return {
+        user_id: '',
+        role: '',
+      };
+    }
+    return JSON.parse(atob(this.context.token.split('.')[1]));
+  }
+
   @action
   async getAll() {
     this.isLoading = true;
@@ -47,18 +59,5 @@ export class UserStore {
         this.isLoading = false;
         throw err;
       });
-  }
-
-  @action
-  async getDropdown() {
-    // if (filter != null) {
-    //   this.query.filter = filter;
-    // }
-    this.isLoading = true;
-    const token = localStorage.getItem("token")
-    const data = await http.get("/warehouse").set({ 'authorization': `Bearer ${token}` });
-    this.data = data.body.data;
-    this.maxLength = data.body.totalData;
-    this.isLoading = false;
   }
 }

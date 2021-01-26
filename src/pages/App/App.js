@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { AppRoutes } from "../../routes/app";
-import { UserOutlined, MenuUnfoldOutlined, HomeOutlined,MenuFoldOutlined } from '@ant-design/icons';
+import { UserOutlined, MenuUnfoldOutlined,MenuFoldOutlined } from '@ant-design/icons';
 import {
   Layout, Menu, Col,
   Row, Avatar, Dropdown
@@ -94,7 +94,7 @@ export const App = () => {
         >
           <Menu.Item key="1" style={{ color: 'white' }}>
             <Link to="/app/dashboard">
-              <HomeOutlined style={{ fontSize: 18 }} />
+              {/* <HomeOutlined style={{ fontSize: 18 }} /> */}
               <span>Dashboard</span>
             </Link>
           </Menu.Item>
@@ -133,9 +133,9 @@ export const App = () => {
             <Col>
               <div className="ant-dropdown-link" href="#" style={{ color: 'grey', display: 'flex', flexDirection: 'row', height: 50 }}>
                 <Dropdown overlay={menu} trigger={['click']}>
-                  <Avatar icon={<UserOutlined />} style={{ marginRight: 35, marginTop: 15 }} />
+                  <Avatar icon={<UserOutlined />} style={{ marginRight: 35,marginTop: 15 }} />
                 </Dropdown>
-                {/* <p style={{marginRight: 25}}>Halo Admin</p> */}
+                {/* <p style={{marginRight: 25}}>Halo {store.auth.email}</p> */}
               </div>
             </Col>
           </Row>
