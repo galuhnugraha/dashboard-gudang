@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState} from "react";
 import {
   Table,
   Space,
@@ -49,12 +49,8 @@ export const DataProdukScreen = observer((initialData) => {
 
   useEffect(() => {
     fetchData();
-    return () => {
-      store.products.query.pg = 1;
-      store.products.query.lm = 10;
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[filterQuery]);
+  }, [filterQuery]);
 
   const { Search } = Input;
 
@@ -265,7 +261,7 @@ export const DataProdukScreen = observer((initialData) => {
         <Button key="2" onClick={() => setFilterModal(false)}>
           Cancel
       </Button>,
-        <Button key="1" style={{backgroundColor: '#132743',color: 'white'}} onClick={onOkFilter}>
+        <Button key="1" style={{ backgroundColor: '#132743', color: 'white' }} onClick={onOkFilter}>
           Filter
       </Button>,
       ]}
@@ -450,13 +446,13 @@ export const DataProdukScreen = observer((initialData) => {
             store.products.query.pg = page.current;
             store.products.query.lms = page.pageSize;
             fetchData()
-          }} 
-          current={store.products.query.page} 
+          }}
+          current={store.products.query.page}
 
-          // onChange={(page) => {
-          //   store.products.setPage(page.current);
-          // }}
-          // current={store.products.currentPage}
+        // onChange={(page) => {
+        //   store.products.setPage(page.current);
+        // }}
+        // current={store.products.currentPage}
         />
       </Card>
     </div>

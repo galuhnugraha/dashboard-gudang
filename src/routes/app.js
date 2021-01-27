@@ -3,12 +3,13 @@ import {Redirect, Route, Switch} from "react-router-dom";
 import {DataSupplierScreen} from "../pages/DataSupplier";
 import {DataProdukScreen} from "../pages/DataProduk";
 import {Dashboard} from "../pages/Dashboard/Dashboard";
-import {DataBarangScreen} from "../pages/DataBarang";
+import {DetailWarehouseScreen} from "../pages/Warehouse/detailWarehouse";
 import {EditProfile} from "../component/editProfile";
 import { AddProduk } from "../pages/DataProduk/AddProduk";
 import { WarehouseScreen } from "../pages/Warehouse";
 import {AddWarehouse} from "../pages/Warehouse/addWarehouse";
 import {AddSupplierScreen} from "../pages/DataSupplier/AddSupplier";
+import { DataBarangScreen } from "../pages/DataBarang";
 
 export const AppRoutes = () => {
   return <Switch>
@@ -18,8 +19,8 @@ export const AppRoutes = () => {
     <Route path="/app/dashboard" exact>
       <Dashboard/>
     </Route>
-    <Route path="/app/data-barang" exact>
-      <DataBarangScreen/>
+    <Route path="/app/detail-warehouse/:id" exact>
+      <DetailWarehouseScreen/>
     </Route>
     <Route path="/app/data-produk" exact>
       <DataProdukScreen/>
@@ -36,11 +37,14 @@ export const AppRoutes = () => {
     <Route path="/app/input-product" exact>
       <AddProduk />
     </Route>
-    <Route path="/app/data-warehouse">
+    <Route path="/app/data-warehouse" exact>
       <WarehouseScreen />
     </Route>
-    <Route path="/app/input-warehouse">
+    <Route path="/app/input-warehouse" exact>
       <AddWarehouse />
+    </Route>
+    <Route path="/app/data-barang" exact>
+       <DataBarangScreen />
     </Route>
   </Switch>
 };

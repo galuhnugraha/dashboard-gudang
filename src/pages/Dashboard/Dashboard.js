@@ -17,7 +17,7 @@ export const Dashboard = observer(() => {
       <Col span={12}>
         <Collapse defaultActiveKey={['1']}>
           <Panel header="Data Supplier" key="1">
-            <p>1</p>
+            <p>0</p>
           </Panel>
         </Collapse>
       </Col>

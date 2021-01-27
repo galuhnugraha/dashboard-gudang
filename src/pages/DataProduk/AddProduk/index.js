@@ -23,8 +23,12 @@ export const AddProduk = observer(() => {
     });
 
     useEffect(() => {
-        store.warehouse.getDropdown();
+        store.warehouse.getDataWarehouse();
         store.supliers.getSupplier();
+        return () => {
+            // some function call that cancels the subscription like...
+            // authenticationService.currentUser.unsubscribe()
+            }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -202,7 +206,7 @@ export const AddProduk = observer(() => {
                     </Col>
                 </Row>
                 <Form.Item label="Product Image" rules={[{ required: true, message: 'Please input file Image!' }]} >
-                    <input type='file' id="files" onChange={addImage} />
+                    <input type='file' id="productImage" onChange={addImage} />
                 </Form.Item>
 
                 <Form.Item

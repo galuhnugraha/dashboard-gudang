@@ -116,6 +116,11 @@ export const App = () => {
               <span>Data Warehouse</span>
             </Link>
           </Menu.Item>
+          {/* <Menu.Item key="6">
+            <Link to="/app/data-barang">
+              <span>Barang</span>
+            </Link>
+          </Menu.Item> */}
         </Menu>
       </Sider>
       <Layout>

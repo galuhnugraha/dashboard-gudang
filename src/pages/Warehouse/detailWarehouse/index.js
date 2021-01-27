@@ -13,7 +13,7 @@ import {
   PlusOutlined
 } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
-import { useStore } from "../../utils/useStores";
+import { useStore } from "../../../utils/useStores";
 import { observer } from "mobx-react-lite";
 import moment from "moment";
 
@@ -22,7 +22,7 @@ function cancel(e) {
   message.error('Anda Tidak Jadi Hapus Data Ini!');
 }
 
-export const DataBarangScreen = observer((initialData) => {
+export const DetailWarehouseScreen = observer((initialData) => {
   const store = useStore();
   const history = useHistory();
   const [form] = Form.useForm();
@@ -45,7 +45,7 @@ export const DataBarangScreen = observer((initialData) => {
 
   async function fetchData() {
     await store.warehouse.getWarehouse();
-    await store.barang.getDropdown();
+    // await store.barang.getDropdown();
   }
 
   const data = store.warehouse.data.map((e) => {
@@ -76,18 +76,6 @@ export const DataBarangScreen = observer((initialData) => {
   }
 
   const { Search } = Input;
-
-  // const setEditMode = (value) => {
-  //   setState(prevState => ({
-  //     ...prevState,
-  //     success: true
-  //   }))
-  //   form.setFieldsValue({
-  //     isEdit: value._id,
-  //     success: true,
-  //     quantity: value.quantity,
-  //   })
-  // }
 
   const toggleSuccess = (() => {
     setState({
@@ -229,14 +217,18 @@ export const DataBarangScreen = observer((initialData) => {
           <Link to={'/app/dashboard'}>Home</Link>
         </Breadcrumb.Item>
         <Breadcrumb.Item>
-          <span style={{ color: "#132743" }}>Data Warehouse</span>
+          {/* Home */}
+          <Link to={'/app/data-warehouse'}>Data Warehouse</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>
+          <span style={{ color: "#132743" }}>Detail Warehouse</span>
         </Breadcrumb.Item>
       </Breadcrumb>
       <Card bordered={false} className={"shadow"} bodyStyle={{ padding: 0, marginTop: 25, borderRadius: 10, boxShadow: '0 0 10px  0  rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.10)' }}>
         <PageHeader
           className={"card-page-header"}
           subTitle=""
-          title={name || "Warehouse"}
+          title={"Detail Warehouse"}
           extra={[
             <Search
               placeholder="Search...."

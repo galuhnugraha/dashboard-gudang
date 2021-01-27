@@ -14,6 +14,11 @@ export class WarehouseStore {
   @observable pageSize = 10;
   @observable maxLength = 0;
   @observable selectedFilterValue = '';
+  @observable detailWarehouseQuery = {
+    pg: 1,
+    lm: 10,
+    warehouseId: '',
+  }
   @observable query = {
     pg: 1,
     lm: 10,
@@ -44,12 +49,12 @@ export class WarehouseStore {
 
   @action
   async getWarehouse(filter) {
-    if (filter != null) {
-      this.query.filter = filter;
-    }
+    // if (filter != null) {
+    //   this.query.filter = filter;
+    // }
     this.isLoading = true;
     const token = localStorage.getItem("token")
-    const data = await http.get(this.baseUrl + '?' + qs.stringify(this.query)).set({ 'authorization': `Bearer ${token}` });
+    const data = await http.get(this.baseUrl + '?' + qs.stringify(this.detailWarehouseQuery)).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
     this.maxLength = data.body.totalData;
     this.isLoading = false;
@@ -112,7 +117,7 @@ export class WarehouseStore {
   }
 
   @action
-  async getDropdown() {
+  async getDataWarehouse() {
     // if (filter != null) {
     //   this.query.filter = filter;
     // }
