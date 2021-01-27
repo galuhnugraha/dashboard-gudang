@@ -268,7 +268,7 @@ export const WarehouseScreen = observer((initialData) => {
         {modalFilter()}
         {renderModal()}
         <Table
-          key="AldinMotherFucker"
+          rowKey={record => record._id}
           hasEmpty
           style={{ paddingLeft: '12px' }}
           size={"small"}
