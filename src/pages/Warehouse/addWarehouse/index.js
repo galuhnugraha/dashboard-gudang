@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import {Form, Input, Breadcrumb, message, PageHeader, Card, Button } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
@@ -7,20 +7,24 @@ import { observer } from "mobx-react-lite";
 export const AddWarehouse = observer(() => {
     const store = useStore();
     const history = useHistory();
+    const [loading, setLoading] = useState(false);
 
     const onFinish = values => {
         enterLoading(values);
     };
 
     const enterLoading = (e) => {
+        setLoading(true);
         const data = {
             warehouseName: e.warehouseName,
             warehosueLocation: e.warehosueLocation,
         }
         store.warehouse.AddWarehouse(data).then(res => {
+            setLoading(false);
             message.success('Berhasil Add Product');
             history.push("/app/data-warehouse");
         }).catch(err => {
+            setLoading(false);
             message.error(err.message);
         });
     }
@@ -77,6 +81,7 @@ export const AddWarehouse = observer(() => {
                         block
                         htmlType="submit"
                         size={'large'}
+                        loading={loading}
                     >
                         Submit
 					</Button>

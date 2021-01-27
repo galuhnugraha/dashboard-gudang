@@ -10,7 +10,6 @@ import {
 import {
   DeleteOutlined,
   FilterOutlined,
-  PlusOutlined
 } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
@@ -33,7 +32,7 @@ export const DetailWarehouseScreen = observer((initialData) => {
   const [name , setName] =  useState('')
   const [filterModal, setFilterModal] = useState(false);
   const [filterQuery, setFilterQuery] = useState({});
-
+  console.log(name);
   useEffect(() => {
     fetchData();
     return () => {
@@ -45,7 +44,7 @@ export const DetailWarehouseScreen = observer((initialData) => {
 
   async function fetchData() {
     await store.warehouse.getWarehouse();
-    // await store.barang.getDropdown();
+    await store.barang.getDropdown();
   }
 
   const data = store.warehouse.data.map((e) => {
@@ -244,14 +243,14 @@ export const DetailWarehouseScreen = observer((initialData) => {
                 store.warehouse.setPageDebounced();
               }}
             />,
-            <Button
-              key="butonPushHistory"
-              onClick={() => {
-                history.push("/app/input-warehouse")
-              }}
-            >
-              <PlusOutlined /> New
-              </Button>,
+            // <Button
+            //   key="butonPushHistory"
+            //   onClick={() => {
+            //     history.push("/app/input-warehouse")
+            //   }}
+            // >
+            //   <PlusOutlined /> New
+            //   </Button>,
             <Button
             key="buttonFilter"
             htmlType={"button"}

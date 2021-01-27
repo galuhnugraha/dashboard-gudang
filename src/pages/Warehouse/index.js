@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Table, Card, Space, PageHeader, Input, Breadcrumb, Button } from 'antd';
+import { Table, Card, Popconfirm, Modal, Form, message, Space, PageHeader, Input, Breadcrumb, Button } from 'antd';
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../utils/useStores";
 import { Link, useHistory } from 'react-router-dom';
 import {
   PlusOutlined,
+  DeleteOutlined,
+  EditOutlined
 } from '@ant-design/icons';
 
-export const WarehouseScreen = observer(() => {
+function cancel(e) {
+  message.error('Click on No');
+}
+
+export const WarehouseScreen = observer((initialData) => {
   const store = useStore();
   const history = useHistory();
   const { Search } = Input;
@@ -16,17 +22,23 @@ export const WarehouseScreen = observer(() => {
     warehouseId: '',
     warehouseName: ''
   });
-  const [warehouse,setWarehouse] = useState("");
+  const [form] = Form.useForm();
   const [filterQuery, setFilterQuery] = useState({});
-
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterQuery]);
 
-  async function fetchData() {
-    await store.warehouse.getDataWarehouse();
+
+  function fetchData() {
+    store.warehouse.getDataWarehouse();
   }
+
+  const toggleSuccess = (() => {
+    setState({
+      success: !state.success,
+    });
+  })
 
   const data = store.warehouse.data.map((e) => {
     return {
@@ -36,25 +48,59 @@ export const WarehouseScreen = observer(() => {
     }
   })
 
+  function confirm(_id) {
+    // store.warehouse.deleteWarehouse(_id).then((res) => {
+    //   message.success('Success delete Warehouse')
+    //   history.push('/app/data-warehouse');
+    //   fetchData();
+    // }).catch(err => {
+    //   message.error(err.response.body.message)
+    // })
+    console.log(_id, 'id delete')
+  }
+
+  const setEditMode = (value) => {
+    setState(prevState => ({
+      ...prevState,
+      success: true
+    }))
+    form.setFieldsValue({
+      isEdit: value._id,
+      success: true,
+      warehouseName: value.warehouseName,
+      warehosueLocation: value.warehosueLocation,
+    })
+  }
+
+  async function editData(e) {
+    const data = {
+      warehouseName: e.warehouseName,
+      warehosueLocation: e.warehosueLocation,
+    }
+
+    if (e.isEdit) {
+      store.warehouse.updateWarehouse(e.isEdit, data)
+        .then(res => {
+          message.success('Data Produk Di Update!');
+          toggleSuccess();
+          fetchData();
+        })
+        .catch(err => {
+          message.error(`Error on Updating Member, ${err.message}`);
+          message.error(err.message);
+        });
+    }
+  }
 
   function onDetailProduct(value) {
     // setState({warehouseId: value})
     console.log(value)
     store.warehouse.detailWarehouseQuery.warehouseId = value
-    // setFilterQuery({
-    //   ...filterQuery,
-    //   warehouseId: state.warehouseId,
-    // })
-    history.push("/app/detail-warehouse/" + value)
-    
-  }
-
-  function onOkFilter() {
-    store.warehouse.query.warehouseId = state.warehouseId;
     setFilterQuery({
       ...filterQuery,
       warehouseId: state.warehouseId,
     })
+    history.push("/app/detail-warehouse/" + value)
   }
 
   {
@@ -85,7 +131,24 @@ export const WarehouseScreen = observer(() => {
         render: (text, record) => (
           <Space size="middle">
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <p>Delete</p>
+              <div>
+                <EditOutlined onClick={() => {
+                  setEditMode(record)
+                }} />
+              </div>
+              <Popconfirm
+                title="Apakah Kamu Yakin Hapus Data Warehouse Ini?"
+                onConfirm={() => {
+                  confirm(record._id)
+                }}
+                onCancel={cancel}
+                okText="Yes"
+                cancelText="No"
+              >
+                <div style={{ marginLeft: 8 }}>
+                  <DeleteOutlined />
+                </div>
+              </Popconfirm>
             </div>
           </Space>
         ),
@@ -123,15 +186,65 @@ export const WarehouseScreen = observer(() => {
           </Button>
           ]}
         />
+        {renderModal()}
         <Table
           dataSource={data}
           rowKey={record => record._id}
-          loading={store.warehouse.loading}
+          loading={store.warehouse.isLoading}
           columns={columns}
           size="small"
           style={{ paddingLeft: '12px' }}
         />
       </Card>
     </div>
+  }
+
+  function renderModal() {
+    return <Modal visible={state.success}
+      closable={false}
+      confirmLoading={false}
+      destroyOnClose={true} title="Update Warehouse"
+      okText="Save"
+      cancelText="Cancel"
+      bodyStyle={{ background: '#f7fafc' }}
+      onCancel={() => {
+        form.validateFields().then(values => {
+          form.resetFields();
+        });
+        toggleSuccess();
+      }}
+      onOk={() => {
+        form
+          .validateFields()
+          .then(values => {
+            editData(values);
+          })
+          .catch(info => {
+
+          });
+      }}
+    >
+      <Form layout="vertical" form={form} className={'custom-form'} name="form_in_modal" initialValues={initialData}>
+        <Form.Item name="isEdit" hidden={true}>
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Supplier Name"
+          name="warehouseName"
+          size={'large'}
+          rules={[{ required: true, message: 'Please input your Product Name!' }]}
+        >
+          <Input style={{ width: '98%' }} />
+        </Form.Item>
+        <Form.Item
+          label="Company Name"
+          name="warehosueLocation"
+          size={'large'}
+          rules={[{ required: true, message: 'Please input your Product Type!' }]}
+        >
+          <Input style={{ width: '98%' }} />
+        </Form.Item>
+      </Form>
+    </Modal>
   }
 });

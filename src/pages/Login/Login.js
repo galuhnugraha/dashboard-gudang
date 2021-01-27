@@ -1,10 +1,10 @@
-import React,{useState } from "react";
+import React, { useState } from "react";
 import { observer } from 'mobx-react-lite';
 // import { useStore } from "../../utils/useStores";
 // import { createUseStyles } from "react-jss";
 // import { useHistory } from "react-router-dom";
-import { useHistory } from "react-router-dom";
-import { Form, Input, Button, Row, Col, Card, Typography,message } from 'antd';
+import { useHistory,Link } from "react-router-dom";
+import { Form, Input, Button, Row, Col, Card, Typography, message } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { useStore } from "../../utils/useStores";
 
@@ -23,18 +23,18 @@ export const Login = observer(() => {
   const enterLoading = (e) => {
     setLoading(true);
     const data = {
-        email: e.email,
-        password: e.password,
+      email: e.email,
+      password: e.password,
     }
     store.auth.login(data).then(res => {
-        message.success('Berhasil Masuk');
-        setLoading(false);
-        history.push("/app/dashboard");
+      message.success('Berhasil Masuk');
+      setLoading(false);
+      history.push("/app/dashboard");
     }).catch(err => {
-        message.error(err.message);
-        setLoading(false);
+      message.error(err.message);
+      setLoading(false);
     });
-}
+  }
 
   const { Paragraph } = Typography;
 
@@ -120,7 +120,11 @@ export const Login = observer(() => {
           </Card>
         </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <p style={{ marginTop: 8 }}>Don't account yet! <a style={{ color: '#132743' }} href="/register">Sign Up</a></p>
+          <Link to="/register">
+            <p style={{ marginTop:10 }}>
+              Don't account yet! <span style={{color: '#132743'}}>Sign Up</span>
+            </p>
+          </Link>
         </div>
       </Col>
     </Row>

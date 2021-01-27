@@ -41,10 +41,10 @@ export const DataProdukScreen = observer((initialData) => {
   });
 
 
-  async function fetchData() {
-    await store.products.getAll();
-    await store.warehouse.getWarehouse()
-    await store.barang.getDropdown();
+  function fetchData() {
+     store.products.getAll();
+     store.warehouse.getWarehouse()
+     store.barang.getDropdown();
   }
 
   useEffect(() => {
@@ -64,9 +64,6 @@ export const DataProdukScreen = observer((initialData) => {
     })
   }
 
-  const deleteClick = (_id) => {
-    confirm(_id);
-  }
 
   const changeImage = (info) => new Promise((result, reject) => {
     const data = info.target.files[0]
@@ -356,7 +353,7 @@ export const DataProdukScreen = observer((initialData) => {
               <Popconfirm
                 title="Are you sure to delete this task?"
                 onConfirm={() => {
-                  deleteClick(record._id)
+                  confirm(record._id)
                 }}
                 onCancel={cancel}
                 okText="Yes"
