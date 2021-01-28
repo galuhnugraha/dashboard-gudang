@@ -1,5 +1,5 @@
 import { action, observable } from 'mobx';
-import { http } from "../utils/http";
+import { http } from "../../utils/http";
 import * as qs from "querystring";
 import debounce from "lodash.debounce";
 

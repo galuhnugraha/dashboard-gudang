@@ -30,8 +30,9 @@ export const WarehouseScreen = observer((initialData) => {
   }, [filterQuery]);
 
 
-  function fetchData() {
-    store.warehouse.getDataWarehouse();
+  async function fetchData() {
+    await store.warehouse.getDataWarehouse();
+    await store.warehouseData.getWarehouseData();
   }
 
   const toggleSuccess = (() => {
@@ -49,14 +50,13 @@ export const WarehouseScreen = observer((initialData) => {
   })
 
   function confirm(_id) {
-    // store.warehouse.deleteWarehouse(_id).then((res) => {
-    //   message.success('Success delete Warehouse')
-    //   history.push('/app/data-warehouse');
-    //   fetchData();
-    // }).catch(err => {
-    //   message.error(err.response.body.message)
-    // })
-    console.log(_id, 'id delete')
+    store.warehouseData.deleteWarehouseData(_id).then((res) => {
+      message.success('Success delete Warehouse')
+      history.push('/app/data-warehouse');
+      fetchData();
+    }).catch(err => {
+      message.error(err.response.body.message)
+    })
   }
 
   const setEditMode = (value) => {
@@ -79,7 +79,7 @@ export const WarehouseScreen = observer((initialData) => {
     }
 
     if (e.isEdit) {
-      store.warehouse.updateWarehouse(e.isEdit, data)
+      store.warehouseData.updateWarehouseData(e.isEdit, data)
         .then(res => {
           message.success('Data Produk Di Update!');
           toggleSuccess();
@@ -94,7 +94,6 @@ export const WarehouseScreen = observer((initialData) => {
 
   function onDetailProduct(value) {
     // setState({warehouseId: value})
-    console.log(value)
     store.warehouse.detailWarehouseQuery.warehouseId = value
     setFilterQuery({
       ...filterQuery,
@@ -114,7 +113,6 @@ export const WarehouseScreen = observer((initialData) => {
             warehouseId: value
           })
         }} onClick={() => {
-          console.log(record._id)
           onDetailProduct(record._id)
         }}>
           {value}
@@ -175,6 +173,16 @@ export const WarehouseScreen = observer((initialData) => {
               placeholder="Search...."
               style={{ width: 200 }}
               key={row => row._id}
+              onSearch={(value) => {
+                console.log(value)
+                store.warehouseData.selectedFilterValue = value;
+                store.warehouseData.setPage(1);
+                // store.member.search(value);
+              }}
+              onChange={event => {
+                store.warehouseData.selectedFilterValue = event.target.value;
+                store.warehouseData.setPageDebounced();
+              }}
             />,
             <Button
               key="1"
@@ -229,7 +237,7 @@ export const WarehouseScreen = observer((initialData) => {
           <Input />
         </Form.Item>
         <Form.Item
-          label="Supplier Name"
+          label="Warehouse Name"
           name="warehouseName"
           size={'large'}
           rules={[{ required: true, message: 'Please input your Product Name!' }]}
@@ -237,7 +245,7 @@ export const WarehouseScreen = observer((initialData) => {
           <Input style={{ width: '98%' }} />
         </Form.Item>
         <Form.Item
-          label="Company Name"
+          label="Warehouse Location"
           name="warehosueLocation"
           size={'large'}
           rules={[{ required: true, message: 'Please input your Product Type!' }]}

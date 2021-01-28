@@ -2,7 +2,8 @@ import { action, observable } from 'mobx';
 import { AuthStore } from './auth';
 import { ProdukStore } from './produk';
 import { UserStore } from './users';
-import { WarehouseStore } from './warehouse';
+import { WarehouseStore } from './Warehouse/index';
+import {WarehouseDataStore} from './Warehouse/warehouse';
 import { SupplierStore } from './supplier';
 import { BarangStore } from './barang';
 
@@ -12,6 +13,7 @@ export class Store {
   user = new UserStore(this);
   products = new ProdukStore(this);
   warehouse = new WarehouseStore(this);
+  warehouseData = new WarehouseDataStore(this);
   supliers = new SupplierStore(this);
   barang = new BarangStore(this);
 

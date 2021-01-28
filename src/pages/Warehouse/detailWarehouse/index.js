@@ -32,7 +32,6 @@ export const DetailWarehouseScreen = observer((initialData) => {
   const [name , setName] =  useState('')
   const [filterModal, setFilterModal] = useState(false);
   const [filterQuery, setFilterQuery] = useState({});
-  console.log(name);
   useEffect(() => {
     fetchData();
     return () => {
@@ -44,7 +43,7 @@ export const DetailWarehouseScreen = observer((initialData) => {
 
   async function fetchData() {
     await store.warehouse.getWarehouse();
-    await store.barang.getDropdown();
+    // await store.barang.getDropdown();
   }
 
   const data = store.warehouse.data.map((e) => {
@@ -55,7 +54,7 @@ export const DetailWarehouseScreen = observer((initialData) => {
       createdAt: e.createdAt,
       updatedAt: e.updatedAt,
       _id: e._id,
-      warehouseName: e.warehouse?.warehouseName
+      // warehouseName: e.warehouse?.warehouseName
     } 
   })
   // console.log(data.warehouse.warehouseName,'test')
@@ -127,7 +126,7 @@ export const DetailWarehouseScreen = observer((initialData) => {
             setState({ warehouseId: value[1] });
             setName(value[0])
           }}>
-            {store.barang.data.map((d) => <Select.Option value={[d.warehouseName , d._id]}  key={d._id}>{d.warehouseName}</Select.Option>)}
+            {store.barang.data.map((d) =><Select.Option value={[d.warehouseName , d._id]}  key={d._id}>{d.warehouseName}</Select.Option>)}
           </Select>
         </Form.Item>
       </Form>
@@ -233,15 +232,15 @@ export const DetailWarehouseScreen = observer((initialData) => {
               placeholder="Search...."
               style={{ width: 200 }}
               key={row => row._id}
-              onSearch={(value) => {
-                store.warehouse.selectedFilterValue = value;
-                store.warehouse.setPage(1);
-                // store.member.search(value);
-              }}
-              onChange={event => {
-                store.warehouse.selectedFilterValue = event.target.value;
-                store.warehouse.setPageDebounced();
-              }}
+              // onSearch={(value) => {
+              //   store.warehouse.selectedFilterValue = value;
+              //   store.warehouse.setPage(1);
+              //   // store.member.search(value);
+              // }}
+              // onChange={event => {
+              //   store.warehouse.selectedFilterValue = event.target.value;
+              //   store.warehouse.setPageDebounced();
+              // }}
             />,
             // <Button
             //   key="butonPushHistory"
@@ -251,13 +250,13 @@ export const DetailWarehouseScreen = observer((initialData) => {
             // >
             //   <PlusOutlined /> New
             //   </Button>,
-            <Button
-            key="buttonFilter"
-            htmlType={"button"}
-              onClick={() => setFilterModal(true)}
-            >
-              <FilterOutlined /> Filter
-            </Button>
+            // <Button
+            // key="buttonFilter"
+            // htmlType={"button"}
+            //   onClick={() => setFilterModal(true)}
+            // >
+            //   <FilterOutlined /> Filter
+            // </Button>
           ]}
         />
         {modalFilter()}
