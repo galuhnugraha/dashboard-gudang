@@ -9,7 +9,9 @@ import { AddProduk } from "../pages/DataProduk/AddProduk";
 import { WarehouseScreen } from "../pages/Warehouse";
 import {AddWarehouse} from "../pages/Warehouse/addWarehouse";
 import {AddSupplierScreen} from "../pages/DataSupplier/AddSupplier";
-import { DataBarangScreen } from "../pages/DataBarang";
+import { DataTransactionScreen } from "../pages/Payment/DataTransaction";
+import { PurchaseOrderScreen } from "../pages/Payment/PurchaseOrder";
+import { DataReciveScreen } from "../pages/Payment/Recive";
 
 export const AppRoutes = () => {
   return <Switch>
@@ -43,8 +45,14 @@ export const AppRoutes = () => {
     <Route path="/app/input-warehouse" exact>
       <AddWarehouse />
     </Route>
-    <Route path="/app/data-barang" exact>
-       <DataBarangScreen />
+    <Route path="/app/data-transaction" exact>
+       <DataTransactionScreen />
+    </Route>
+    <Route path="/app/purchase-order" exact>
+      <PurchaseOrderScreen />
+    </Route>
+    <Route path="/app/recive" exact>
+      <DataReciveScreen />
     </Route>
   </Switch>
 };

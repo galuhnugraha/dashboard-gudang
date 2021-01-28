@@ -4,12 +4,10 @@ import {
   Space,
   Popconfirm, Input,
   message, Breadcrumb,
-  PageHeader, Card, Button, Modal, Form,
-  Select
+  PageHeader, Card,Modal, Form,
 } from 'antd';
 import {
   DeleteOutlined,
-  FilterOutlined,
 } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
@@ -29,9 +27,7 @@ export const DetailWarehouseScreen = observer((initialData) => {
     success: false,
     warehouseId: '',
   });
-  const [name , setName] =  useState('')
-  const [filterModal, setFilterModal] = useState(false);
-  const [filterQuery, setFilterQuery] = useState({});
+  // const [filterQuery, setFilterQuery] = useState({});
   useEffect(() => {
     fetchData();
     return () => {
@@ -39,7 +35,7 @@ export const DetailWarehouseScreen = observer((initialData) => {
       // store.warehouse.query.lm = 10;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterQuery]);
+  }, []);
 
   async function fetchData() {
     await store.warehouse.getWarehouse();
@@ -73,14 +69,14 @@ export const DetailWarehouseScreen = observer((initialData) => {
     confirm(_id);
   }
 
-  function onSearchProduct(value) {
-    // setState({warehouseId: value})
-    store.warehouse.selectedFilterValue = value
-    setFilterQuery({
-      ...filterQuery,
-      warehouseId: state.warehouseId,
-    })
-  }
+  // function onSearchProduct(value) {
+  //   // setState({warehouseId: value})
+  //   store.warehouse.selectedFilterValue = value
+  //   setFilterQuery({
+  //     ...filterQuery,
+  //     warehouseId: state.warehouseId,
+  //   })
+  // }
 
   const { Search } = Input;
 

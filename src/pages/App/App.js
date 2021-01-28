@@ -12,6 +12,7 @@ import "antd/dist/antd.css";
 import "./index.css";
 
 const { Header, Content, Sider, Footer } = Layout;
+const { SubMenu } = Menu;
 
 const useStyles = createUseStyles({
   logo: `
@@ -118,11 +119,21 @@ export const App = () => {
               <span>Data Warehouse</span>
             </Link>
           </Menu.Item>
-          {/* <Menu.Item key="6">
-            <Link to="/app/data-barang">
-              <span>Barang</span>
+          <Menu.Item key="6">
+            <Link to="/app/data-transaction">
+              <span>Transaction</span>
             </Link>
-          </Menu.Item> */}
+          </Menu.Item>
+          <Menu.Item key="7">
+            <Link to="/app/purchase-order">
+              <span>Purchase Order</span>
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="8">
+            <Link to="/app/recive">
+              <span>Recive</span>
+            </Link>
+          </Menu.Item>
         </Menu>
       </Sider>
       <Layout>

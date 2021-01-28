@@ -405,16 +405,16 @@ export const DataProdukScreen = observer((initialData) => {
                 store.products.setPageDebounced();
               }}
             />,
+          //   <Button
+          //     key={"1"}
+          //     onClick={() => {
+          //       history.push("/app/input-product")
+          //     }}
+          //   >
+          //     <PlusOutlined /> New
+          // </Button>,
             <Button
               key={"1"}
-              onClick={() => {
-                history.push("/app/input-product")
-              }}
-            >
-              <PlusOutlined /> New
-          </Button>,
-            <Button
-              key={"2"}
               onClick={() => setFilterModal(true)}
             >
               <FilterOutlined /> Filter
