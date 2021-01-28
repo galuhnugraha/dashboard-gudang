@@ -28,34 +28,41 @@ export const PurchaseOrderScreen = observer(() => {
     const dataSource = [
         {
             key: '1',
-            name: 'Mike',
-            age: 32,
-            address: '10 Downing Street',
+            purchaseName: 'Mike',
+            suplierName: 32,
+            destination: '10 Downing Street',
+            totalPurchase: 10
         },
         {
             key: '2',
-            name: 'John',
-            age: 42,
-            address: '10 Downing Street',
+            purchaseName: 'John',
+            suplierName: 42,
+            destination: '10 Downing Street',
+            totalPurchase: 15
         },
     ];
 
     const columns = [
         {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
+            title: 'Purchase Name',
+            dataIndex: 'purchaseName',
+            key: 'purchaseName',
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
+            title: 'Suplier Name',
+            dataIndex: 'suplierName',
+            key: 'suplierName',
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
+            title: 'Destination',
+            dataIndex: 'destination',
+            key: 'destination',
         },
+        {
+            title: 'Total Purchase',
+            dataIndex: 'totalPurchase',
+            key: 'totalPurchase',
+        }
     ];
 
 
@@ -69,7 +76,7 @@ export const PurchaseOrderScreen = observer(() => {
                 <span style={{ color: "#132743" }}>Purchase Order</span>
             </Breadcrumb.Item>
         </Breadcrumb>
-        <Card bordered={false} className={"shadow"} bodyStyle={{ padding: 0, marginTop: 10, borderRadius: 10, boxShadow: '0 0 10px  0  rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.10)' }}>
+        <Card bordered={false} className={"shadow"} bodyStyle={{ padding: 0, marginTop: 10, borderRadius: 5, boxShadow: '0 0 10px  0  rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.10)' }}>
             <PageHeader
                 className="card-page-header"
                 subTitle=""

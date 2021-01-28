@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { AppRoutes } from "../../routes/app";
-import { UserOutlined, MenuUnfoldOutlined,MenuFoldOutlined } from '@ant-design/icons';
+import { UserOutlined, MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import {
   Layout, Menu, Col,
   Row, Avatar, Dropdown
@@ -101,39 +101,43 @@ export const App = () => {
               <span>Dashboard</span>
             </Link>
           </Menu.Item>
-          <Menu.Item key="2">
-            <Link to="/app/data-supplier">
-              {/* <ContainerOutlined style={{ fontSize: 18 }} /> */}
-              <span>Data Supplier</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="4">
-            <Link to="/app/data-produk">
-              {/* <UserOutlined style={{ fontSize: 18 }} /> */}
-              <span>Data Produk</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="5">
-            <Link to="/app/data-warehouse">
-              {/* <UserOutlined style={{ fontSize: 18 }} /> */}
-              <span>Data Warehouse</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="6">
-            <Link to="/app/data-transaction">
-              <span>Transaction</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="7">
-            <Link to="/app/purchase-order">
-              <span>Purchase Order</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="8">
-            <Link to="/app/recive">
-              <span>Recive</span>
-            </Link>
-          </Menu.Item>
+          <SubMenu key="sub1" title="Master Data">
+            <Menu.Item key="2">
+              <Link to="/app/data-supplier">
+                {/* <ContainerOutlined style={{ fontSize: 18 }} /> */}
+                <span>Data Supplier</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="4">
+              <Link to="/app/data-produk">
+                {/* <UserOutlined style={{ fontSize: 18 }} /> */}
+                <span>Data Produk</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="5">
+              <Link to="/app/data-warehouse">
+                {/* <UserOutlined style={{ fontSize: 18 }} /> */}
+                <span>Data Warehouse</span>
+              </Link>
+            </Menu.Item>
+          </SubMenu>
+          <SubMenu key="sub2" title="Payment">
+            <Menu.Item key="6">
+              <Link to="/app/data-transaction">
+                <span>Transaction</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="7">
+              <Link to="/app/purchase-order">
+                <span>Purchase Order</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="8">
+              <Link to="/app/recive">
+                <span>Recive</span>
+              </Link>
+            </Menu.Item>
+          </SubMenu>
         </Menu>
       </Sider>
       <Layout>
@@ -151,7 +155,7 @@ export const App = () => {
             <Col>
               <div className="ant-dropdown-link" href="#" style={{ color: 'grey', display: 'flex', flexDirection: 'row', height: 50 }}>
                 <Dropdown overlay={menu} trigger={['click']}>
-                  <Avatar icon={<UserOutlined />} style={{ marginRight: 35,marginTop: 15 }} />
+                  <Avatar icon={<UserOutlined />} style={{ marginRight: 35, marginTop: 15 }} />
                 </Dropdown>
                 {/* <p style={{marginRight: 25}}>Halo {store.auth.email}</p> */}
               </div>
