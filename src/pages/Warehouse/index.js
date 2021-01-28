@@ -8,6 +8,9 @@ import {
   DeleteOutlined,
   EditOutlined
 } from '@ant-design/icons';
+import "antd/dist/antd.css";
+import "./index.css";
+
 
 function cancel(e) {
   message.error('Click on No');
@@ -165,7 +168,7 @@ export const WarehouseScreen = observer((initialData) => {
       </Breadcrumb>
       <Card bordered={false} className={"shadow"} bodyStyle={{ padding: 0, marginTop: 25, borderRadius: 10, boxShadow: '0 0 10px  0  rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.10)' }}>
         <PageHeader
-          className={"card-page-header"}
+          className="card-page-header"
           subTitle=""
           title={"Data Warehouse"}
           extra={[
@@ -201,6 +204,7 @@ export const WarehouseScreen = observer((initialData) => {
           loading={store.warehouse.isLoading}
           columns={columns}
           size="small"
+          className="card-page-header"
           style={{ paddingLeft: '12px' }}
         />
       </Card>

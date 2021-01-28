@@ -226,6 +226,7 @@ export const DataSupplierScreen = observer((initialData) => {
               store.supliers.setCurrentPage(pageSize);
             }
           }}
+          className="card-page-header"
           loading={store.supliers.isLoading}
           onChange={(page) => {
             store.supliers.setPage(page.current);

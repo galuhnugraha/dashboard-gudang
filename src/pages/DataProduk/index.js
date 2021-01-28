@@ -385,9 +385,9 @@ export const DataProdukScreen = observer((initialData) => {
           <span style={{ color: "#132743" }}>Data Produk</span>
         </Breadcrumb.Item>
       </Breadcrumb>
-      <Card bordered={false} className={"shadow"} bodyStyle={{ padding: 0, marginTop: 25, borderRadius: 10, boxShadow: '0 0 10px  0  rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.10)' }}>
+      <Card bordered={false} className={"shadow"} bodyStyle={{ padding: 0, marginTop: 10, borderRadius: 10, boxShadow: '0 0 10px  0  rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.10)' }}>
         <PageHeader
-          className={"card-page-header"}
+          className="card-page-header"
           subTitle=""
           title={"Produk"}
           extra={[
@@ -438,6 +438,7 @@ export const DataProdukScreen = observer((initialData) => {
             //   store.products.setCurrentPage(pageSize);
             // }
           }}
+          className="card-page-header"
           loading={store.products.isLoading}
           onChange={(page) => {
             store.products.query.pg = page.current;

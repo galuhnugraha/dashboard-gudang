@@ -8,6 +8,8 @@ import {
 import { createUseStyles } from "react-jss";
 import { Link, useHistory } from "react-router-dom";
 import { useStore } from "../../utils/useStores";
+import "antd/dist/antd.css";
+import "./index.css";
 
 const { Header, Content, Sider, Footer } = Layout;
 
@@ -68,8 +70,7 @@ export const App = () => {
   return (
     <Layout
       theme={"light"}
-      className={"transparent"}
-      style={{ height: '100vh' }}
+      className="transparent"
     >
       <Sider
         breakpoint="lg"
@@ -91,6 +92,7 @@ export const App = () => {
             // fontWeight: 400,
             paddingLeft: 0,
           }}
+          className="App"
         >
           <Menu.Item key="1" style={{ color: 'white' }}>
             <Link to="/app/dashboard">
@@ -155,7 +157,7 @@ export const App = () => {
         >
           <AppRoutes />
         </Content>
-        <Footer style={{ textAlign: 'center' }}>©2021 Created by PT APLIKASI KARYA UTAMA</Footer>
+        {/* <Footer style={{ textAlign: 'center' }}>©2021 Created by PT APLIKASI KARYA UTAMA</Footer> */}
       </Layout>
     </Layout>
   );

@@ -54,7 +54,7 @@ export class WarehouseStore {
     // }
     this.isLoading = true;
     const token = localStorage.getItem("token")
-    const data = await http.get(this.baseUrl + '?' + qs.stringify(this.detailWarehouseQuery)).set({ 'authorization': `Bearer ${token}` });
+    const data = await http.get(this.baseUrl + '?' + qs.stringify(this.detailWarehouseQuery) ).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
     this.maxLength = data.body.totalData;
     this.isLoading = false;
@@ -111,7 +111,7 @@ export class WarehouseStore {
     if (!filterValue) {
       this.getWarehouse();
     }
-    const data = await http.get(`/dataWarehouse?search=${filterValue}`).set({ 'authorization': `Bearer ${token}` });
+    const data = await http.get(`/dataWarehouse?pg=${this.detailWarehouseQuery.pg}&lm=${this.detailWarehouseQuery.lm}&search=${filterValue}&warehouseId=${this.detailWarehouseQuery.warehouseId}`).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
     this.isLoading = false;
   }

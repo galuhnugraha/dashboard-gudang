@@ -73,6 +73,15 @@ export const DetailWarehouseScreen = observer((initialData) => {
     confirm(_id);
   }
 
+  function onSearchProduct(value) {
+    // setState({warehouseId: value})
+    store.warehouse.selectedFilterValue = value
+    setFilterQuery({
+      ...filterQuery,
+      warehouseId: state.warehouseId,
+    })
+  }
+
   const { Search } = Input;
 
   const toggleSuccess = (() => {
@@ -81,57 +90,58 @@ export const DetailWarehouseScreen = observer((initialData) => {
     });
   })
 
-  function onOkFilter() {
-    store.warehouse.query.warehouseId = state.warehouseId;
-    setFilterQuery({
-      ...filterQuery,
-      warehouseId: state.warehouseId,
-    })
-    setFilterModal(false);
-  }
 
-  function resetFilter() {
-    setState({
-      warehouseId: '',
-    });
-    store.warehouse.query.warehouseId = ''
-    delete filterQuery['warehouseId']
-    setFilterQuery({
-      ...filterQuery,
-    })
-    setFilterModal(false);
-  }
+  // function onOkFilter() {
+  //   store.warehouse.query.warehouseId = state.warehouseId;
+  //   setFilterQuery({
+  //     ...filterQuery,
+  //     warehouseId: state.warehouseId,
+  //   })
+  //   setFilterModal(false);
+  // }
 
-  function modalFilter() {
-    return <Modal
-      maskClosable={false}
-      closable={false}
-      title={"Filter"}
-      visible={filterModal}
-      footer={[
-        <Button key="reset" onClick={() => {
-          resetFilter()
-        }}>Reset Filter</Button>,
-        <Button key="back" onClick={() => setFilterModal(false)}>
-          Cancel
-      </Button>,
-          <Button key="button" style={{backgroundColor: '#132743',color: 'white'}} onClick={onOkFilter}>
-            Filter
-        </Button>,
-      ]}
-    >
-      <Form initialValues={initialData} form={form} layout="vertical">
-        <Form.Item label="Warehouse" name="_id" >
-          <Select placeholder="Select Warehouse" style={{ width: '97%' }} onChange={(value) => {
-            setState({ warehouseId: value[1] });
-            setName(value[0])
-          }}>
-            {store.barang.data.map((d) =><Select.Option value={[d.warehouseName , d._id]}  key={d._id}>{d.warehouseName}</Select.Option>)}
-          </Select>
-        </Form.Item>
-      </Form>
-    </Modal>
-  }
+  // function resetFilter() {
+  //   setState({
+  //     warehouseId: '',
+  //   });
+  //   store.warehouse.query.warehouseId = ''
+  //   delete filterQuery['warehouseId']
+  //   setFilterQuery({
+  //     ...filterQuery,
+  //   })
+  //   setFilterModal(false);
+  // }
+
+  // function modalFilter() {
+  //   return <Modal
+  //     maskClosable={false}
+  //     closable={false}
+  //     title={"Filter"}
+  //     visible={filterModal}
+  //     footer={[
+  //       <Button key="reset" onClick={() => {
+  //         resetFilter()
+  //       }}>Reset Filter</Button>,
+  //       <Button key="back" onClick={() => setFilterModal(false)}>
+  //         Cancel
+  //     </Button>,
+  //         <Button key="button" style={{backgroundColor: '#132743',color: 'white'}} onClick={onOkFilter}>
+  //           Filter
+  //       </Button>,
+  //     ]}
+  //   >
+  //     <Form initialValues={initialData} form={form} layout="vertical">
+  //       <Form.Item label="Warehouse" name="_id" >
+  //         <Select placeholder="Select Warehouse" style={{ width: '97%' }} onChange={(value) => {
+  //           setState({ warehouseId: value[1] });
+  //           setName(value[0])
+  //         }}>
+  //           {store.barang.data.map((d) =><Select.Option value={[d.warehouseName , d._id]}  key={d._id}>{d.warehouseName}</Select.Option>)}
+  //         </Select>
+  //       </Form.Item>
+  //     </Form>
+  //   </Modal>
+  // }
 
   async function editData(e) {
     const data = {
@@ -232,34 +242,22 @@ export const DetailWarehouseScreen = observer((initialData) => {
               placeholder="Search...."
               style={{ width: 200 }}
               key={row => row._id}
-              // onSearch={(value) => {
-              //   store.warehouse.selectedFilterValue = value;
-              //   store.warehouse.setPage(1);
-              //   // store.member.search(value);
-              // }}
-              // onChange={event => {
-              //   store.warehouse.selectedFilterValue = event.target.value;
-              //   store.warehouse.setPageDebounced();
-              // }}
+              onSearch={(value) => {
+                store.warehouseData.selectedFilterValue = value;
+                // store.warehouse.setPage(1);
+                // store.member.search(value);
+                console.log(value,'tes')
+              }}
+              onChange={event => {
+                // onSearchProduct(event.target.value)
+                store.warehouse.selectedFilterValue = event.target.value;
+                // store.warehouse.detailWarehouseQuery.warehouseId = event
+                store.warehouse.setPageDebounced();
+              }}
             />,
-            // <Button
-            //   key="butonPushHistory"
-            //   onClick={() => {
-            //     history.push("/app/input-warehouse")
-            //   }}
-            // >
-            //   <PlusOutlined /> New
-            //   </Button>,
-            // <Button
-            // key="buttonFilter"
-            // htmlType={"button"}
-            //   onClick={() => setFilterModal(true)}
-            // >
-            //   <FilterOutlined /> Filter
-            // </Button>
           ]}
         />
-        {modalFilter()}
+        {/* {modalFilter()} */}
         {renderModal()}
         <Table
           rowKey={record => record._id}

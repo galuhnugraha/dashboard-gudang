@@ -12,7 +12,7 @@ export const Dashboard = observer(() => {
      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return <div>
+  return <div className="card-page-header">
     <Row gutter={16}>
       <Col span={12}>
         <Collapse defaultActiveKey={['1']}>
