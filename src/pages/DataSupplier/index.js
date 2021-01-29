@@ -1,9 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Table, Breadcrumb, PageHeader,Input, Form, Modal, Card, Button, Space, message, Popconfirm } from 'antd';
+import {
+  Table,
+  Breadcrumb,
+  PageHeader,
+  Input, Form,
+  Modal,
+  Card,
+  Button,
+  Space,
+  message,
+  Row,
+  Col,
+  Select,
+  Popconfirm
+} from 'antd';
 import {
   PlusOutlined,
   EditOutlined,
-  DeleteOutlined
+  DeleteOutlined,
+  MinusOutlined
 } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../utils/useStores";
@@ -22,6 +37,8 @@ export const DataSupplierScreen = observer((initialData) => {
   const [state, setState] = useState({
     success: false,
   });
+  const [filterProduct, setFilterProduct] = useState(false);
+  const [suplierId, setSuplierId] = useState('')
 
   useEffect(() => {
     fetchData();
@@ -30,6 +47,7 @@ export const DataSupplierScreen = observer((initialData) => {
 
   async function fetchData() {
     await store.supliers.getSupplier();
+    await store.products.getAll();
   }
 
   function confirm(_id) {
@@ -77,6 +95,77 @@ export const DataSupplierScreen = observer((initialData) => {
       success: !state.success,
     });
   })
+
+  function SuplierOut(e) {
+    const data = {
+      productId: e._id
+    }
+    store.supliers.AddSuplierOut(suplierId, data).then(res => {
+      message.success('Data Berhasil Di Save!');
+    }).catch(err => {
+      message.error(`Error , ${err.message}`);
+      message.error(err.message);
+    })
+  }
+
+  const onFinish = values => {
+    SuplierOut(values)
+    setFilterProduct(false)
+  };
+
+  function modalSuplier() {
+    return <Modal
+      maskClosable={false}
+      closable={false}
+      title={"Add Suplier Product"}
+      visible={filterProduct}
+      footer={null}
+    >
+      <Form
+        layout="vertical"
+        onFinish={onFinish}
+      >
+        <Form.Item
+          name="_id"
+          label="Product "
+          rules={[
+            {
+              required: true,
+              message: 'Please input your Warehouse!',
+            },
+          ]}
+        >
+          <Select placeholder="Select Product" style={{ width: '98%' }}>
+            {store.products.data.map(d => <Select.Option value={d._id} key={d._id}>{d.productName}</Select.Option>)}
+          </Select>
+        </Form.Item>
+        <Row>
+          <Col span={4}>
+            <Form.Item
+              style={{
+                marginBottom: 25,
+                width: 100
+              }}>
+              <Button key="back" onClick={() => {
+                setFilterProduct(false)
+              }}>
+                Cancel
+              </Button>
+            </Form.Item>
+          </Col>
+          <Col span={4}>
+            <Form.Item
+              style={{
+                marginBottom: 25,
+                width: 100
+              }}>
+              <Button htmlType="submit" style={{ backgroundColor: '#132743', color: 'white' }}>Submit</Button>
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
+    </Modal>
+  }
 
   async function editData(e) {
     const suplierProduct2 = [{
@@ -165,6 +254,12 @@ export const DataSupplierScreen = observer((initialData) => {
                   <DeleteOutlined />
                 </div>
               </Popconfirm>
+              <div style={{ marginLeft: 8 }}>
+                <MinusOutlined onClick={() => {
+                  setSuplierId(record._id)
+                  setFilterProduct(true)
+                }} />
+              </div>
             </div>
           </Space>
         ),
@@ -211,6 +306,7 @@ export const DataSupplierScreen = observer((initialData) => {
           </Button>
           ]}
         />
+        {modalSuplier()}
         {renderModal()}
         <Table
           rowKey={record => record._id}

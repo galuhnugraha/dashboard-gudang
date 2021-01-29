@@ -102,19 +102,6 @@ export const AddProduk = observer(() => {
                 >
                     <Input style={{ width: '98%' }} />
                 </Form.Item>
-                <Form.Item
-                    name="quantity"
-                    label="Quantity"
-
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please Input Your Quantity!',
-                        },
-                    ]}
-                >
-                    <Input type="number" style={{ width: '98%' }} />
-                </Form.Item>
                 <Row>
                     <Col lg={11}>
                         <Form.Item

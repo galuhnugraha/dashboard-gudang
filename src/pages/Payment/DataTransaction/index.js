@@ -25,36 +25,36 @@ export const DataTransactionScreen = observer(() => {
     const [form] = Form.useForm();
     const history = useHistory();
     const { Search } = Input;
-    const dataSource = [
-        {
-            key: '1',
-            name: 'Mike',
-            age: 32,
-            address: '10 Downing Street',
-        },
-        {
-            key: '2',
-            name: 'John',
-            age: 42,
-            address: '10 Downing Street',
-        },
-    ];
+
+    
+    useEffect(() => {
+        fetchData();
+         // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    async function fetchData() {
+        await store.transaction.getTransaction();
+    }
 
     const columns = [
         {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
+            title: 'Transaction Name',
+            dataIndex: 'transactionName',
+            key: 'transactionName',
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
+            title: 'PIC',
+            dataIndex: 'pic',
+            key: 'pic',
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
+            title: 'Action',
+            key: 'action',
+            render: (text, record) => (
+                <Space size="middle">
+                    <a>Delete</a>
+                </Space>
+            ),
         },
     ];
 
@@ -82,17 +82,15 @@ export const DataTransactionScreen = observer(() => {
                     />,
                     <Button
                         key={"1"}
-                        onClick={() => {
-                            history.push("/app/input-product")
-                        }}
+                        // onClick={() => setFilterModal(true)}
                     >
-                        <PlusOutlined /> New
-                    </Button>,
+                        <FilterOutlined /> Filter
+                     </Button>
                 ]}
             />
             <Table
-                dataSource={dataSource}
-                columns={columns} 
+                dataSource={store.transaction.data.slice()}
+                columns={columns}
                 style={{ paddingLeft: '12px' }}
             />
         </Card>

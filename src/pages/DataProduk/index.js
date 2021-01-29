@@ -84,7 +84,6 @@ export const DataProdukScreen = observer((initialData) => {
       message.error(`Error on Updating Member, ${err.message}`);
       message.error(err.message);
     })
-
   }
 
   async function editData(e) {
@@ -405,14 +404,14 @@ export const DataProdukScreen = observer((initialData) => {
                 store.products.setPageDebounced();
               }}
             />,
-          //   <Button
-          //     key={"1"}
-          //     onClick={() => {
-          //       history.push("/app/input-product")
-          //     }}
-          //   >
-          //     <PlusOutlined /> New
-          // </Button>,
+            <Button
+              key={"1"}
+              onClick={() => {
+                history.push("/app/input-product")
+              }}
+            >
+              <PlusOutlined /> New
+          </Button>,
             <Button
               key={"1"}
               onClick={() => setFilterModal(true)}
@@ -428,7 +427,7 @@ export const DataProdukScreen = observer((initialData) => {
           rowKey={record => record._id}
           hasEmpty
           // style={{ paddingLeft: '12px' }}
-          size={"large"}
+          size="small"
           columns={columns}
           scroll={{ x: 1200 }}
           dataSource={store.products.data.slice()}

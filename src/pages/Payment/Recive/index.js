@@ -25,36 +25,40 @@ export const DataReciveScreen = observer(() => {
     const [form] = Form.useForm();
     const history = useHistory();
     const { Search } = Input;
-    const dataSource = [
-        {
-            key: '1',
-            name: 'Mike',
-            age: 32,
-            address: '10 Downing Street',
-        },
-        {
-            key: '2',
-            name: 'John',
-            age: 42,
-            address: '10 Downing Street',
-        },
-    ];
+
+    useEffect(() => {
+        // fetchData();
+         // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    async function fetchData() {
+        // await store.receive.getReceive();
+    }
 
     const columns = [
         {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
+            title: 'Receive Order Name',
+            dataIndex: 'receiveOrderName',
+            key: 'receiveOrderName',
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
+            title: 'PIC',
+            dataIndex: 'pic',
+            key: 'pic',
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
+            title: 'Total Recive Item',
+            dataIndex: 'totalReciveItem',
+            key: 'totalReciveItem',
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            render: (text, record) => (
+                <Space size="middle">
+                    <a>Delete</a>
+                </Space>
+            ),
         },
     ];
 
@@ -91,8 +95,8 @@ export const DataReciveScreen = observer(() => {
                 ]}
             />
             <Table
-                dataSource={dataSource}
-                columns={columns} 
+                dataSource={store.receive.data.slice()}
+                columns={columns}
                 style={{ paddingLeft: '12px' }}
             />
         </Card>
