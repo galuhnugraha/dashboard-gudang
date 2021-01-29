@@ -11,9 +11,9 @@ import { observer } from "mobx-react-lite";
 
 
 
-function handleChange(value) {
-    console.log(`selected ${value}`);
-}
+// function handleChange(value) {
+//     console.log(`selected ${value}`);
+// }
 
 export const AddPurchaseOrder = observer(() => {
     const store = useStore();
@@ -21,8 +21,8 @@ export const AddPurchaseOrder = observer(() => {
     const [loading, setLoading] = useState(false);
     const [item, setItem] = useState([]);
     const [productId , setProductId] = useState('')
-    const [quantity , setQuantity] = useState('')
-
+    // const [quantity , setQuantity] = useState('')
+    console.log(productId)
     useEffect(() => {
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps

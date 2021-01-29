@@ -1,39 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, } from "react";
 import {
     Table,
-    Space,
-    Popconfirm, Input,
-    Form, Modal,
-    Row, Col,
-    message, Breadcrumb,
-    PageHeader, Card, Button, Select
+    Space, Input, Breadcrumb,
+    PageHeader, Card, Button,message,
+    Popconfirm
 } from 'antd';
 import {
-    DeleteOutlined,
-    EditOutlined,
     PlusOutlined,
-    FilterOutlined,
-    MinusOutlined
+    EditOutlined,
+    DeleteOutlined
 } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
 import { observer } from "mobx-react-lite";
 
+function cancel(e) {
+    message.error('Click on No');
+}
 
 export const DataReciveScreen = observer(() => {
     const store = useStore();
-    const [form] = Form.useForm();
+    // const [form] = Form.useForm();
     const history = useHistory();
     const { Search } = Input;
 
     useEffect(() => {
         // fetchData();
-         // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    async function fetchData() {
-        // await store.receive.getReceive();
-    }
+    // async function fetchData() {
+    //     await store.receive.getReceive();
+    // }
 
     const columns = [
         {
@@ -56,7 +54,24 @@ export const DataReciveScreen = observer(() => {
             key: 'action',
             render: (text, record) => (
                 <Space size="middle">
-                    <a>Delete</a>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                        <div>
+                            <EditOutlined />
+                        </div>
+                        <Popconfirm
+                            title="Are you sure to delete this task?"
+                            onConfirm={() => {
+                                // confirm(record._id)
+                            }}
+                            onCancel={cancel}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <div style={{ marginLeft: 8 }}>
+                                <DeleteOutlined />
+                            </div>
+                        </Popconfirm>
+                    </div>
                 </Space>
             ),
         },

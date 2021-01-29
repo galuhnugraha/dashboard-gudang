@@ -413,7 +413,7 @@ export const DataProdukScreen = observer((initialData) => {
               <PlusOutlined /> New
           </Button>,
             <Button
-              key={"1"}
+              key={"2"}
               onClick={() => setFilterModal(true)}
             >
               <FilterOutlined /> Filter

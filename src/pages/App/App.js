@@ -11,7 +11,7 @@ import { useStore } from "../../utils/useStores";
 import "antd/dist/antd.css";
 import "./index.css";
 
-const { Header, Content, Sider, Footer } = Layout;
+const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const useStyles = createUseStyles({
@@ -172,7 +172,6 @@ export const App = () => {
         >
           <AppRoutes />
         </Content>
-        {/* <Footer style={{ textAlign: 'center' }}>©2021 Created by PT APLIKASI KARYA UTAMA</Footer> */}
       </Layout>
     </Layout>
   );
