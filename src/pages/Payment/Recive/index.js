@@ -25,13 +25,23 @@ export const DataReciveScreen = observer(() => {
     const { Search } = Input;
 
     useEffect(() => {
-        // fetchData();
+        fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    // async function fetchData() {
-    //     await store.receive.getReceive();
-    // }
+    async function fetchData() {
+        await store.receive.getReceive();
+    }
+
+    function confirm(_id) {
+        store.receive.deleteReceiveOrder(_id).then((res) => {
+            message.success('Success delete Purchase Order')
+            history.push('/app/purchase-order');
+            fetchData();
+        }).catch(err => {
+            // message.error(err.response.message)
+        })
+    }
 
     const columns = [
         {
@@ -61,7 +71,7 @@ export const DataReciveScreen = observer(() => {
                         <Popconfirm
                             title="Are you sure to delete this task?"
                             onConfirm={() => {
-                                // confirm(record._id)
+                                confirm(record._id)
                             }}
                             onCancel={cancel}
                             okText="Yes"
@@ -102,7 +112,7 @@ export const DataReciveScreen = observer(() => {
                     <Button
                         key={"1"}
                         onClick={() => {
-                            history.push("/app/input-product")
+                            history.push("/app/input-receive")
                         }}
                     >
                         <PlusOutlined /> New

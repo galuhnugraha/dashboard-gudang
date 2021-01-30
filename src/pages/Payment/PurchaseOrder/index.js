@@ -45,7 +45,7 @@ export const PurchaseOrderScreen = observer((initialData) => {
             history.push('/app/purchase-order');
             fetchData();
         }).catch(err => {
-            message.error(err.response.body.message)
+            // message.error(err.response.message)
         })
     }
 
@@ -61,7 +61,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
             suplierName: value.suplierName,
             destination: value.destination,
             pic: value.pic,
-            totalPurchaseItem: value.totalPurchaseItem
         })
     }
 
@@ -184,9 +183,9 @@ export const PurchaseOrderScreen = observer((initialData) => {
                 />
                 {renderModal()}
                 <Table
-                    dataSource={store.purchase.data.slice()}
                     columns={columns}
                     rowKey={record => record._id}
+                    dataSource={store.purchase.data.slice()}
                     style={{ paddingLeft: '12px' }}
                 />
             </Card>
@@ -248,14 +247,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
                 <Form.Item
                     label="PIC"
                     name="pic"
-                    size={'large'}
-                    rules={[{ required: true, message: 'Please input your Product Type!' }]}
-                >
-                    <Input style={{ width: '98%' }} />
-                </Form.Item>
-                <Form.Item
-                    label="Total Purchase Item"
-                    name="totalPurchaseItem"
                     size={'large'}
                     rules={[{ required: true, message: 'Please input your Product Type!' }]}
                 >

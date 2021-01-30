@@ -81,34 +81,6 @@ export const DataTransactionScreen = observer((initialData) => {
                 key: 'updatedAt',
                 render: (record) => moment(record).format("DD/MM/YY, H:mm:ss")
             },
-            {
-                title: 'Action',
-                key: 'action',
-                render: (text, record) => (
-                    <Space size="middle">
-                        <div style={{ display: 'flex', flexDirection: 'row' }}>
-                            <div>
-                                <EditOutlined onClick={() => {
-                                    setEditMode(record)
-                                }} />
-                            </div>
-                            <Popconfirm
-                                title="Are you sure to delete this task?"
-                                onConfirm={() => {
-                                    // confirm(record._id)
-                                }}
-                                onCancel={cancel}
-                                okText="Yes"
-                                cancelText="No"
-                            >
-                                <div style={{ marginLeft: 8 }}>
-                                    <DeleteOutlined />
-                                </div>
-                            </Popconfirm>
-                        </div>
-                    </Space>
-                ),
-            },
         ];
 
 

@@ -10,26 +10,20 @@ import { useStore } from "../../../../utils/useStores";
 import { observer } from "mobx-react-lite";
 
 
-
-// function handleChange(value) {
-//     console.log(`selected ${value}`);
-// }
-
-export const AddPurchaseOrder = observer(() => {
+export const ReceiveScreen = observer(() => {
     const store = useStore();
     const history = useHistory();
-    const [loading, setLoading] = useState(false);
     const [item, setItem] = useState([]);
     const [productId , setProductId] = useState('')
-    // const [quantity , setQuantity] = useState('')
-    console.log(productId)
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         fetchData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+         // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
-    function fetchData() {
-        store.products.getAll();
+    async function fetchData() {
+        await store.purchase.getPurchaseOrder();
     }
 
     const onFinish = values => {
@@ -57,26 +51,32 @@ export const AddPurchaseOrder = observer(() => {
         setLoading(true);
         const dataTaro = item.map((result) => {
             let data = {
-                productId: result,
-                quantity: result.quantity
+                purchaseId: result,
             }
             return data
         })
         const data = {
-            purchaseName: e.purchaseName,
             pic: e.pic,
             item: dataTaro
         }
-        store.purchase.AddPurchaseOrder(data).then(res => {
+        store.receive.AddReceive(data).then(res => {
             setLoading(false);
-            message.success('Berhasil Add Product');
-            history.push("/app/purchase-order");
+            message.success('Berhasil Add Receive');
+            history.push("/app/recive");
         }).catch(err => {
             setLoading(false);
             message.error(err.message);
         });
     }
 
+    const data = store.purchase.data.map((e) => {
+        console.log(e.purchaseName , )
+        let item = {
+            purchaseId: e._id
+        }
+        return item;
+    })
+    console.log(data)
 
     return <div>
         <Breadcrumb>
@@ -85,10 +85,7 @@ export const AddPurchaseOrder = observer(() => {
                 <Link to={'/app/dashboard'}>Home</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-                <Link to={'/app/purchase-order'}>Purchase Order</Link>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>
-                <span style={{ color: "#132743" }}>Input Purchase Order</span>
+                <span style={{ color: "#132743" }}>Input Receive</span>
             </Breadcrumb.Item>
         </Breadcrumb>
         <Card
@@ -109,18 +106,10 @@ export const AddPurchaseOrder = observer(() => {
                 onFinish={onFinish}
             >
                 <Form.Item
-                    label="Purchase Name"
-                    name="purchaseName"
-                    size={'large'}
-                    rules={[{ required: true, message: 'Please input your Product Name!' }]}
-                >
-                    <Input style={{ width: '98%' }} />
-                </Form.Item>
-                <Form.Item
                     label="PIC"
                     name="pic"
                     size={'large'}
-                    rules={[{ required: true, message: 'Please input your Product Type!' }]}
+                    rules={[{ required: true, message: 'Please input your Product Name!' }]}
                 >
                     <Input style={{ width: '98%' }} />
                 </Form.Item>
@@ -139,7 +128,7 @@ export const AddPurchaseOrder = observer(() => {
                             setProductId(value)
                         }}
                     >
-                        {store.products.data.map(d => <Select.Option value={d._id} key={d._id}>{d.productName}</Select.Option>)}
+                        {store.purchase.data.map(d => <Select.Option value={d._id} key={d._id}>{d.purchaseName}</Select.Option>)}
                     </Select>
                 </Form.Item>
                 <Form.Item
@@ -151,13 +140,12 @@ export const AddPurchaseOrder = observer(() => {
                         block
                         htmlType="submit"
                         size={'large'}
-                        loading={loading}
+                        // loading={loading}
                     >
                         Submit
 					</Button>
                 </Form.Item>
             </Form>
-            {/* <Button onClick={SaveItem}>add</Button> */}
         </Card>
     </div>
 })
