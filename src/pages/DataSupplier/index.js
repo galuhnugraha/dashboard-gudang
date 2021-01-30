@@ -227,7 +227,7 @@ export const DataSupplierScreen = observer((initialData) => {
         dataIndex: 'suplierProduct',
         key: 'suplierProduct',
         render: (text, record) => <span key="10">{record.suplierProduct.map((e) => {
-          return e.productName
+          return <p>{e.product?.productName}</p>
         })}</span>
       },
       {

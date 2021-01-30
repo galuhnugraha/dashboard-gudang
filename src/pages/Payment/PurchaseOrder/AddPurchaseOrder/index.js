@@ -20,8 +20,9 @@ export const AddPurchaseOrder = observer(() => {
     const history = useHistory();
     const [loading, setLoading] = useState(false);
     const [item, setItem] = useState([]);
-    const [productId , setProductId] = useState('')
-    // const [quantity , setQuantity] = useState('')
+    const [productId, setProductId] = useState('')
+    const [quantity, setQuantity] = useState([])
+    const [load,setLoad] = useState('');
     console.log(productId)
     useEffect(() => {
         fetchData();
@@ -58,14 +59,16 @@ export const AddPurchaseOrder = observer(() => {
         const dataTaro = item.map((result) => {
             let data = {
                 productId: result,
-                quantity: result.quantity
+                quantity: e.quantity
             }
             return data
         })
         const data = {
             purchaseName: e.purchaseName,
             pic: e.pic,
-            item: dataTaro
+            item: dataTaro,
+            // quantity: ''
+            // quantity: dataTaro.push([item])
         }
         store.purchase.AddPurchaseOrder(data).then(res => {
             setLoading(false);
@@ -141,6 +144,17 @@ export const AddPurchaseOrder = observer(() => {
                     >
                         {store.products.data.map(d => <Select.Option value={d._id} key={d._id}>{d.productName}</Select.Option>)}
                     </Select>
+                </Form.Item>
+                <Form.Item
+                    label="Quantity"
+                    name="quantity"
+                    size={'large'}
+                    rules={[{ required: true, message: 'Please input your Product Type!' }]}
+                >
+                    <Input style={{ width: '98%' }} onChange={(value) => {
+                        // setItem(value)
+                        setQuantity(value)
+                    }}/>
                 </Form.Item>
                 <Form.Item
                     style={{

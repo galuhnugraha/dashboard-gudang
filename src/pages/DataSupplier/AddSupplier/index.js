@@ -1,5 +1,5 @@
-import React from "react";
-import {Form, Input, Breadcrumb, message, PageHeader, Card, Button } from 'antd';
+import React, { useEffect,useState } from "react";
+import { Form, Input, Breadcrumb, message, PageHeader, Card, Button } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
 import { observer } from "mobx-react-lite";
@@ -10,11 +10,22 @@ export const AddSupplierScreen = observer(() => {
     const onFinish = values => {
         enterLoading(values);
     };
+    const [product,setProduct] = useState([]);
 
+    useEffect(() => {
+        fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    async function fetchData() {
+        await store.supliers.getSupplier();
+    }
 
     const enterLoading = (e) => {
         const suplierProduct2 = [{
-            productName: e.suplierProduct,
+            product: {
+                productName: e.suplierProduct
+            },
             price: 12312312313
         }]
         const suplierAddress2 = {
@@ -27,9 +38,9 @@ export const AddSupplierScreen = observer(() => {
             suplierPhone: e.suplierPhone,
             suplierProduct: suplierProduct2
         }
-        // data.suplierProduct = suplierProduct
+        console.log(data)
         store.supliers.AddSupplier(data).then(res => {
-            message.success('Berhasil Add Product');
+            message.success('Berhasil Add Supliers');
             history.push("/app/data-supplier");
         }).catch(err => {
             message.error(err.message);
