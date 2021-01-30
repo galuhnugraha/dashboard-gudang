@@ -21,9 +21,9 @@ export const AddPurchaseOrder = observer(() => {
     const [loading, setLoading] = useState(false);
     const [item, setItem] = useState([]);
     const [productId, setProductId] = useState('')
-    const [quantity, setQuantity] = useState([])
+    // const [quantity, setQuantity] = useState([])
     const [load,setLoad] = useState('');
-    console.log(productId)
+    // console.log(productId)
     useEffect(() => {
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -153,7 +153,7 @@ export const AddPurchaseOrder = observer(() => {
                 >
                     <Input style={{ width: '98%' }} onChange={(value) => {
                         // setItem(value)
-                        setQuantity(value)
+                        // setQuantity(value)
                     }}/>
                 </Form.Item>
                 <Form.Item
