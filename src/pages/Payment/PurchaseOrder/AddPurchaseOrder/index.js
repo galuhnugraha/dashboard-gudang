@@ -16,13 +16,14 @@ import { observer } from "mobx-react-lite";
 // }
 
 export const AddPurchaseOrder = observer(() => {
+    var myItem = []
     const store = useStore();
     const history = useHistory();
     const [loading, setLoading] = useState(false);
     const [item, setItem] = useState([]);
     const [productId, setProductId] = useState('')
     // const [quantity, setQuantity] = useState([])
-    const [load,setLoad] = useState('');
+    const [load, setLoad] = useState('');
     // console.log(productId)
     useEffect(() => {
         fetchData();
@@ -37,16 +38,15 @@ export const AddPurchaseOrder = observer(() => {
         enterLoading(values);
     };
 
-    // const AddItem = () => {
-    //     const itemData = []
-    //     const value = {
-    //         productId: productId[0],
-    //         quantity: 0
-    //     }
-    //     itemData.push(value)
-    //     return itemData
-    // }
-
+    const AddItem = () => {
+        const value = {
+            productId: "00000000",
+            quantity: 0
+        }
+        myItem.push(value)
+        console.log(myItem)
+    }
+    console.log(myItem)
     // const SaveItem = () => {
     //     const myData = []
     //     const item = AddItem()
@@ -154,7 +154,7 @@ export const AddPurchaseOrder = observer(() => {
                     <Input style={{ width: '98%' }} onChange={(value) => {
                         // setItem(value)
                         // setQuantity(value)
-                    }}/>
+                    }} />
                 </Form.Item>
                 <Form.Item
                     style={{
@@ -170,8 +170,9 @@ export const AddPurchaseOrder = observer(() => {
                         Submit
 					</Button>
                 </Form.Item>
+
             </Form>
-            {/* <Button onClick={SaveItem}>add</Button> */}
+            <Button onClick={AddItem}>add</Button>
         </Card>
     </div>
 })
