@@ -1,34 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
     Table,
     Breadcrumb,
     PageHeader,
-    Input, Form,
-    Modal,
+    Input,
     Card,
-    Button,
-    Space,
-    message,
-    Row,
-    Col,
-    Select,
-    Popconfirm
 } from 'antd';
-import {
-    PlusOutlined,
-    EditOutlined,
-    DeleteOutlined,
-    MinusOutlined
-} from '@ant-design/icons';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
 import { observer } from "mobx-react-lite";
 
 
 export const DetailSuplierScreen = observer(() => {
     const store = useStore();
-    const history = useHistory();
-    const [form] = Form.useForm();
+    // const history = useHistory();
+    // const [form] = Form.useForm();
     const { Search } = Input;
 
     useEffect(() => {
@@ -122,6 +108,7 @@ export const DetailSuplierScreen = observer(() => {
                 dataSource={data}
                 columns={columns}
                 size={"middle"}
+                rowKey={record => record.data}
                 hasEmpty
                 style={{ paddingLeft: '12px' }}
             />

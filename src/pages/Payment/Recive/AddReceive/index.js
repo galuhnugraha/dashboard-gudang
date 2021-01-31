@@ -13,8 +13,6 @@ import { observer } from "mobx-react-lite";
 export const ReceiveScreen = observer(() => {
     const store = useStore();
     const history = useHistory();
-    const [item, setItem] = useState([]);
-    const [productId , setProductId] = useState('')
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -118,7 +116,7 @@ export const ReceiveScreen = observer(() => {
                         block
                         htmlType="submit"
                         size={'large'}
-                        // loading={loading}
+                        loading={loading}
                     >
                         Submit
 					</Button>

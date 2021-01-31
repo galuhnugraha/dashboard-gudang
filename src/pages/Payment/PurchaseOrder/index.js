@@ -187,6 +187,7 @@ export const PurchaseOrderScreen = observer((initialData) => {
                     rowKey={record => record._id}
                     dataSource={store.purchase.data.slice()}
                     style={{ paddingLeft: '12px' }}
+                    size="small"
                 />
             </Card>
         </div>

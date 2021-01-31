@@ -7,7 +7,7 @@ import {
 } from 'antd';
 import {
     PlusOutlined,
-    EditOutlined,
+    // EditOutlined,
     DeleteOutlined
 } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
@@ -47,19 +47,19 @@ export const DataReciveScreen = observer((initialData) => {
         })
     }
 
-    const setEditMode = (value) => {
-        setState(prevState => ({
-            ...prevState,
-            success: true
-        }))
-        form.setFieldsValue({
-            isEdit: value._id,
-            success: true,
-            receiveOrderName: value.receiveOrderName,
-            pic: value.pic,
-            totalReciveItem: value.totalReciveItem,
-        })
-    }
+    // const setEditMode = (value) => {
+    //     setState(prevState => ({
+    //         ...prevState,
+    //         success: true
+    //     }))
+    //     form.setFieldsValue({
+    //         isEdit: value._id,
+    //         success: true,
+    //         receiveOrderName: value.receiveOrderName,
+    //         pic: value.pic,
+    //         totalReciveItem: value.totalReciveItem,
+    //     })
+    // }
 
     const toggleSuccess = (() => {
         setState({
@@ -170,6 +170,8 @@ export const DataReciveScreen = observer((initialData) => {
                 <Table
                     dataSource={store.receive.data.slice()}
                     columns={columns}
+                    rowKey={record => record._id}
+                    size="small"
                     style={{ paddingLeft: '12px' }}
                 />
             </Card>

@@ -1,23 +1,14 @@
 import React, { useEffect,useState } from "react";
 import {
-    Table,
-    Space, Input, Breadcrumb,
-    PageHeader, Card, Button,Modal,
-    Popconfirm, message,Form
+    Table, Input, Breadcrumb,
+    PageHeader, Card,Modal,Form
 } from 'antd';
-import {
-    FilterOutlined,
-    EditOutlined,
-    DeleteOutlined
-} from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
 import { observer } from "mobx-react-lite";
 import moment from "moment";
 
-function cancel(e) {
-    message.error('Click on No');
-}
+
 
 export const DataTransactionScreen = observer((initialData) => {
     const store = useStore();
@@ -38,18 +29,7 @@ export const DataTransactionScreen = observer((initialData) => {
         await store.transaction.getTransaction();
     }
 
-    const setEditMode = (value) => {
-        setState(prevState => ({
-            ...prevState,
-            success: true
-        }))
-        form.setFieldsValue({
-            isEdit: value._id,
-            success: true,
-            transactionName: value.transactionName,
-            pic: value.pic,
-        })
-    }
+   
 
     const toggleSuccess = (() => {
         setState({
@@ -120,6 +100,8 @@ export const DataTransactionScreen = observer((initialData) => {
                 <Table
                     dataSource={store.transaction.data.slice()}
                     columns={columns}
+                    rowKey={record => record._id}
+                    size="small"
                     style={{ paddingLeft: '12px' }}
                 />
             </Card>
