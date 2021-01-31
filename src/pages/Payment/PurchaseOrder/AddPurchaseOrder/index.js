@@ -16,15 +16,16 @@ import { FormInstance } from 'antd/lib/form';
 // }
 
 export const AddPurchaseOrder = observer(() => {
-    var myItem = []
-    var newItem = []
+    var myItem = new Array()
+    var newItem = ""
+    var newID = ""
     const store = useStore();
     const history = useHistory();
     const [loading, setLoading] = useState(false);
     const [item, setItem] = useState([]);
     const [productId, setProductId] = useState('')
     const [form] = Form.useForm();
-    const [quncy , setQuantity] = useState('')
+    const [quncy, setQuantity] = useState('')
     const { Option } = Select;
     const [state, setState] = useState({
         success: false,
@@ -43,56 +44,44 @@ export const AddPurchaseOrder = observer(() => {
     }
 
     const onFinish = values => {
+
         enterLoading(values);
     };
 
     const getQuantity = (val) => {
-        setQuantity(val.target.value)
-        myItem.push(val.target.value)
+        newItem = val.target.value
     }
 
+    const getID = (val) => {
+        newID = val
+    }
     const AddItem = () => {
-            const value = {
-                productId: productId,
-                quantity: quncy
-            }
+        const value = {
+            productId: newID,
+            quantity: newItem
+        }
         myItem.push(value)
-        console.log(quncy.target.value)
-        // form.resetFields();
+        form.resetFields(["quantity", 'item', []]);
+        console.log(myItem)
     }
-
-    console.log(myItem)
     const enterLoading = (e) => {
         setLoading(true);
-        const dataTaro = item.map((result) => {
-            // let data = {
-            //     productId: result,
-            //     quantity: e.quantity
-            // }
-            // return data
-            const value = {
-                productId: result,
-                quantity: e.quantity
-            }
-            myItem.push(value)
-            return value
-        })
         const data = {
             purchaseName: e.purchaseName,
             pic: e.pic,
-            item: dataTaro,
+            item: myItem,
             // quantity: ''
             // quantity: dataTaro.push([item])
         }
         console.log(data)
-        // store.purchase.AddPurchaseOrder(data).then(res => {
-        //     setLoading(false);
-        //     message.success('Berhasil Add Product');
-        //     history.push("/app/purchase-order");
-        // }).catch(err => {
-        //     setLoading(false);
-        //     message.error(err.message);
-        // });
+        store.purchase.AddPurchaseOrder(data).then(res => {
+            setLoading(false);
+            message.success('Berhasil Add Product');
+            history.push("/app/purchase-order");
+        }).catch(err => {
+            setLoading(false);
+            message.error(err.message);
+        });
     }
 
 
@@ -129,7 +118,7 @@ export const AddPurchaseOrder = observer(() => {
                 name="normal_login"
                 className="login-form"
                 style={{ marginLeft: 23 }}
-                form={form} 
+                form={form}
                 onFinish={onFinish}
             >
                 <Form.Item
@@ -152,15 +141,17 @@ export const AddPurchaseOrder = observer(() => {
                     label="Product Item"
                     name="item"
                     size={'large'}
-                    rules={[{ required: true, message: 'Please input your Product Type!' }]}
+                // rules={[{ required: true, message: 'Please input your Product Type!' }]}
                 >
                     <Select
                         placeholder="Select Product"
                         style={{ width: '98%' }}
                         mode="default"
-                        onClick={(value) => {
+                        onChange={(value) => {
                             // setItem(value)
-                            setProductId(value)
+                            // setProductId(value)
+                            getID(value)
+                            console.log(value)
                             // AddItem(value)
                         }}
                     >
@@ -171,10 +162,10 @@ export const AddPurchaseOrder = observer(() => {
                     label="Quantity"
                     name="quantity"
                     size={'large'}
-                    rules={[{ required: true, message: 'Please input your Product Type!' }]}
-                    
+                // rules={[{ required: true, message: 'Please input your Product Type!' }]}
+
                 >
-                    <Input style={{ width: '98%' }}  onChange={(value) => getQuantity(value)}/>
+                    <Input style={{ width: '98%' }} onChange={(value) => getQuantity(value)} />
                 </Form.Item>
                 <Form.Item
                     style={{
@@ -190,9 +181,12 @@ export const AddPurchaseOrder = observer(() => {
                         Submit
 					</Button>
                 </Form.Item>
-                
+                <Button onClick={AddItem}>add</Button>
             </Form>
+            <div>
+                {myItem.map((r) => { return (<div key={r.productName}><h5>{r.productName}</h5><br /><h5>{r.quantity}</h5></div>) })}
+            </div>
         </Card>
-        <Button onClick={AddItem}>add</Button>
+
     </div>
 })
