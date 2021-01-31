@@ -10,7 +10,6 @@ export const AddSupplierScreen = observer(() => {
     const onFinish = values => {
         enterLoading(values);
     };
-    const [product,setProduct] = useState([]);
 
     useEffect(() => {
         fetchData();

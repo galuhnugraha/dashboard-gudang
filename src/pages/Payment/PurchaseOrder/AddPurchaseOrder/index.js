@@ -8,7 +8,7 @@ import {
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../../utils/useStores";
 import { observer } from "mobx-react-lite";
-
+import { FormInstance } from 'antd/lib/form';
 
 
 // function handleChange(value) {
@@ -17,13 +17,21 @@ import { observer } from "mobx-react-lite";
 
 export const AddPurchaseOrder = observer(() => {
     var myItem = []
+    var newItem = []
     const store = useStore();
     const history = useHistory();
     const [loading, setLoading] = useState(false);
     const [item, setItem] = useState([]);
     const [productId, setProductId] = useState('')
-    const [quantity, setQuantity] = useState('')
-    const [load, setLoad] = useState('');
+    const [form] = Form.useForm();
+    const [quncy , setQuantity] = useState('')
+    const { Option } = Select;
+    const [state, setState] = useState({
+        success: false,
+        item: '',
+        quantity: ''
+    });
+
     // console.log(productId)
     useEffect(() => {
         fetchData();
@@ -38,24 +46,22 @@ export const AddPurchaseOrder = observer(() => {
         enterLoading(values);
     };
 
-    const AddItem = (values) => {
-        const dataTaro = item.map((result) => {
-            const value = {
-                productId: result,
-                quantity: values.quantity
-            }
-            myItem.push(value)
-            // return value
-        })
-        // const value = {
-        //     productId: "00000000",
-        //     quantity: 0
-        // }
-        myItem.push(dataTaro)
-        console.log(myItem)
+    const getQuantity = (val) => {
+        setQuantity(val.target.value)
+        myItem.push(val.target.value)
     }
-    console.log(myItem)
 
+    const AddItem = () => {
+            const value = {
+                productId: productId,
+                quantity: quncy
+            }
+        myItem.push(value)
+        console.log(quncy.target.value)
+        // form.resetFields();
+    }
+
+    console.log(myItem)
     const enterLoading = (e) => {
         setLoading(true);
         const dataTaro = item.map((result) => {
@@ -113,11 +119,17 @@ export const AddPurchaseOrder = observer(() => {
                 subTitle=""
                 title={"Input Purchase Order"}
             />
+            {/* <Form  form={form} name="control-hooks" onFinish={onFinish}>
+                <Form.Item name="note" label="Note" rules={[{ required: true }]}>
+                    <Input />
+                </Form.Item>
+            </Form> */}
             <Form
                 layout={'vertical'}
                 name="normal_login"
                 className="login-form"
                 style={{ marginLeft: 23 }}
+                form={form} 
                 onFinish={onFinish}
             >
                 <Form.Item
@@ -145,10 +157,11 @@ export const AddPurchaseOrder = observer(() => {
                     <Select
                         placeholder="Select Product"
                         style={{ width: '98%' }}
-                        mode="multiple"
-                        onChange={(value) => {
-                            setItem(value)
+                        mode="default"
+                        onClick={(value) => {
+                            // setItem(value)
                             setProductId(value)
+                            // AddItem(value)
                         }}
                     >
                         {store.products.data.map(d => <Select.Option value={d._id} key={d._id}>{d.productName}</Select.Option>)}
@@ -159,11 +172,9 @@ export const AddPurchaseOrder = observer(() => {
                     name="quantity"
                     size={'large'}
                     rules={[{ required: true, message: 'Please input your Product Type!' }]}
+                    
                 >
-                    <Input style={{ width: '98%' }} onChange={(value) => {
-                        // setItem(value)
-                        setQuantity(value)
-                    }} />
+                    <Input style={{ width: '98%' }}  onChange={(value) => getQuantity(value)}/>
                 </Form.Item>
                 <Form.Item
                     style={{
@@ -179,9 +190,9 @@ export const AddPurchaseOrder = observer(() => {
                         Submit
 					</Button>
                 </Form.Item>
-
+                
             </Form>
-            <Button onClick={AddItem}>add</Button>
         </Card>
+        <Button onClick={AddItem}>add</Button>
     </div>
 })
