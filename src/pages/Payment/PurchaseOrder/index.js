@@ -11,10 +11,13 @@ import {
     DeleteOutlined,
     EditOutlined,
     PlusOutlined,
+    DownloadOutlined
 } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
 import { observer } from "mobx-react-lite";
+import axios from 'axios';
+import download from 'downloadjs';
 
 function cancel(e) {
     message.error('Click on No');
@@ -32,7 +35,7 @@ export const PurchaseOrderScreen = observer((initialData) => {
 
     useEffect(() => {
         fetchData();
-         // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     async function fetchData() {
@@ -80,7 +83,7 @@ export const PurchaseOrderScreen = observer((initialData) => {
         }
 
         if (e.isEdit) {
-            store.purchase.updatePurchase(e.isEdit,data)
+            store.purchase.updatePurchase(e.isEdit, data)
                 .then(res => {
                     message.success('Data Produk Di Update!');
                     toggleSuccess();
@@ -92,9 +95,15 @@ export const PurchaseOrderScreen = observer((initialData) => {
         }
     }
 
+
     {
 
         const columns = [
+            {
+                title: 'No Invoice',
+                dataIndex: 'invoiceNo',
+                key: 'invoiceNo',
+            },
             {
                 title: 'Purchase Name',
                 dataIndex: 'purchaseName',
@@ -119,6 +128,11 @@ export const PurchaseOrderScreen = observer((initialData) => {
                 title: 'Total Purchase',
                 dataIndex: 'totalPurchaseItem',
                 key: 'totalPurchaseItem',
+            },
+            {
+                title: 'Status',
+                dataIndex: 'status',
+                key: 'status',
             },
             {
                 title: 'Action',
@@ -149,7 +163,7 @@ export const PurchaseOrderScreen = observer((initialData) => {
                 ),
             },
         ];
-        
+
         return <div style={{ paddingLeft: 10, paddingRight: 10 }}>
             <Breadcrumb>
                 <Breadcrumb.Item>

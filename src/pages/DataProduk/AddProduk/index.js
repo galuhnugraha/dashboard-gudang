@@ -28,7 +28,7 @@ export const AddProduk = observer(() => {
         return () => {
             // some function call that cancels the subscription like...
             // authenticationService.currentUser.unsubscribe()
-            }
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

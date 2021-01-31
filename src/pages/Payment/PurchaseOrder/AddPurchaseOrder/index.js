@@ -5,10 +5,12 @@ import {
     message, Breadcrumb,
     PageHeader, Card, Button, Select
 } from 'antd';
+import {
+    PlusOutlined,
+} from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../../utils/useStores";
 import { observer } from "mobx-react-lite";
-import { FormInstance } from 'antd/lib/form';
 
 
 // function handleChange(value) {
@@ -22,16 +24,7 @@ export const AddPurchaseOrder = observer(() => {
     const store = useStore();
     const history = useHistory();
     const [loading, setLoading] = useState(false);
-    const [item, setItem] = useState([]);
-    const [productId, setProductId] = useState('')
     const [form] = Form.useForm();
-    const [quncy, setQuantity] = useState('')
-    const { Option } = Select;
-    const [state, setState] = useState({
-        success: false,
-        item: '',
-        quantity: ''
-    });
 
     // console.log(productId)
     useEffect(() => {
@@ -44,7 +37,6 @@ export const AddPurchaseOrder = observer(() => {
     }
 
     const onFinish = values => {
-
         enterLoading(values);
     };
 
@@ -107,6 +99,14 @@ export const AddPurchaseOrder = observer(() => {
                 className={"card-page-header"}
                 subTitle=""
                 title={"Input Purchase Order"}
+                extra={[
+                    <Button
+                        key={"1"}
+                        onClick={AddItem}
+                    >
+                        <PlusOutlined /> Add
+                </Button>,
+                ]}
             />
             {/* <Form  form={form} name="control-hooks" onFinish={onFinish}>
                 <Form.Item name="note" label="Note" rules={[{ required: true }]}>
@@ -151,7 +151,6 @@ export const AddPurchaseOrder = observer(() => {
                             // setItem(value)
                             // setProductId(value)
                             getID(value)
-                            console.log(value)
                             // AddItem(value)
                         }}
                     >
@@ -181,12 +180,11 @@ export const AddPurchaseOrder = observer(() => {
                         Submit
 					</Button>
                 </Form.Item>
-                <Button onClick={AddItem}>add</Button>
+                {/* <Button onClick={AddItem}>add</Button> */}
             </Form>
-            <div>
-                {myItem.map((r) => { return (<div key={r.productName}><h5>{r.productName}</h5><br /><h5>{r.quantity}</h5></div>) })}
-            </div>
         </Card>
-
+        {/* <div>
+            {dataItem ? myItem.map((r) => { return (<div key={r.productName}><h5>{r.productName}</h5><br /><h5>{r.quantity}</h5></div>) }) : myItem}
+        </div> */}
     </div>
 })
