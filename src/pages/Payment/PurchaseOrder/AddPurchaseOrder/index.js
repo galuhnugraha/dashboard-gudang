@@ -22,7 +22,7 @@ export const AddPurchaseOrder = observer(() => {
     const [loading, setLoading] = useState(false);
     const [item, setItem] = useState([]);
     const [productId, setProductId] = useState('')
-    // const [quantity, setQuantity] = useState([])
+    const [quantity, setQuantity] = useState('')
     const [load, setLoad] = useState('');
     // console.log(productId)
     useEffect(() => {
@@ -38,30 +38,38 @@ export const AddPurchaseOrder = observer(() => {
         enterLoading(values);
     };
 
-    const AddItem = () => {
-        const value = {
-            productId: "00000000",
-            quantity: 0
-        }
-        myItem.push(value)
+    const AddItem = (values) => {
+        const dataTaro = item.map((result) => {
+            const value = {
+                productId: result,
+                quantity: values.quantity
+            }
+            myItem.push(value)
+            // return value
+        })
+        // const value = {
+        //     productId: "00000000",
+        //     quantity: 0
+        // }
+        myItem.push(dataTaro)
         console.log(myItem)
     }
     console.log(myItem)
-    // const SaveItem = () => {
-    //     const myData = []
-    //     const item = AddItem()
-    //     const myItem  = myData.concat(item)
-    //     console.log(myItem)
-    // }
 
     const enterLoading = (e) => {
         setLoading(true);
         const dataTaro = item.map((result) => {
-            let data = {
+            // let data = {
+            //     productId: result,
+            //     quantity: e.quantity
+            // }
+            // return data
+            const value = {
                 productId: result,
                 quantity: e.quantity
             }
-            return data
+            myItem.push(value)
+            return value
         })
         const data = {
             purchaseName: e.purchaseName,
@@ -70,14 +78,15 @@ export const AddPurchaseOrder = observer(() => {
             // quantity: ''
             // quantity: dataTaro.push([item])
         }
-        store.purchase.AddPurchaseOrder(data).then(res => {
-            setLoading(false);
-            message.success('Berhasil Add Product');
-            history.push("/app/purchase-order");
-        }).catch(err => {
-            setLoading(false);
-            message.error(err.message);
-        });
+        console.log(data)
+        // store.purchase.AddPurchaseOrder(data).then(res => {
+        //     setLoading(false);
+        //     message.success('Berhasil Add Product');
+        //     history.push("/app/purchase-order");
+        // }).catch(err => {
+        //     setLoading(false);
+        //     message.error(err.message);
+        // });
     }
 
 
@@ -153,7 +162,7 @@ export const AddPurchaseOrder = observer(() => {
                 >
                     <Input style={{ width: '98%' }} onChange={(value) => {
                         // setItem(value)
-                        // setQuantity(value)
+                        setQuantity(value)
                     }} />
                 </Form.Item>
                 <Form.Item

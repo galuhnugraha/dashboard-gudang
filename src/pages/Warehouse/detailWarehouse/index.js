@@ -69,15 +69,6 @@ export const DetailWarehouseScreen = observer((initialData) => {
     confirm(_id);
   }
 
-  // function onSearchProduct(value) {
-  //   // setState({warehouseId: value})
-  //   store.warehouse.selectedFilterValue = value
-  //   setFilterQuery({
-  //     ...filterQuery,
-  //     warehouseId: state.warehouseId,
-  //   })
-  // }
-
   const { Search } = Input;
 
   const toggleSuccess = (() => {
@@ -85,59 +76,6 @@ export const DetailWarehouseScreen = observer((initialData) => {
       success: !state.success,
     });
   })
-
-
-  // function onOkFilter() {
-  //   store.warehouse.query.warehouseId = state.warehouseId;
-  //   setFilterQuery({
-  //     ...filterQuery,
-  //     warehouseId: state.warehouseId,
-  //   })
-  //   setFilterModal(false);
-  // }
-
-  // function resetFilter() {
-  //   setState({
-  //     warehouseId: '',
-  //   });
-  //   store.warehouse.query.warehouseId = ''
-  //   delete filterQuery['warehouseId']
-  //   setFilterQuery({
-  //     ...filterQuery,
-  //   })
-  //   setFilterModal(false);
-  // }
-
-  // function modalFilter() {
-  //   return <Modal
-  //     maskClosable={false}
-  //     closable={false}
-  //     title={"Filter"}
-  //     visible={filterModal}
-  //     footer={[
-  //       <Button key="reset" onClick={() => {
-  //         resetFilter()
-  //       }}>Reset Filter</Button>,
-  //       <Button key="back" onClick={() => setFilterModal(false)}>
-  //         Cancel
-  //     </Button>,
-  //         <Button key="button" style={{backgroundColor: '#132743',color: 'white'}} onClick={onOkFilter}>
-  //           Filter
-  //       </Button>,
-  //     ]}
-  //   >
-  //     <Form initialValues={initialData} form={form} layout="vertical">
-  //       <Form.Item label="Warehouse" name="_id" >
-  //         <Select placeholder="Select Warehouse" style={{ width: '97%' }} onChange={(value) => {
-  //           setState({ warehouseId: value[1] });
-  //           setName(value[0])
-  //         }}>
-  //           {store.barang.data.map((d) =><Select.Option value={[d.warehouseName , d._id]}  key={d._id}>{d.warehouseName}</Select.Option>)}
-  //         </Select>
-  //       </Form.Item>
-  //     </Form>
-  //   </Modal>
-  // }
 
   async function editData(e) {
     const data = {

@@ -15,7 +15,7 @@ export class PurchaseOrder {
         // }
         this.isLoading = true;
         const token = localStorage.getItem("token")
-        const data = await http.get("/purchaseOrder").set({ 'authorization': `Bearer ${token}` });
+        const data = await http.get("/purchaseOrder/receiveList").set({ 'authorization': `Bearer ${token}` });
         this.data = data.body.data;
         this.maxLength = data.body.totalData;
         this.isLoading = false;
@@ -41,7 +41,7 @@ export class PurchaseOrder {
         this.isLoading = true;
         const token = localStorage.getItem("token")
         return http.del(`/purchaseOrder/deletePo/${_id}`).set({ 'authorization': `Bearer ${token}` }).then(res => {
-            this.data = res.body.data;
+            // this.data = res.body.data;
             this.isLoading = false;
             return res;
         })

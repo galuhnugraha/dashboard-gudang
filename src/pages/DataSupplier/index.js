@@ -36,18 +36,20 @@ export const DataSupplierScreen = observer((initialData) => {
   const { Search } = Input;
   const [state, setState] = useState({
     success: false,
+    suplierId: ''
   });
   const [filterProduct, setFilterProduct] = useState(false);
   const [suplierId, setSuplierId] = useState('')
+  const [filterQuery, setFilterQuery] = useState({});
 
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [filterQuery]);
 
   async function fetchData() {
     await store.supliers.getSupplier();
-    await store.products.getAll();
+    // await store.supliers.getSupplierProduct();
   }
 
   function confirm(_id) {
@@ -69,15 +71,15 @@ export const DataSupplierScreen = observer((initialData) => {
       ...prevState,
       success: true
     }))
-    const halo = value.suplierProduct.map(result => {
-      // const product = [
-      //   {
-      //     productName: result.productName,
-      //     price: result.price
-      //   }
-      // ]
-      return result.productName
-    })
+    // const halo = value.suplierProduct.map(result => {
+    //   // const product = [
+    //   //   {
+    //   //     productName: result.productName,
+    //   //     price: result.price
+    //   //   }
+    //   // ]
+    //   return result.productName
+    // })
     form.setFieldsValue(
       {
         isEdit: value._id,
@@ -86,7 +88,7 @@ export const DataSupplierScreen = observer((initialData) => {
         companyName: value.companyName,
         suplierAddress: value.suplierAddress.address,
         suplierPhone: value.suplierPhone,
-        suplierProduct: halo
+        // suplierProduct: halo
       })
   }
 
@@ -95,6 +97,16 @@ export const DataSupplierScreen = observer((initialData) => {
       success: !state.success,
     });
   })
+
+  function onDetailProduct(value) {
+    // setState({warehouseId: value})
+    store.supliers.detailSuplierQuery.suplierId = value
+    setFilterQuery({
+      ...filterQuery,
+      suplierId: state.suplierId,
+    })
+    history.push("/app/detail-suplier/" + value)
+  }
 
   function SuplierOut(e) {
     const data = {
@@ -203,7 +215,12 @@ export const DataSupplierScreen = observer((initialData) => {
         dataIndex: 'suplierName',
         key: 'suplierName',
         fixed: 'left',
-        width: 120
+        width: 120,
+        render: (value, record) => <span style={{ color: '#132743' }} onClick={() => {
+          onDetailProduct(record._id)
+        }}>
+          {value}
+        </span>
       },
       {
         title: 'Company Name',
@@ -214,22 +231,22 @@ export const DataSupplierScreen = observer((initialData) => {
         title: 'Supplier Address',
         dataIndex: 'suplierAddress',
         key: 'suplierAddress',
-        render: (text, record) => <span>{record.suplierAddress.address}</span>,
+        render: (text, record) => <span>{record.suplierAddress?.address}</span>,
       },
       {
         title: 'Supplier Phone',
         dataIndex: 'suplierPhone',
         key: 'suplierPhone',
       },
-      {
-        title: 'Suplier Product',
-        width: 150,
-        dataIndex: 'suplierProduct',
-        key: 'suplierProduct',
-        render: (text, record) => <span key="10">{record.suplierProduct.map((e) => {
-          return <p>{e.product?.productName}</p>
-        })}</span>
-      },
+      // {
+      //   title: 'Suplier Product',
+      //   width: 150,
+      //   dataIndex: 'suplierProduct',
+      //   key: 'suplierProduct',
+      //   render: (text, record) => <span key="10">{record.suplierProduct.map((e) => {
+      //     return <p>{e.product?.productName}</p>
+      //   })}</span>
+      // },
       {
         title: 'Action',
         key: 'action',
@@ -393,14 +410,14 @@ export const DataSupplierScreen = observer((initialData) => {
         >
           <Input style={{ width: '98%' }} />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           label="Supplier Product"
           name="suplierProduct"
           size={'large'}
           rules={[{ required: true, message: 'Please input your Product Type!' }]}
         >
           <Input style={{ width: '98%' }} />
-        </Form.Item>
+        </Form.Item> */}
       </Form>
     </Modal>
   }

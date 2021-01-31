@@ -1,29 +1,43 @@
 import { action, observable } from 'mobx';
 import { http } from "../utils/http";
 import debounce from "lodash.debounce";
+import * as qs from "querystring";
+
 
 export class SupplierStore {
+  baseUrl = '/supliers'
+  suplier = '/dataSuplier'
   @observable isLoading = false;
   @observable data = [];
   @observable currentPage = 1;
   @observable pageSize = 10;
   @observable maxLength = 0;
   @observable selectedFilterValue = '';
+  @observable selectedFilterValueDetail = '';
+  @observable detailSuplierQuery = {
+    pg: 1,
+    lm: 10,
+    suplierId: '',
+  }
 
   @action
   setPage(page = 1) {
     this.currentPage = page;
-    this.getAll();
+    this.getSupplier();
   }
 
   @action
   setCurrentPage(current = 10) {
     this.pageSize = current;
-    this.getAll();
+    this.getSupplier();
   }
 
   setPageDebounced = debounce((page) => {
     this.setSearch(page);
+  }, 300);
+
+  setPageDebouncedDetail = debounce((page) => {
+    this.setSearchDetail(page);
   }, 300);
 
   @action
@@ -32,12 +46,18 @@ export class SupplierStore {
     this.search();
   }
 
+  @action
+  setSearchDetail(page = 1) {
+    this.currentPage = page;
+    this.searchDetail();
+  }
+
 
   @action
   async getSupplier() {
     this.isLoading = true;
     const token = localStorage.getItem("token")
-    const data = await http.get(`/supliers`).set({ 'authorization': `Bearer ${token}` });
+    const data = await http.get(this.baseUrl).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
     this.maxLength = data.body.totalData;
     this.isLoading = false;
@@ -112,5 +132,27 @@ export class SupplierStore {
         this.isLoading = false;
         throw err;
       });
+  }
+
+  @action
+  async getSupplierProduct() {
+    this.isLoading = true;
+    const token = localStorage.getItem("token")
+    const data = await http.get(this.suplier + '?' + qs.stringify(this.detailSuplierQuery)).set({ 'authorization': `Bearer ${token}` });
+    this.data = data.body.data;
+    this.maxLength = data.body.totalData;
+    this.isLoading = false;
+  }
+
+  @action
+  async searchDetail() {
+    let filterValue = this.selectedFilterValueDetail;
+    const token = localStorage.getItem("token");
+    if (!filterValue) {
+      this.getSupplier();
+    }
+    const data = await http.get(`/dataSuplier?search=${filterValue}`).set({ 'authorization': `Bearer ${token}` });
+    this.data = data.body.data;
+    this.isLoading = false;
   }
 }

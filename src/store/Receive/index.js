@@ -39,12 +39,27 @@ export class ReceiveStore {
         this.isLoading = true;
         const token = localStorage.getItem("token")
         return http.del(`/receiveOrder/deletedReceiveOrder/${_id}`).set({ 'authorization': `Bearer ${token}` }).then(res => {
-            this.data = res.body.data;
+            // this.data = res.body.data;
             this.isLoading = false;
             return res;
         })
             .catch(err => {
                 throw err;
             })
+    }
+
+    @action
+    updateReceive = async (_id, data) => {
+        this.isLoading = true;
+        const token = localStorage.getItem("token")
+        return http.put(`/receiveOrder/updatedReceiveOrder/${_id}`).set({ 'authorization': `Bearer ${token}` }).send(data)
+            .then((res) => {
+                this.isLoading = false;
+                return res;
+            })
+            .catch((err) => {
+                this.isLoading = false;
+                throw err;
+            });
     }
 }

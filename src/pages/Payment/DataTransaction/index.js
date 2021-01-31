@@ -104,13 +104,16 @@ export const DataTransactionScreen = observer((initialData) => {
                             placeholder="Search...."
                             style={{ width: 200 }}
                             key={row => row._id}
+                            onSearch={(value) => {
+                                store.transaction.selectedFilterValue = value;
+                                store.transaction.setPage(1);
+                                // store.member.search(value);
+                              }}
+                              onChange={event => {
+                                store.transaction.selectedFilterValue = event.target.value;
+                                store.transaction.setPageDebounced();
+                              }}
                         />,
-                        <Button
-                            key={"1"}
-                        // onClick={() => setFilterModal(true)}
-                        >
-                            <FilterOutlined /> Filter
-                     </Button>
                     ]}
                 />
                 {renderModal()}

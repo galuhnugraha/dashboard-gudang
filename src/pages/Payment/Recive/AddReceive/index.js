@@ -30,34 +30,12 @@ export const ReceiveScreen = observer(() => {
         enterLoading(values);
     };
 
-    // const AddItem = () => {
-    //     const itemData = []
-    //     const value = {
-    //         productId: productId[0],
-    //         quantity: 0
-    //     }
-    //     itemData.push(value)
-    //     return itemData
-    // }
-
-    // const SaveItem = () => {
-    //     const myData = []
-    //     const item = AddItem()
-    //     const myItem  = myData.concat(item)
-    //     console.log(myItem)
-    // }
 
     const enterLoading = (e) => {
         setLoading(true);
-        const dataTaro = item.map((result) => {
-            let data = {
-                purchaseId: result,
-            }
-            return data
-        })
         const data = {
             pic: e.pic,
-            item: dataTaro
+            purchaseId: e.purchaseId[0]
         }
         store.receive.AddReceive(data).then(res => {
             setLoading(false);
@@ -69,14 +47,14 @@ export const ReceiveScreen = observer(() => {
         });
     }
 
-    const data = store.purchase.data.map((e) => {
-        console.log(e.purchaseName , )
-        let item = {
-            purchaseId: e._id
-        }
-        return item;
-    })
-    console.log(data)
+    // const data = store.purchase.data.map((e) => {
+    //     console.log(e.purchaseName , )
+    //     let item = {
+    //         purchaseId: e._id
+    //     }
+    //     return item;
+    // })
+    // console.log(data)
 
     return <div>
         <Breadcrumb>
@@ -96,7 +74,7 @@ export const ReceiveScreen = observer(() => {
             <PageHeader
                 className={"card-page-header"}
                 subTitle=""
-                title={"Input Purchase Order"}
+                title={"Input Receive"}
             />
             <Form
                 layout={'vertical'}
@@ -114,8 +92,8 @@ export const ReceiveScreen = observer(() => {
                     <Input style={{ width: '98%' }} />
                 </Form.Item>
                 <Form.Item
-                    label="Product Item"
-                    name="item"
+                    label="Purchase Order"
+                    name="purchaseId"
                     size={'large'}
                     rules={[{ required: true, message: 'Please input your Product Type!' }]}
                 >
@@ -123,10 +101,10 @@ export const ReceiveScreen = observer(() => {
                         placeholder="Select Product"
                         style={{ width: '98%' }}
                         mode="multiple"
-                        onChange={(value) => {
-                            setItem(value)
-                            setProductId(value)
-                        }}
+                        // onChange={(value) => {
+                        //     setItem(value)
+                        //     setProductId(value)
+                        // }}
                     >
                         {store.purchase.data.map(d => <Select.Option value={d._id} key={d._id}>{d.purchaseName}</Select.Option>)}
                     </Select>

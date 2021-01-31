@@ -14,6 +14,7 @@ import { PurchaseOrderScreen } from "../pages/Payment/PurchaseOrder";
 import { DataReciveScreen } from "../pages/Payment/Recive";
 import { AddPurchaseOrder } from "../pages/Payment/PurchaseOrder/AddPurchaseOrder";
 import { ReceiveScreen } from "../pages/Payment/Recive/AddReceive";
+import { DetailSuplierScreen } from "../pages/DataSupplier/DetailSuplier";
 
 export const AppRoutes = () => {
   return <Switch>
@@ -61,6 +62,9 @@ export const AppRoutes = () => {
     </Route>
     <Route path="/app/input-receive" exact>
       <ReceiveScreen />
+    </Route>
+    <Route path="/app/detail-suplier/:id" exact>
+      <DetailSuplierScreen />
     </Route>
   </Switch>
 };
