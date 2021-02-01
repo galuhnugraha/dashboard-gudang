@@ -21,12 +21,7 @@ export const AddSupplierScreen = observer(() => {
     }
 
     const enterLoading = (e) => {
-        const suplierProduct2 = [{
-            product: {
-                productName: e.suplierProduct
-            },
-            price: 12312312313
-        }]
+       
         const suplierAddress2 = {
             address: e.suplierAddress,
         }
@@ -35,7 +30,6 @@ export const AddSupplierScreen = observer(() => {
             companyName: e.companyName,
             suplierAddress: suplierAddress2,
             suplierPhone: e.suplierPhone,
-            suplierProduct: suplierProduct2
         }
         console.log(data)
         store.supliers.AddSupplier(data).then(res => {
@@ -101,14 +95,6 @@ export const AddSupplierScreen = observer(() => {
                 <Form.Item
                     label="Supplier Phone"
                     name="suplierPhone"
-                    size={'large'}
-                    rules={[{ required: true, message: 'Please input your Product Type!' }]}
-                >
-                    <Input style={{ width: '98%' }} />
-                </Form.Item>
-                <Form.Item
-                    label="Supplier Product"
-                    name="suplierProduct"
                     size={'large'}
                     rules={[{ required: true, message: 'Please input your Product Type!' }]}
                 >

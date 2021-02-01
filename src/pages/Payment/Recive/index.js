@@ -39,8 +39,8 @@ export const DataReciveScreen = observer((initialData) => {
 
     function confirm(_id) {
         store.receive.deleteReceiveOrder(_id).then((res) => {
-            message.success('Success delete Purchase Order')
-            history.push('/app/receive');
+            message.success('Success delete Received')
+            history.push('/app/recive');
             fetchData();
         }).catch(err => {
             // message.error(err.response.message)

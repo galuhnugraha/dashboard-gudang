@@ -271,12 +271,12 @@ export const DataSupplierScreen = observer((initialData) => {
                   <DeleteOutlined />
                 </div>
               </Popconfirm>
-              <div style={{ marginLeft: 8 }}>
+              {/* <div style={{ marginLeft: 8 }}>
                 <MinusOutlined onClick={() => {
                   setSuplierId(record._id)
                   setFilterProduct(true)
                 }} />
-              </div>
+              </div> */}
             </div>
           </Space>
         ),

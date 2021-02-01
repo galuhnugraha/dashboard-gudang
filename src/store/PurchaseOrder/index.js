@@ -22,6 +22,19 @@ export class PurchaseOrder {
     }
 
     @action
+    async getPurchaseOrderList() {
+        // if (filter != null) {
+        //   this.query.filter = filter;
+        // }
+        this.isLoading = true;
+        const token = localStorage.getItem("token")
+        const data = await http.get("/purchaseOrder").set({ 'authorization': `Bearer ${token}` });
+        this.data = data.body.data;
+        this.maxLength = data.body.totalData;
+        this.isLoading = false;
+    }
+
+    @action
     AddPurchaseOrder = async (data) => {
         this.isLoading = true;
         const token = localStorage.getItem("token")

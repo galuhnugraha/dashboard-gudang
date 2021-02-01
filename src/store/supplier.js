@@ -9,6 +9,7 @@ export class SupplierStore {
   suplier = '/dataSuplier'
   @observable isLoading = false;
   @observable data = [];
+  @observable detailData = [];
   @observable currentPage = 1;
   @observable pageSize = 10;
   @observable maxLength = 0;
@@ -140,6 +141,16 @@ export class SupplierStore {
     const token = localStorage.getItem("token")
     const data = await http.get(this.suplier + '?' + qs.stringify(this.detailSuplierQuery)).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
+    this.maxLength = data.body.totalData;
+    this.isLoading = false;
+  }
+
+  @action
+  async getSupplierProductReview() {
+    this.isLoading = true;
+    const token = localStorage.getItem("token")
+    const data = await http.get(this.suplier + '?' + qs.stringify(this.detailSuplierQuery)).set({ 'authorization': `Bearer ${token}` });
+    this.detailData = data.body.data;
     this.maxLength = data.body.totalData;
     this.isLoading = false;
   }

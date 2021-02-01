@@ -46,7 +46,7 @@ export const DetailWarehouseScreen = observer((initialData) => {
     return {
       productName: e.productName,
       status: e.status,
-      quantity: e.quantity,
+      quantity: e.product?.quantity,
       createdAt: e.createdAt,
       updatedAt: e.updatedAt,
       _id: e._id,

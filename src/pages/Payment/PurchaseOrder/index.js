@@ -11,13 +11,13 @@ import {
     DeleteOutlined,
     EditOutlined,
     PlusOutlined,
-    DownloadOutlined
+    // DownloadOutlined
 } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
 import { observer } from "mobx-react-lite";
-import axios from 'axios';
-import download from 'downloadjs';
+// import axios from 'axios';
+// import download from 'downloadjs';
 
 function cancel(e) {
     message.error('Click on No');
@@ -39,7 +39,7 @@ export const PurchaseOrderScreen = observer((initialData) => {
     }, [])
 
     async function fetchData() {
-        await store.purchase.getPurchaseOrder();
+        await store.purchase.getPurchaseOrderList();
     }
 
     function confirm(_id) {

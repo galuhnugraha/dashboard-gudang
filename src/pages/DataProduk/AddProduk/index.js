@@ -44,7 +44,6 @@ export const AddProduk = observer(() => {
             grosirPrice: e.grosirPrice,
             pricePerUnit: e.pricePerUnit,
             // sku: e.sku,
-            quantity: e.quantity,
             selfing: e.selfing,
             warehouseId: e._id,
             suplierId: e.suplierId

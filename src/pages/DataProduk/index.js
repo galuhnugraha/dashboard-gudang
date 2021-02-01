@@ -183,8 +183,6 @@ export const DataProdukScreen = observer((initialData) => {
     </Modal>
   }
 
-
-
   const setEditMode = (value) => {
     setXImg(value.productImage)
     setState(prevState => ({

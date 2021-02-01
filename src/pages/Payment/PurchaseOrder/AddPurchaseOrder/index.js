@@ -25,6 +25,7 @@ export const AddPurchaseOrder = observer(() => {
     const history = useHistory();
     const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
+    const [item, setItem] = useState([]);
 
     // console.log(productId)
     useEffect(() => {
@@ -34,6 +35,9 @@ export const AddPurchaseOrder = observer(() => {
 
     function fetchData() {
         store.products.getAll();
+        store.supliers.getSupplier();
+
+
     }
 
     const onFinish = values => {
@@ -44,18 +48,35 @@ export const AddPurchaseOrder = observer(() => {
         newItem = val.target.value
     }
 
+    const showItem = () => {
+        const hero = store.supliers.detailData.map(r => {
+            let item = {
+                productName: r.product?.productName,
+                quantity: r.product?.quantity,
+                selfing: r.product?.selfing,
+                rack: r.product?.rack
+            }
+            return item;
+        })
+        setItem(hero)
+    }
+
     const getID = (val) => {
         newID = val
     }
+
     const AddItem = () => {
         const value = {
             productId: newID,
             quantity: newItem
         }
         myItem.push(value)
-        form.resetFields(["quantity", 'item', []]);
+        form.resetFields(["quantity", 'item']);
         console.log(myItem)
+        // setGetItem(value);
+        // setItem(myItem)
     }
+
     const enterLoading = (e) => {
         setLoading(true);
         const data = {
@@ -75,7 +96,7 @@ export const AddPurchaseOrder = observer(() => {
             message.error(err.message);
         });
     }
-
+    console.log(item)
 
     return <div>
         <Breadcrumb>
@@ -108,11 +129,6 @@ export const AddPurchaseOrder = observer(() => {
                 </Button>,
                 ]}
             />
-            {/* <Form  form={form} name="control-hooks" onFinish={onFinish}>
-                <Form.Item name="note" label="Note" rules={[{ required: true }]}>
-                    <Input />
-                </Form.Item>
-            </Form> */}
             <Form
                 layout={'vertical'}
                 name="normal_login"
@@ -125,7 +141,7 @@ export const AddPurchaseOrder = observer(() => {
                     label="Purchase Name"
                     name="purchaseName"
                     size={'large'}
-                    rules={[{ required: true, message: 'Please input your Product Name!' }]}
+                    rules={[{ required: true, message: 'Please input your Purchase Name!' }]}
                 >
                     <Input style={{ width: '98%' }} />
                 </Form.Item>
@@ -133,7 +149,7 @@ export const AddPurchaseOrder = observer(() => {
                     label="PIC"
                     name="pic"
                     size={'large'}
-                    rules={[{ required: true, message: 'Please input your Product Type!' }]}
+                    rules={[{ required: true, message: 'Please input your PIC!' }]}
                 >
                     <Input style={{ width: '98%' }} />
                 </Form.Item>
@@ -148,16 +164,24 @@ export const AddPurchaseOrder = observer(() => {
                         style={{ width: '98%' }}
                         mode="default"
                         onChange={(value) => {
+                            store.supliers.detailSuplierQuery.suplierId = value;
+                            store.supliers.getSupplierProductReview();
+                            showItem();
                             // setItem(value)
                             // setProductId(value)
                             getID(value)
                             // AddItem(value)
+                            // setIdDetail(value)
+                            // setIdDetail(value)
+
+
                         }}
-                    >
-                        {store.products.data.map(d => <Select.Option value={d._id} key={d._id}>{d.productName}</Select.Option>)}
+                        // onClick={showItem}
+                    > 
+                        {store.supliers.data.map(d => <Select.Option value={d._id} key={d._id} >{d.suplierName}</Select.Option>)}
                     </Select>
                 </Form.Item>
-                <Form.Item
+                {/* <Form.Item
                     label="Quantity"
                     name="quantity"
                     size={'large'}
@@ -165,7 +189,7 @@ export const AddPurchaseOrder = observer(() => {
 
                 >
                     <Input style={{ width: '98%' }} onChange={(value) => getQuantity(value)} />
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item
                     style={{
                         marginBottom: 25,
@@ -182,9 +206,14 @@ export const AddPurchaseOrder = observer(() => {
                 </Form.Item>
                 {/* <Button onClick={AddItem}>add</Button> */}
             </Form>
+            <div>
+                {/* {item && <p>Test</p>} */}
+                {item.length > 0 &&
+                    <h2>
+                        You have unread messages.
+                     </h2>
+                }
+            </div>
         </Card>
-        {/* <div>
-            {dataItem ? myItem.map((r) => { return (<div key={r.productName}><h5>{r.productName}</h5><br /><h5>{r.quantity}</h5></div>) }) : myItem}
-        </div> */}
     </div>
 })
