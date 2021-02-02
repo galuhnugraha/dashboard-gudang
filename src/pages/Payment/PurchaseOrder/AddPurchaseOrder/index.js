@@ -10,19 +10,6 @@ import { useStore } from "../../../../utils/useStores";
 import { observer } from "mobx-react-lite";
 
 
-const EditableContext = React.createContext(null);
-const EditableRow = ({ index, ...props }) => {
-    const [form] = Form.useForm();
-    return (
-        <Form form={form} component={false}>
-            <EditableContext.Provider value={form}>
-                <tr {...props} />
-            </EditableContext.Provider>
-        </Form>
-    );
-};
-
-
 export const AddPurchaseOrder = observer(() => {
     var myItem = new Array()
     // var newItem = ""
@@ -33,12 +20,9 @@ export const AddPurchaseOrder = observer(() => {
     const [item, setItem] = useState([]);
     const [newItem, setNewItem] = useState("");
     const [filterQuery, setFilterQuery] = useState({});
-    const [dataSource, setDataSource] = useState([]);
-    const [id, setId] = useState("");
-    const [state, setState] = useState({
-        dataSource: [],
-    })
     const [form] = Form.useForm();
+
+
     useEffect(() => {
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,7 +44,7 @@ export const AddPurchaseOrder = observer(() => {
     }
 
     const onFinish = values => {
-        enterLoading(values);
+        dataPost(values);
     };
 
     const showItem = () => {
@@ -77,96 +61,52 @@ export const AddPurchaseOrder = observer(() => {
         setItem(hero)
     }
 
+
     const dataTable = store.supliers.detailData.map((e) => {
         let obj = {
-            key: e.length,
+            id: e.product?._id,
             productName: e.product?.productName,
             pricePerUnit: e.product?.pricePerUnit,
             quantity: e.product?.quantity,
             rack: e.product?.rack,
-            sku: e.product?.sku,
-            id: e.product?._id
+            sku: e.product?.sku
         }
         return obj;
     })
 
     const columns = [
         {
-            title: 'name',
+            title: 'Product Name',
             dataIndex: 'productName',
-            key: 'productName'
+            width: '30%',
+            editable: true,
         },
         {
-            title: 'age',
-            dataIndex: 'age',
-            key: '2',
-        },
-        {
-            title: 'address',
-            dataIndex: 'address',
-            key: '3',
+            title: 'Quantity',
+            dataIndex: 'quantity',
+            render: () => <div>
+                <Input onChange={(val) => getQuantity(val)} />
+            </div>
         },
         {
             title: 'operation',
             dataIndex: 'operation',
             render: (_, record) =>
                 dataTable.length >= 1 ? (
-                    <Popconfirm title="Sure to delete?" onConfirm={() => {
-                        setId(record.id)
-                        const key = dataTable.findIndex(getIndex)
-                        console.log(key)
-                        handleDelete(key)
-                        }}>
+                    <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
                         <a>Delete</a>
                     </Popconfirm>
                 ) : null,
         },
     ];
 
-    function getIndex(val) {
-        console.log(val.id ,':', id)
-       return val.id == id
-    }
-
-    // const columns = [
-    //     {
-    //         title: 'Product Name',
-    //         dataIndex: 'productName',
-    //         key: 'productName',
-    //     },
-    //     {
-    //         title: 'Quantity',
-    //         dataIndex: 'quantity',
-    //         key: 'quantity',
-    //         render: () => <div>
-    //             <Input onChange={(val) => getQuantity(val)} />
-    //         </div>
-    //     },
-    //     {
-    //         title: 'Operation',
-    //         dataIndex: 'operation',
-    //         render: (_, record) =>
-    //             item.length >= 1 ? (
-    //                 <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
-    //                     <a>Delete</a>
-    //                 </Popconfirm>
-    //             ) : null,
-    //     }
-    // ];
-
     const handleDelete = (id) => {
         const dataSource = [...dataTable];
-        dataTable.splice(id, 1);
-        console.log(id)
-        console.log(dataSource)
-        // setState({ dataSource });
-    }
+        dataSource.filter((item) => item.id !== id);
+        // console.log(dataSource)
+        return dataSource
+    };
 
-    // const onDelete = (key) => {
-    //     const dataSource = [...state.dataSource]
-    //     const dataDelete = dataSource.splice(0,-1).filter((item) => item.key !== key)
-    //     setDataSource(dataDelete)
-    // }
 
     const getQuantity = (val) => {
         // newItem = val.target.value
@@ -177,30 +117,20 @@ export const AddPurchaseOrder = observer(() => {
         newID = val
     }
 
-    const enterLoading = (e) => {
+    const dataPost = (e) => {
         setLoading(true);
-        // const value = {
-        //     productId: newID,
-        //     quantity: newItem
-        // }
-
         const item = dataTable.map(r => {
             let i = {
                 productId: r.id,
                 quantity: newItem
             }
-            console.log(i)
             return i
         })
-
-        // myItem.push(item)
-        // console.log(myItem, 'data post')
         const data = {
             purchaseName: e.purchaseName,
             pic: e.pic,
             item: item,
         }
-        console.log(data)
         store.purchase.AddPurchaseOrder(data).then(res => {
             setLoading(false);
             message.success('Berhasil Add Product');
@@ -277,7 +207,7 @@ export const AddPurchaseOrder = observer(() => {
                         {store.supliers.data.map(d => <Select.Option value={d._id} key={d._id} onChange>{d.suplierName}</Select.Option>)}
                     </Select>
                 </Form.Item>
-                {dataTable.length > 0 && <Table dataSource={dataTable} rowClassName={() => 'editable-row'} columns={columns} rowKey={record => record._id} />}
+                {dataTable.length >= 1 && <Table dataSource={dataTable} columns={columns} rowKey={record => record._id} />}
                 <Form.Item
                     style={{
                         marginBottom: 25,
