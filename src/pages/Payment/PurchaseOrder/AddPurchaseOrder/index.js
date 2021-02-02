@@ -1,19 +1,16 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Input,
     Form,
-    message, Breadcrumb,
-    PageHeader, Card, Button, Select, Popconfirm, Table
+    message, Breadcrumb, Popconfirm,
+    PageHeader, Card, Button, Select, Table
 } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../../utils/useStores";
 import { observer } from "mobx-react-lite";
 
 
-// function handleChange(value) {
-//     console.log(`selected ${value}`);
-// }
-
+const EditableContext = React.createContext(null);
 const EditableRow = ({ index, ...props }) => {
     const [form] = Form.useForm();
     return (
@@ -25,162 +22,46 @@ const EditableRow = ({ index, ...props }) => {
     );
 };
 
-const EditableCell = ({
-    title,
-    editable,
-    children,
-    dataIndex,
-    record,
-    handleSave,
-    ...restProps
-}) => {
-    const [editing, setEditing] = useState(false);
-    const inputRef = useRef(null);
-    const form = useContext(EditableContext);
-    useEffect(() => {
-        if (editing) {
-            inputRef.current.focus();
-        }
-    }, [editing]);
-
-    const toggleEdit = () => {
-        setEditing(!editing);
-        form.setFieldsValue({
-            [dataIndex]: record[dataIndex],
-        });
-    };
-
-    const save = async () => {
-        try {
-            const values = await form.validateFields();
-            toggleEdit();
-            handleSave({ ...record, ...values });
-        } catch (errInfo) {
-            console.log('Save failed:', errInfo);
-        }
-    };
-
-    let childNode = children;
-
-    if (editable) {
-        childNode = editing ? (
-            <Form.Item
-                style={{
-                    margin: 0,
-                }}
-                name={dataIndex}
-                rules={[
-                    {
-                        required: true,
-                        message: `${title} is required.`,
-                    },
-                ]}
-            >
-                <Input ref={inputRef} onPressEnter={save} onBlur={save} />
-            </Form.Item>
-        ) : (
-                <div
-                    className="editable-cell-value-wrap"
-                    style={{
-                        paddingRight: 24,
-                    }}
-                    onClick={toggleEdit}
-                >
-                    {children}
-                </div>
-            );
-    }
-
-    return <td {...restProps}>{childNode}</td>;
-};
-
-const EditableContext = React.createContext(null);
 
 export const AddPurchaseOrder = observer(() => {
     var myItem = new Array()
+    // var newItem = ""
+    var newID = ""
     const store = useStore();
     const history = useHistory();
     const [loading, setLoading] = useState(false);
     const [item, setItem] = useState([]);
+    const [newItem, setNewItem] = useState("");
+    const [filterQuery, setFilterQuery] = useState({});
+    const [dataSource, setDataSource] = useState([]);
+    const [id, setId] = useState("");
     const [state, setState] = useState({
-        dataSource: [
-            {
-                key: '0',
-                name: 'Edward King 0',
-                age: '32',
-                address: 'London, Park Lane no. 0',
-            },
-            {
-                key: '1',
-                name: 'Edward King 1',
-                age: '32',
-                address: 'London, Park Lane no. 1',
-            },
-        ],
+        dataSource: [],
     })
     const [form] = Form.useForm();
-
     useEffect(() => {
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const components = {
-        body: {
-            row: EditableRow,
-            cell: EditableCell,
-        },
-    };
-
-    const tableData = [
-        {
-            title: 'name',
-            dataIndex: 'name',
-            width: '30%',
-            editable: true,
-        },
-        {
-            title: 'age',
-            dataIndex: 'age',
-        },
-        {
-            title: 'address',
-            dataIndex: 'address',
-        },
-        {
-            title: 'operation',
-            dataIndex: 'operation',
-            render: (_, record) =>
-                state.dataSource.length >= 1 ? (
-                    <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
-                        <a>Delete</a>
-                    </Popconfirm>
-                ) : null,
-        },
-    ];
-
-    const columns = tableData.map((col) => {
-        if (!col.editable) {
-            return col;
-        }
-
-        return {
-            ...col,
-            onCell: (record) => ({
-                record,
-                editable: col.editable,
-                dataIndex: col.dataIndex,
-                title: col.title,
-                handleSave: handleSave,
-            }),
-        };
-    });
-
-
     function fetchData() {
         store.supliers.getSupplier();
-        store.supliers.getSupplierProductReview();
+        store.supliersItem.getSupplierProductReview();
     }
+
+    const onDetailProduct = (val) => {
+        // console.log(val, 'test')
+        store.supliers.detailSuplierQueryItem.suplierId = val
+        store.supliers.getSupplierProductReview()
+        setFilterQuery({
+            ...filterQuery,
+            suplierId: val,
+        })
+    }
+
+    const onFinish = values => {
+        enterLoading(values);
+    };
 
     const showItem = () => {
         const hero = store.supliers.detailData.map(r => {
@@ -192,45 +73,143 @@ export const AddPurchaseOrder = observer(() => {
             }
             return item;
         })
+        // console.log(myItem)
         setItem(hero)
     }
 
-    const handleDelete = (key) => {
-        const dataSource = [...state.dataSource];
-        setState({
-            dataSource: dataSource.filter((item) => item.key !== key),
-        });
-    };
+    const dataTable = store.supliers.detailData.map((e) => {
+        let obj = {
+            key: e.length,
+            productName: e.product?.productName,
+            pricePerUnit: e.product?.pricePerUnit,
+            quantity: e.product?.quantity,
+            rack: e.product?.rack,
+            sku: e.product?.sku,
+            id: e.product?._id
+        }
+        return obj;
+    })
 
-    const handleSave = (row) => {
-        const newData = [...state.dataSource];
-        const index = newData.findIndex((item) => row.key === item.key);
-        const item = newData[index];
-        newData.splice(index, 1, { ...item, ...row });
-        setState({
-            dataSource: newData,
-        });
-    };
+    const columns = [
+        {
+            title: 'name',
+            dataIndex: 'productName',
+            key: 'productName'
+        },
+        {
+            title: 'age',
+            dataIndex: 'age',
+            key: '2',
+        },
+        {
+            title: 'address',
+            dataIndex: 'address',
+            key: '3',
+        },
+        {
+            title: 'operation',
+            dataIndex: 'operation',
+            render: (_, record) =>
+                dataTable.length >= 1 ? (
+                    <Popconfirm title="Sure to delete?" onConfirm={() => {
+                        setId(record.id)
+                        const key = dataTable.findIndex(getIndex)
+                        console.log(key)
+                        handleDelete(key)
+                        }}>
+                        <a>Delete</a>
+                    </Popconfirm>
+                ) : null,
+        },
+    ];
 
-    // const enterLoading = (e) => {
-    //     setLoading(true);
-    //     const data = {
-    //         purchaseName: e.purchaseName,
-    //         pic: e.pic,
-    //         item: myItem,
-    //         // quantity: ''
-    //         // quantity: dataTaro.push([item])
+    function getIndex(val) {
+        console.log(val.id ,':', id)
+       return val.id == id
+    }
+
+    // const columns = [
+    //     {
+    //         title: 'Product Name',
+    //         dataIndex: 'productName',
+    //         key: 'productName',
+    //     },
+    //     {
+    //         title: 'Quantity',
+    //         dataIndex: 'quantity',
+    //         key: 'quantity',
+    //         render: () => <div>
+    //             <Input onChange={(val) => getQuantity(val)} />
+    //         </div>
+    //     },
+    //     {
+    //         title: 'Operation',
+    //         dataIndex: 'operation',
+    //         render: (_, record) =>
+    //             item.length >= 1 ? (
+    //                 <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
+    //                     <a>Delete</a>
+    //                 </Popconfirm>
+    //             ) : null,
     //     }
-    //     console.log(data)
-    //     store.purchase.AddPurchaseOrder(data).then(res => {
-    //         setLoading(false);
-    //         message.success('Berhasil Add Product');
-    //         history.push("/app/purchase-order");
-    //     }).catch(err => {
-    //         setLoading(false);
-    //         message.error(err.message);
-    //     });
+    // ];
+
+    const handleDelete = (id) => {
+        const dataSource = [...dataTable];
+        dataTable.splice(id, 1);
+        console.log(id)
+        console.log(dataSource)
+        // setState({ dataSource });
+    }
+
+    // const onDelete = (key) => {
+    //     const dataSource = [...state.dataSource]
+    //     const dataDelete = dataSource.splice(0,-1).filter((item) => item.key !== key)
+    //     setDataSource(dataDelete)
     // }
+
+    const getQuantity = (val) => {
+        // newItem = val.target.value
+        setNewItem(val.target.value)
+    }
+
+    const getID = (val) => {
+        newID = val
+    }
+
+    const enterLoading = (e) => {
+        setLoading(true);
+        // const value = {
+        //     productId: newID,
+        //     quantity: newItem
+        // }
+
+        const item = dataTable.map(r => {
+            let i = {
+                productId: r.id,
+                quantity: newItem
+            }
+            console.log(i)
+            return i
+        })
+
+        // myItem.push(item)
+        // console.log(myItem, 'data post')
+        const data = {
+            purchaseName: e.purchaseName,
+            pic: e.pic,
+            item: item,
+        }
+        console.log(data)
+        store.purchase.AddPurchaseOrder(data).then(res => {
+            setLoading(false);
+            message.success('Berhasil Add Product');
+            history.push("/app/purchase-order");
+        }).catch(err => {
+            setLoading(false);
+            message.error(err.message);
+        });
+    }
 
 
     return <div>
@@ -255,16 +234,6 @@ export const AddPurchaseOrder = observer(() => {
                 className={"card-page-header"}
                 subTitle=""
                 title={"Input Purchase Order"}
-                extra={[
-                    <Button style={{ backgroundColor: '#132743', color: 'white', borderRadius: 5 }}
-                        block
-                        htmlType="submit"
-                        size={'large'}
-                        loading={loading}
-                    >
-                        Submit
-                </Button>
-                ]}
             />
             <Form
                 layout={'vertical'}
@@ -272,7 +241,7 @@ export const AddPurchaseOrder = observer(() => {
                 className="login-form"
                 style={{ marginLeft: 23 }}
                 form={form}
-            // onFinish={onFinish}
+                onFinish={onFinish}
             >
                 <Form.Item
                     label="Purchase Name"
@@ -301,27 +270,29 @@ export const AddPurchaseOrder = observer(() => {
                         mode="default"
                         onChange={(value) => {
                             showItem(value)
+                            getID(value)
+                            onDetailProduct(value)
                         }}
                     >
-                        {store.supliers.data.map(d => <Select.Option value={d._id} key={d._id}>{d.suplierName}</Select.Option>)}
+                        {store.supliers.data.map(d => <Select.Option value={d._id} key={d._id} onChange>{d.suplierName}</Select.Option>)}
                     </Select>
                 </Form.Item>
-                {item.length > 0 && <Table
-                    components={components}
-                    rowClassName={() => 'editable-row'}
-                    bordered
-                    style={{ width: '98%' }}
-                    dataSource={state.dataSource}
-                    columns={columns}
-                />}
+                {dataTable.length > 0 && <Table dataSource={dataTable} rowClassName={() => 'editable-row'} columns={columns} rowKey={record => record._id} />}
                 <Form.Item
                     style={{
                         marginBottom: 25,
                         width: 100
                     }}>
+                    <Button style={{ backgroundColor: '#132743', color: 'white', borderRadius: 5 }}
+                        block
+                        htmlType="submit"
+                        size={'large'}
+                    // loading={loading}
+                    >
+                        Submit
+                </Button>
                 </Form.Item>
             </Form>
         </Card>
-
-    </div >
+    </div>
 })

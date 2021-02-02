@@ -9,6 +9,7 @@ import { BarangStore } from './barang';
 import { PurchaseOrder } from './PurchaseOrder';
 import { TransactionStore } from './Transaction';
 import { ReceiveStore } from './Receive';
+import {SupplierReviewStore} from './SupliersItem';
 
 export class Store {
   @observable token = "";
@@ -18,6 +19,7 @@ export class Store {
   warehouse = new WarehouseStore(this);
   warehouseData = new WarehouseDataStore(this);
   supliers = new SupplierStore(this);
+  supliersItem = new SupplierReviewStore(this);
   barang = new BarangStore(this);
   purchase = new PurchaseOrder(this);
   transaction = new TransactionStore(this);

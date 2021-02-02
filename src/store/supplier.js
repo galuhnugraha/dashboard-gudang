@@ -7,6 +7,7 @@ import * as qs from "querystring";
 export class SupplierStore {
   baseUrl = '/supliers'
   suplier = '/dataSuplier'
+  supliers = '/dataSuplier'
   @observable isLoading = false;
   @observable data = [];
   @observable detailData = [];
@@ -16,6 +17,11 @@ export class SupplierStore {
   @observable selectedFilterValue = '';
   @observable selectedFilterValueDetail = '';
   @observable detailSuplierQuery = {
+    pg: 1,
+    lm: 10,
+    suplierId: '',
+  }
+  @observable detailSuplierQueryItem = {
     pg: 1,
     lm: 10,
     suplierId: '',
@@ -149,7 +155,7 @@ export class SupplierStore {
   async getSupplierProductReview() {
     this.isLoading = true;
     const token = localStorage.getItem("token")
-    const data = await http.get(this.suplier + '?' + qs.stringify(this.detailSuplierQuery)).set({ 'authorization': `Bearer ${token}` });
+    const data = await http.get(this.supliers + '?' + qs.stringify(this.detailSuplierQueryItem)).set({ 'authorization': `Bearer ${token}` });
     this.detailData = data.body.data;
     this.maxLength = data.body.totalData;
     this.isLoading = false;
