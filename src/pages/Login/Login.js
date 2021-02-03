@@ -13,46 +13,58 @@ export const Login = observer(() => {
   let history = useHistory();
   const [loading, setLoading] = useState(false);
   const store = useStore();
+  const [robot, setRobot] = useState(true);
+  const [email, setEmail] = useState('');
   // const enterLoading = () => {
   //   history.push("/app/dashboard");
   // }
   const [state, setState] = useState({
     human: false,
     disabled: true,
-})
-console.log(state.human,'bro')
+  })
+  console.log(state.human, 'bro')
 
   const onFinish = values => {
     enterLoading(values);
   };
 
   const verifyCaptcha = (res) => {
-    if (res) {
-        //   this.setState({ human: true, humanKey: res })
-        //   this.setState({ disabled: this.isDisabled() })
-        setState({
-            human: true,
-            humanKey: res
-        })
+    console.log(res)
+    if(email.length <= 0) {
+      setRobot(false)
+      return 
     }
-}
+    setRobot(true)
+  }
 
-const expireCaptcha = () => {
+  const expireCaptcha = () => {
     // this.setState({ human: false, humanKey: null })
     // this.setState({ disabled: this.isDisabled() })
     setState({
-        human: false,
-        humanKey: null,
-        disabled: isDisabled()
+      human: false,
+      humanKey: null,
+      disabled: isDisabled()
     })
-}
+  }
 
-const isDisabled = () => {
+  const isDisabled = () => {
+
     if (
-        state.email != null &&
+      state.email != null &&
       state.human === true
-    ) return false
+
+    ) {
+      console.log(state.human, 'bro')
+      setRobot(true)
+      return false
+    }
+    setRobot(false)
     return true
+  }
+
+  const test = (value) => {
+    // console.log('test', value.target.value)
+    setEmail(value.target.value)
   }
 
   const enterLoading = (e) => {
@@ -120,7 +132,9 @@ const isDisabled = () => {
                 <Input
                   prefix={<MailOutlined className="site-form-item-icon" />}
                   type="text"
-                  placeholder="email" />
+                  placeholder="email" onChange={(value) => {
+                    test(value)
+                  }} />
               </Form.Item>
 
               <Form.Item
@@ -155,6 +169,7 @@ const isDisabled = () => {
                   block
                   htmlType="submit"
                   loading={loading}
+                  disabled={robot}
                   size={'large'}
                   className="login-form-button">
                   Sign In
