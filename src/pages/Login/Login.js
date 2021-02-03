@@ -71,6 +71,10 @@ const isDisabled = () => {
     });
   }
 
+  const sendEmail = () => {
+    store.user.sendEmailConfirmation()
+  }
+
   const { Paragraph } = Typography;
 
   return <div style={{ width: '100vw', display: 'flex', justifyContent: 'center' }}>
@@ -162,7 +166,7 @@ const isDisabled = () => {
               </Form.Item>
             </Form>
             <div style={{ marginTop: 10 }}>
-              <Link to="/forgot-password">
+              <Link to="/email-confirmation">
                 <p>Forgot Password</p>
               </Link>
             </div>

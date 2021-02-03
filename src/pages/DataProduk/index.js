@@ -20,7 +20,7 @@ import { useStore } from "../../utils/useStores";
 import { observer } from "mobx-react-lite";
 import { appConfig } from "../config/app";
 import { ShowModalSupliers } from "./ShowModalSuplier";
-
+import * as _ from "lodash";
 
 function cancel(e) {
   message.error('Click on No');
@@ -36,10 +36,14 @@ export const DataProdukScreen = observer((initialData) => {
   const [filterQuery, setFilterQuery] = useState({});
   const [filterProduct, setFilterProduct] = useState(false);
   const [prOutId, setPrOut] = useState('')
+  const [filterSupliers, setFilterSupliers] = useState('');
+  const [filterWarehouse, setFilterWarehouse] = useState('');
+  const [filterProductName, setFilterProductName] = useState('');
   const [state, setState] = useState({
     success: false,
     yes: false,
     location: false,
+    product: false,
     warehouseID: '',
   });
 
@@ -198,6 +202,27 @@ export const DataProdukScreen = observer((initialData) => {
     // console.log(value)
   }
 
+  const setEditModeReviewProduct = (value) => {
+    setState(prevState => ({
+      ...prevState,
+      product: true
+    }))
+    form.setFieldsValue({
+      product: true,
+      productType: value.productType,
+      quantity: value.quantity,
+      sku: value.sku,
+      pricePerUnit: value.pricePerUnit,
+      grosirPrice: value.grosirPrice,
+      productName: value.productName,
+      productImage: value.productImage,
+      selfing: value.selfing,
+      rack: value.rack,
+      location: value.location,
+    })
+    // console.log(value)
+  }
+
   const setEditModeReviewLocation = (value) => {
     setState(prevState => ({
       ...prevState,
@@ -205,6 +230,8 @@ export const DataProdukScreen = observer((initialData) => {
     }))
     form.setFieldsValue({
       location: true,
+      warehouseName: value.warehouseName,
+      warehosueLocation: value.warehosueLocation
     })
     // console.log(value)
   }
@@ -247,6 +274,12 @@ export const DataProdukScreen = observer((initialData) => {
   const toggleSuccessReviewLocation = (() => {
     setState({
       location: !state.location
+    });
+  })
+
+  const toggleSuccessReviewProduct = (() => {
+    setState({
+      product: !state.product
     });
   })
 
@@ -317,6 +350,14 @@ export const DataProdukScreen = observer((initialData) => {
     toggleSuccessReview();
   };
 
+  const handleCancelProduct = () => {
+    // setIsModalVisible(false);
+    form.validateFields().then(values => {
+      form.resetFields();
+    });
+    toggleSuccessReviewProduct();
+  };
+
   const handleCancelLocation = () => {
     // setIsModalVisible(false);
     form.validateFields().then(values => {
@@ -327,18 +368,56 @@ export const DataProdukScreen = observer((initialData) => {
 
   const dataMap = store.products.data.map((e) => {
     let data = {
+      id: e._id,
       productName: e.productName,
       suplierName: e.suplierId.suplierName,
       quantity: e.quantity,
       pricePerUnit: e.pricePerUnit,
       grosirPrice: e.grosirPrice,
+      productMark: e.productMark,
+      varian: e.varian,
+      size: e.size,
+      color: e.color,
+      termsOfGrosir: e.termsOfGrosir,
       companyName: e.suplierId.companyName,
       suplierAddress: e.suplierId.suplierAddress?.address,
+      warehouseName: e.warehouseId?.warehouseName,
+      warehosueLocation: e.warehouseId?.warehosueLocation,
       suplierPhone: e.suplierId.suplierPhone,
+      suplierId: e.suplierId._id,
+      warehouseId: e.warehouseId._id,
+      productImage: e.productImage,
+      rack: e.rack,
+      selfing: e.selfing,
+      room: e.room,
+      lt: e.lt,
       location: e.location
     }
     return data
   })
+
+  function FilterWarehouse(value) {
+    // console.log(value)
+    return value.warehouseId == filterWarehouse
+  }
+
+  function FilterSupliers(value) {
+    // console.log(value)
+    return value.suplierId == filterSupliers
+  }
+
+  function FilterProduct(value) {
+    console.log(value)
+    return value.id == filterProductName
+  }
+  const selectedDataProduct = dataMap.filter(FilterProduct);
+  console.log(selectedDataProduct);
+
+  const selectedDataSupliers = dataMap.filter(FilterSupliers);
+  console.log(selectedDataSupliers);
+
+  const selectedDataWarehouse = dataMap.filter(FilterWarehouse);
+  console.log(selectedDataWarehouse)
 
   function modalItem() {
     return <Modal
@@ -348,23 +427,117 @@ export const DataProdukScreen = observer((initialData) => {
       // onCancel={handleCancel}
       onCancel={handleCancel}
     >
-      <Form
-        form={form}
-        layout="vertical"
-        initialValues={initialData}>
-        <Form.Item
-          label="Suplier Address"
-          name="suplierAddress"
-        >
-          <Input disabled={true} />
-        </Form.Item>
-        <Form.Item label="Suplier Phone" name="suplierPhone">
-          <Input disabled={true}/>
-        </Form.Item>
-        <Form.Item label="Company Name" name="companyName" >
-          <Input disabled={true}/>
-        </Form.Item>
-      </Form>
+      <Card>
+        <Row>
+          <Col lg={6}>
+            <Row gutter={[8, 16]}>
+              <Col className="gutter-row" lg={10}><h5>Supliers Name</h5></Col>
+              <Col lg={1}>:</Col>
+              <Col lg={10}><h5>{selectedDataSupliers[0]?.suplierAddress}</h5></Col>
+            </Row>
+            <Row gutter={[8, 16]} >
+              <Col className="gutter-row" lg={10}><h5>Company Name</h5></Col>
+              <Col lg={1}>:</Col>
+              <Col lg={10}><h5>{selectedDataSupliers[0]?.companyName}</h5></Col>
+            </Row>
+            <Row gutter={[8, 16]} >
+              <Col className="gutter-row" lg={10}><h5>Supliers Phone</h5></Col>
+              <Col lg={1}>:</Col>
+              <Col lg={10}><h5>{selectedDataSupliers[0]?.suplierPhone}</h5></Col>
+            </Row>
+          </Col>
+        </Row>
+      </Card>
+    </Modal>
+  }
+
+  function modalItemProduct() {
+    return <Modal
+      title={"Detail Product"}
+      visible={state.product}
+      footer={null}
+      // onCancel={handleCancel}
+      onCancel={handleCancelProduct}
+    >
+      <Card>
+        <Row>
+          <Col span={12}>Product Name :  {selectedDataProduct[0]?.productName}</Col>
+          <Col span={12}>Product Merek : {selectedDataProduct[0]?.productMark}</Col>
+        </Row>
+        <Row>
+          <Col span={12}>Rak :  {selectedDataProduct[0]?.rack}</Col>
+          <Col span={12}>Selfing :  {selectedDataProduct[0]?.selfing}</Col>
+        </Row>
+        <Row>
+          <Col span={12}>LT :  {selectedDataProduct[0]?.lt}</Col>
+          <Col span={12}>Room : {selectedDataProduct[0]?.room}</Col>
+        </Row>
+        <Row>
+        <img src={`${appConfig.apiImage}/${selectedDataProduct[0]?.productImage}`} alt="avatar" style={{ width: 110, height: 110,marginTop: 10, borderRadius: 4 }} />
+          {/* <Col span={12}>LT :  {selectedDataProduct[0]?.lt}</Col> */}
+        </Row>
+        {/* <Row>
+          <Col lg={6}>
+            <Row gutter={[8, 16]}>
+              <Col className="gutter-row" lg={10}><h5>Porduct Name</h5></Col>
+              <Col lg={1}>:</Col>
+              <Col lg={10}><h5>{selectedDataProduct[0]?.productName}</h5></Col>
+            </Row>
+            <Row gutter={[8, 16]}>
+              <Col className="gutter-row" lg={10}><h5>Porduct Mark</h5></Col>
+              <Col lg={1}>:</Col>
+              <Col lg={10}><h5>{selectedDataProduct[0]?.productMark}</h5></Col>
+            </Row>
+            <Row gutter={[8, 16]}>
+              <Col className="gutter-row" lg={10}><h5>Rak</h5></Col>
+              <Col lg={1}>:</Col>
+              <Col lg={10}><h5>{selectedDataProduct[0]?.rack}</h5></Col>
+            </Row>
+            <Row gutter={[8, 16]}>
+              <Col className="gutter-row" lg={10}><h5>Room</h5></Col>
+              <Col lg={1}>:</Col>
+              <Col lg={10}><h5>{selectedDataProduct[0]?.room}</h5></Col>
+            </Row>
+            <Row gutter={[8, 16]}>
+              <Col className="gutter-row" lg={10}><h5>Lt</h5></Col>
+              <Col lg={1}>:</Col>
+              <Col lg={10}><h5>{selectedDataProduct[0]?.lt}</h5></Col>
+            </Row>
+            <Row gutter={[8, 16]}>
+              <Col className="gutter-row" lg={10}><h5>Location</h5></Col>
+              <Col lg={1}>:</Col>
+              <Col lg={10}><h5>{selectedDataProduct[0]?.location}</h5></Col>
+            </Row>
+          </Col>
+          <Col lg={6}>
+          <Row gutter={[8, 16]}>
+              <Col className="gutter-row" lg={10}><h5>Grosir Price</h5></Col>
+              <Col lg={1}>:</Col>
+              <Col lg={10}><h5>{selectedDataProduct[0]?.grosirPrice}</h5></Col>
+            </Row>
+            <Row gutter={[8, 16]}>
+              <Col className="gutter-row" lg={10}><h5>Size</h5></Col>
+              <Col lg={1}>:</Col>
+              <Col lg={10}><h5>{selectedDataProduct[0]?.size}</h5></Col>
+            </Row>
+            <Row gutter={[8, 16]}>
+              <Col className="gutter-row" lg={10}><h5>Suplier Address</h5></Col>
+              <Col lg={1}>:</Col>
+              <Col lg={10}><h5>{selectedDataProduct[0]?.suplierAddress}</h5></Col>
+            </Row>
+            <Row gutter={[8, 16]}>
+              <Col className="gutter-row" lg={10}><h5>Varian</h5></Col>
+              <Col lg={1}>:</Col>
+              <Col lg={10}><h5>{selectedDataProduct[0]?.varian}</h5></Col>
+            </Row>
+            <Row gutter={[8, 16]}>
+              <Col className="gutter-row" lg={10}><h5>Color</h5></Col>
+              <Col lg={1}>:</Col>
+              <Col lg={10}><h5>{selectedDataProduct[0]?.color}</h5></Col>
+            </Row>
+          </Col>
+        </Row> */}
+      </Card>
     </Modal>
   }
 
@@ -376,23 +549,38 @@ export const DataProdukScreen = observer((initialData) => {
       // onCancel={handleCancel}
       onCancel={handleCancelLocation}
     >
-      <Form
+      <Card>
+        <Row>
+          <Col lg={6}>
+            <Row gutter={[8, 16]}>
+              <Col className="gutter-row" lg={10}><h5>Warehouse Name</h5></Col>
+              <Col lg={1}>:</Col>
+              <Col lg={10}><h5>{selectedDataWarehouse[0]?.warehouseName}</h5></Col>
+            </Row>
+            <Row gutter={[8, 16]} >
+              <Col className="gutter-row" lg={10}><h5>Warehouse Location</h5></Col>
+              <Col lg={1}>:</Col>
+              <Col lg={10}><h5>{selectedDataWarehouse[0]?.warehosueLocation}</h5></Col>
+            </Row>
+
+          </Col>
+        </Row>
+      </Card>
+      {/* <Form
         form={form}
         layout="vertical"
         initialValues={initialData}>
         <Form.Item
-          label="Suplier Address"
-          // name="suplierAddress"
+          label="Warehouse Name"
+          name="warehouseName"
         >
           <Input disabled={true} />
         </Form.Item>
-        <Form.Item label="Suplier Phone">
+
+        <Form.Item label="Warehouse Location" name="warehosueLocation">
           <Input disabled={true}/>
         </Form.Item>
-        <Form.Item label="Company Name">
-          <Input disabled={true}/>
-        </Form.Item>
-      </Form>
+      </Form> */}
     </Modal>
   }
 
@@ -402,22 +590,38 @@ export const DataProdukScreen = observer((initialData) => {
         title: 'Product Name',
         dataIndex: 'productName',
         key: 'productName',
+        render: (text, record) => {
+          return (<div onClick={() => {
+            // setFilterProduct(true)
+            // onDetailProduct(record)
+            // setFilterSupliers(record.suplierId)
+            setFilterProductName(record.id)
+            console.log(record)
+            setEditModeReviewProduct(record)
+          }} style={{ color: '#132743' }}>
+            {text}
+          </div>)
+        },
       },
       {
         title: 'Product Merek',
-        render: (record) => <span>{"-"}</span>
+        dataIndex: 'productMark',
+        render: (record) => <span>{record}</span>
       },
       {
         title: 'Varian',
-        render: (record) => <span>{"-"}</span>
+        dataIndex: 'varian',
+        render: (record) => <span>{record}</span>
       },
       {
         title: 'Size',
-        render: (record) => <span>{"-"}</span>
+        dataIndex: 'size',
+        render: (record) => <span>{record}</span>
       },
       {
         title: 'Color',
-        render: (record) => <span>{"-"}</span>
+        dataIndex: 'color',
+        render: (record) => <span>{record}</span>
       },
       {
         title: 'Stok',
@@ -439,9 +643,9 @@ export const DataProdukScreen = observer((initialData) => {
       },
       {
         title: 'Grosir Quantity',
-        // dataIndex: 'location',
-        // key: 'location',
-        render: (record) => <span>{"-"}</span>
+        dataIndex: 'termsOfGrosir',
+        key: 'termsOfGrosir',
+        render: (record) => <span>{record}</span>
       },
       {
         title: 'Suplier Name',
@@ -451,8 +655,10 @@ export const DataProdukScreen = observer((initialData) => {
           return (<div onClick={() => {
             // setFilterProduct(true)
             // onDetailProduct(record)
+            setFilterSupliers(record.suplierId)
+            console.log(record.suplierId)
             setEditModeReview(record)
-          }} style={{color: '#132743'}}>
+          }} style={{ color: '#132743' }}>
             {text}
           </div>)
         },
@@ -466,8 +672,9 @@ export const DataProdukScreen = observer((initialData) => {
           return (<div onClick={() => {
             // setFilterProduct(true)
             // onDetailProduct(record)
+            setFilterWarehouse(record.warehouseId)
             setEditModeReviewLocation(record)
-          }} style={{color: '#132743'}}>
+          }} style={{ color: '#132743' }}>
             {text}
           </div>)
         },
@@ -565,6 +772,7 @@ export const DataProdukScreen = observer((initialData) => {
           />
         )} */}
         {/* {modalProduct()} */}
+        {modalItemProduct()}
         {modalItem()}
         {modalFilter()}
         {renderModal()}

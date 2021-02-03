@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import { observer } from 'mobx-react-lite';
 import ReCAPTCHA from 'react-google-recaptcha'
-import { useHistory, Link, useParams } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { Form, Input, Button, Row, Col, Card, Typography, message } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { useStore } from "../../../utils/useStores";
 
-export const ForgotPassword = observer(() => {
+export const EmailConfirmation = observer(() => {
     let history = useHistory();
-    const {id} = useParams();
-    console.log(id);
     const [loading, setLoading] = useState(false);
     const store = useStore();
     const [state, setState] = useState({
@@ -17,35 +15,21 @@ export const ForgotPassword = observer(() => {
         disabled: true,
         email: ""
     })
-    // const enterLoading = () => {
-    //   history.push("/app/dashboard");
-    // }
 
-    const verifyCaptcha = (res) => {
-        if (res) {
-            //   this.setState({ human: true, humanKey: res })
-            //   this.setState({ disabled: this.isDisabled() })
-            setState({
-                human: true,
-                humanKey: res
-            })
-        }
-    }
-
-      const onFinish = (e) => {
+    const enterLoading = (e) => {
         setLoading(true);
         const data = {
-            newPassword: e.newPassword,
+            email: e.email,
         }
         console.log(data)
-        store.user.resetPassword(id,data).then(res => {
+        store.user.sendEmail(data).then(res => {
             message.success('Berhasil Masuk');
             setLoading(false);
         }).catch(err => {
             message.error(err.message);
             setLoading(false);
         });
-      }
+    }
 
     const { Paragraph } = Typography;
 
@@ -79,28 +63,28 @@ export const ForgotPassword = observer(() => {
                         headStyle={{ fontSize: 13, fontWeight: 200 }}
                         className={"shadow"}
                         bordered={true}
-                        title={'Change Password New'}
+                        title={'Email Confirmation'}
                     >
                         <Form
                             layout={'vertical'}
                             name="normal_login"
                             className="login-form"
-                            onFinish={onFinish}
+                            onFinish={enterLoading}
                         >
 
                             <Form.Item
                                 style={{
                                     marginBottom: 30,
                                 }}
-                                label="Ganti Password"
-                                name="newPassword"
+                                label="Email"
+                                name="email"
                                 size={'large'}
                                 rules={[{ required: false, message: 'Please input your Password!' }]}
                             >
                                 <Input
-                                    // prefix={< className="site-form-item-icon" />}
-                                    placeholder="Masukan Password Baru"
-                                    type="password"
+                                    prefix={<MailOutlined className="site-form-item-icon" />}
+                                    placeholder="Masukan Email"
+                                    value={state.email}
                                 />
                             </Form.Item>
                             {/* <div>

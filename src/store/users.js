@@ -1,4 +1,4 @@
-import { action, observable,computed } from 'mobx';
+import { action, observable, computed } from 'mobx';
 import { http } from "../utils/http";
 
 
@@ -14,43 +14,23 @@ export class UserStore {
   }
 
   @action
-  setPage(page = 1) {
-    this.currentPage = page;
-    this.getAll();
-  }
-
-  @action
-  setCurrentPage(current = 10) {
-    this.pageSize = current;
-    this.getAll();
-  }
-
-  @computed
-  get userData() {
-    if (!this.context.token) {
-      return {
-        user_id: '',
-        role: '',
-      };
-    }
-    return JSON.parse(atob(this.context.token.split('.')[1]));
-  }
-
-  @action
-  async getAll() {
+  sendEmail = async (data) => {
     this.isLoading = true;
-    const token = localStorage.getItem("token")
-    const data = await http.get(`/users/get?Pg=${this.currentPage}&lm=${this.pageSize}`).set({ 'authorization': `Bearer ${token}` });
-    this.data = data.body.data;
-    this.maxLength = data.body.totalData;
-    this.isLoading = false;
+    return http.post(`/users/sendmail`).send(data)
+      .then((res) => {
+        this.isLoading = false;
+        return res;
+      })
+      .catch((err) => {
+        this.isLoading = false;
+        throw err;
+      });
   }
 
   @action
-  updateUser = async (data, id) => {
+  resetPassword = async (id,data) => {
     this.isLoading = true;
-    const token = localStorage.getItem("token")
-    return http.put(`/users/update?id=${id}`).set({ 'authorization': `Bearer ${token}` }).send(data)
+    return http.put(`/users/forgotPassword/${id}`).send(data)
       .then((res) => {
         this.isLoading = false;
         return res;

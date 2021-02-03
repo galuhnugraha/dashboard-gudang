@@ -1,15 +1,16 @@
 import React from 'react';
-import {Redirect, Route, Switch} from "react-router-dom";
-import {Login} from "../pages/Login/Login";
-import {Register} from "../pages/Register";
-import {App} from "../pages/App/App";
+import { Redirect, Route, Switch } from "react-router-dom";
+import { Login } from "../pages/Login/Login";
+import { Register } from "../pages/Register";
+import { App } from "../pages/App/App";
 import PrivateRoute from "../component/PrivateRoute";
 import { ForgotPassword } from "../pages/Login/ForgotPassword";
+import { EmailConfirmation } from '../pages/Login/emailConfirmation';
 
 export const MainRoutes = () => {
   return <Switch>
     <Route path="/" exact>
-      <Redirect to={"/login"}/>
+      <Redirect to={"/login"} />
     </Route>
     <Route path="/login" exact>
       <Login />
@@ -21,9 +22,9 @@ export const MainRoutes = () => {
       {/* <DetailSuplierScreen /> */}
       <ForgotPassword />
     </Route>
-    {/* <Route path="/app">
-      <App />
-    </Route> */}
+    <Route path="/email-confirmation" exact>
+      <EmailConfirmation />
+    </Route>
     <PrivateRoute component={App} path="/app" />
   </Switch>;
 };
