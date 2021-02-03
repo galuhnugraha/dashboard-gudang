@@ -27,6 +27,12 @@ export class ProdukStore {
   }
 
   @action
+  setPage(page = 1) {
+    this.currentPage = page;
+    this.getAll();
+  }
+
+  @action
   async getAll(filter) {
     if (filter != null) {
       this.query.filter = filter;

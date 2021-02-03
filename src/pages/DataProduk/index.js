@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   Space,
@@ -19,6 +19,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../utils/useStores";
 import { observer } from "mobx-react-lite";
 import { appConfig } from "../config/app";
+import { ShowModalSupliers } from "./ShowModalSuplier";
 
 
 function cancel(e) {
@@ -37,14 +38,15 @@ export const DataProdukScreen = observer((initialData) => {
   const [prOutId, setPrOut] = useState('')
   const [state, setState] = useState({
     success: false,
+    yes: false,
+    location: false,
     warehouseID: '',
   });
 
-
   function fetchData() {
-     store.products.getAll();
-     store.warehouse.getWarehouse()
-     store.barang.getDropdown();
+    store.products.getAll();
+    store.warehouse.getWarehouse()
+    store.barang.getDropdown();
   }
 
   useEffect(() => {
@@ -64,7 +66,6 @@ export const DataProdukScreen = observer((initialData) => {
     })
   }
 
-
   const changeImage = (info) => new Promise((result, reject) => {
     const data = info.target.files[0]
     const reader = new FileReader();
@@ -73,18 +74,18 @@ export const DataProdukScreen = observer((initialData) => {
     reader.onerror = error => reject(error);
   })
 
-  function ProductOut(e) {
-    const data = {
-      quantity: e.quantity,
-      location: e.location
-    }
-    store.products.AddProductOut(prOutId, data).then(res => {
-      message.success('Data Produk Di Update!');
-    }).catch(err => {
-      message.error(`Error on Updating Member, ${err.message}`);
-      message.error(err.message);
-    })
-  }
+  // function ProductOut(e) {
+  //   const data = {
+  //     quantity: e.quantity,
+  //     location: e.location
+  //   }
+  //   store.products.AddProductOut(prOutId, data).then(res => {
+  //     message.success('Data Produk Di Update!');
+  //   }).catch(err => {
+  //     message.error(`Error on Updating Member, ${err.message}`);
+  //     message.error(err.message);
+  //   })
+  // }
 
   async function editData(e) {
     const data = {
@@ -115,72 +116,97 @@ export const DataProdukScreen = observer((initialData) => {
   }
 
   const onFinish = values => {
-    ProductOut(values)
+    // ProductOut(values)
     setFilterProduct(false)
   };
 
-  function modalProduct() {
-    return <Modal
-      maskClosable={false}
-      closable={false}
-      title={"Product Out"}
-      visible={filterProduct}
-      footer={null}
-    >
-      <Form
-        layout="vertical"
-        onFinish={onFinish}
-      >
-        <Form.Item
-          name="quantity"
-          label="Quantity"
-          rules={[
-            {
-              required: true,
-              message: 'Please Input Your Quantity!',
-            },
-          ]}
-        >
-          <Input type="number" style={{ width: '98%' }} />
-        </Form.Item>
-        <Form.Item
-          name="location"
-          label="Location"
-          rules={[
-            {
-              required: true,
-              message: 'Please Input Your Location!',
-            },
-          ]}
-        >
-          <Input style={{ width: '98%' }} />
-        </Form.Item>
-        <Row>
-          <Col span={4}>
-            <Form.Item
-              style={{
-                marginBottom: 25,
-                width: 100
-              }}>
-              <Button key="back" onClick={() => {
-                setFilterProduct(false)
-              }}>
-                Cancel
-              </Button>
-            </Form.Item>
-          </Col>
-          <Col span={4}>
-            <Form.Item
-              style={{
-                marginBottom: 25,
-                width: 100
-              }}>
-              <Button htmlType="submit" style={{ backgroundColor: '#132743', color: 'white' }}>Submit</Button>
-            </Form.Item>
-          </Col>
-        </Row>
-      </Form>
-    </Modal>
+  // function modalProduct() {
+  //   return <Modal
+  //     maskClosable={false}
+  //     closable={false}
+  //     title={"Product Out"}
+  //     visible={filterProduct}
+  //     footer={null}
+  //   >
+  //     <Form
+  //       layout="vertical"
+  //       onFinish={onFinish}
+  //     >
+  //       <Form.Item
+  //         name="quantity"
+  //         label="Quantity"
+  //         rules={[
+  //           {
+  //             required: true,
+  //             message: 'Please Input Your Quantity!',
+  //           },
+  //         ]}
+  //       >
+  //         <Input type="number" style={{ width: '98%' }} />
+  //       </Form.Item>
+  //       <Form.Item
+  //         name="location"
+  //         label="Location"
+  //         rules={[
+  //           {
+  //             required: true,
+  //             message: 'Please Input Your Location!',
+  //           },
+  //         ]}
+  //       >
+  //         <Input style={{ width: '98%' }} />
+  //       </Form.Item>
+  //       <Row>
+  //         <Col span={4}>
+  //           <Form.Item
+  //             style={{
+  //               marginBottom: 25,
+  //               width: 100
+  //             }}>
+  //             <Button key="back" onClick={() => {
+  //               setFilterProduct(false)
+  //             }}>
+  //               Cancel
+  //             </Button>
+  //           </Form.Item>
+  //         </Col>
+  //         <Col span={4}>
+  //           <Form.Item
+  //             style={{
+  //               marginBottom: 25,
+  //               width: 100
+  //             }}>
+  //             <Button htmlType="submit" style={{ backgroundColor: '#132743', color: 'white' }}>Submit</Button>
+  //           </Form.Item>
+  //         </Col>
+  //       </Row>
+  //     </Form>
+  //   </Modal>
+  // }
+
+  const setEditModeReview = (value) => {
+    setState(prevState => ({
+      ...prevState,
+      yes: true
+    }))
+    form.setFieldsValue({
+      yes: true,
+      companyName: value.companyName,
+      suplierAddress: value.suplierAddress,
+      suplierPhone: value.suplierPhone
+    })
+    // console.log(value)
+  }
+
+  const setEditModeReviewLocation = (value) => {
+    setState(prevState => ({
+      ...prevState,
+      location: true
+    }))
+    form.setFieldsValue({
+      location: true,
+    })
+    // console.log(value)
   }
 
   const setEditMode = (value) => {
@@ -203,11 +229,24 @@ export const DataProdukScreen = observer((initialData) => {
       rack: value.rack,
       location: value.location,
     })
+    // console.log(value)
   }
 
   const toggleSuccess = (() => {
     setState({
       success: !state.success,
+    });
+  })
+
+  const toggleSuccessReview = (() => {
+    setState({
+      yes: !state.yes
+    });
+  })
+
+  const toggleSuccessReviewLocation = (() => {
+    setState({
+      location: !state.location
     });
   })
 
@@ -237,15 +276,13 @@ export const DataProdukScreen = observer((initialData) => {
     setFilterModal(false);
   }
 
-
   function modalFilter() {
     return <Modal
       maskClosable={false}
       closable={false}
       afterClose={() => {
         setFilterModal(false)
-      }
-      }
+      }}
       title={"Filter"}
       visible={filterModal}
       footer={[
@@ -272,41 +309,121 @@ export const DataProdukScreen = observer((initialData) => {
     </Modal>
   }
 
+  const handleCancel = () => {
+    // setIsModalVisible(false);
+    form.validateFields().then(values => {
+      form.resetFields();
+    });
+    toggleSuccessReview();
+  };
+
+  const handleCancelLocation = () => {
+    // setIsModalVisible(false);
+    form.validateFields().then(values => {
+      form.resetFields();
+    });
+    toggleSuccessReviewLocation();
+  };
+
+  const dataMap = store.products.data.map((e) => {
+    let data = {
+      productName: e.productName,
+      suplierName: e.suplierId.suplierName,
+      quantity: e.quantity,
+      pricePerUnit: e.pricePerUnit,
+      grosirPrice: e.grosirPrice,
+      companyName: e.suplierId.companyName,
+      suplierAddress: e.suplierId.suplierAddress?.address,
+      suplierPhone: e.suplierId.suplierPhone,
+      location: e.location
+    }
+    return data
+  })
+
+  function modalItem() {
+    return <Modal
+      title={"Detail Suplier"}
+      visible={state.yes}
+      footer={null}
+      // onCancel={handleCancel}
+      onCancel={handleCancel}
+    >
+      <Form
+        form={form}
+        layout="vertical"
+        initialValues={initialData}>
+        <Form.Item
+          label="Suplier Address"
+          name="suplierAddress"
+        >
+          <Input disabled={true} />
+        </Form.Item>
+        <Form.Item label="Suplier Phone" name="suplierPhone">
+          <Input disabled={true}/>
+        </Form.Item>
+        <Form.Item label="Company Name" name="companyName" >
+          <Input disabled={true}/>
+        </Form.Item>
+      </Form>
+    </Modal>
+  }
+
+  function modalItemLocation() {
+    return <Modal
+      title={"Detail Warehouse"}
+      visible={state.location}
+      footer={null}
+      // onCancel={handleCancel}
+      onCancel={handleCancelLocation}
+    >
+      <Form
+        form={form}
+        layout="vertical"
+        initialValues={initialData}>
+        <Form.Item
+          label="Suplier Address"
+          // name="suplierAddress"
+        >
+          <Input disabled={true} />
+        </Form.Item>
+        <Form.Item label="Suplier Phone">
+          <Input disabled={true}/>
+        </Form.Item>
+        <Form.Item label="Company Name">
+          <Input disabled={true}/>
+        </Form.Item>
+      </Form>
+    </Modal>
+  }
 
   {
     const columns = [
       {
         title: 'Product Name',
         dataIndex: 'productName',
-        // width: 140,
-        fixed: 'left',
         key: 'productName',
       },
       {
-        title: 'Product Type',
-        dataIndex: 'productType',
-        // width: 150,
-        key: 'productType',
+        title: 'Product Merek',
+        render: (record) => <span>{"-"}</span>
       },
       {
-        title: 'Product Image',
-        dataIndex: 'productImage',
-        // width: 150,
-        key: 'productImage',
-        render: (photo) => {
-          return <img src={`${appConfig.apiImage}/` + photo} alt={photo} style={{ width: 60, height: 60 }} />
-        }
+        title: 'Varian',
+        render: (record) => <span>{"-"}</span>
       },
       {
-        title: 'Quantity',
+        title: 'Size',
+        render: (record) => <span>{"-"}</span>
+      },
+      {
+        title: 'Color',
+        render: (record) => <span>{"-"}</span>
+      },
+      {
+        title: 'Stok',
         dataIndex: 'quantity',
         key: 'quantity',
         // width: 120,
-      },
-      {
-        title: 'SKU',
-        dataIndex: 'sku',
-        key: 'sku',
       },
       {
         title: 'Price Per Unit',
@@ -321,20 +438,39 @@ export const DataProdukScreen = observer((initialData) => {
         key: 'grosirPrice',
       },
       {
-        title: 'Product Location',
+        title: 'Grosir Quantity',
+        // dataIndex: 'location',
+        // key: 'location',
+        render: (record) => <span>{"-"}</span>
+      },
+      {
+        title: 'Suplier Name',
+        dataIndex: 'suplierName',
+        // key: 'location',
+        render: (text, record) => {
+          return (<div onClick={() => {
+            // setFilterProduct(true)
+            // onDetailProduct(record)
+            setEditModeReview(record)
+          }} style={{color: '#132743'}}>
+            {text}
+          </div>)
+        },
+      },
+      {
+        title: 'Location',
         dataIndex: 'location',
         width: 150,
         key: 'location',
-      },
-      {
-        title: 'Rak',
-        dataIndex: 'rack',
-        key: 'rack',
-      },
-      {
-        title: 'Selfing',
-        dataIndex: 'selfing',
-        key: 'selfing',
+        render: (text, record) => {
+          return (<div onClick={() => {
+            // setFilterProduct(true)
+            // onDetailProduct(record)
+            setEditModeReviewLocation(record)
+          }} style={{color: '#132743'}}>
+            {text}
+          </div>)
+        },
       },
       {
         title: 'Action',
@@ -360,12 +496,12 @@ export const DataProdukScreen = observer((initialData) => {
                   <DeleteOutlined />
                 </div>
               </Popconfirm>
-              <div style={{ marginLeft: 8 }}>
+              {/* <div style={{ marginLeft: 8 }}>
                 <MinusOutlined onClick={() => {
                   setPrOut(record._id)
                   setFilterProduct(true)
                 }} />
-              </div>
+              </div> */}
             </div>
           </Space>
         ),
@@ -418,17 +554,29 @@ export const DataProdukScreen = observer((initialData) => {
         </Button>
           ]}
         />
-        {modalProduct()}
+        {/* {isModalVisible && (
+          <ShowModalSupliers
+            visible={isModalVisible}
+            onCancel={() => {
+              // setValueCode('')
+              setIsModalVisible(false);
+            }}
+            initialData={state.suplierId}
+          />
+        )} */}
+        {/* {modalProduct()} */}
+        {modalItem()}
         {modalFilter()}
         {renderModal()}
+        {modalItemLocation()}
         <Table
           rowKey={record => record._id}
           hasEmpty
           // style={{ paddingLeft: '12px' }}
           size="small"
           columns={columns}
-          scroll={{ x: 1200 }}
-          dataSource={store.products.data.slice()}
+          // scroll={{ x: 1200 }}
+          dataSource={dataMap}
           pagination={{
             total: store.products.maxLength,
             // onShowSizeChange: (current, pageSize) => {
@@ -590,4 +738,5 @@ export const DataProdukScreen = observer((initialData) => {
       </Form>
     </Modal>
   }
+
 });

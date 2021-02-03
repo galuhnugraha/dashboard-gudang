@@ -109,19 +109,19 @@ export const App = () => {
               </Link>
             </Menu.Item>
             <Menu.Item key="4">
+              <Link to="/app/data-warehouse">
+                {/* <UserOutlined style={{ fontSize: 18 }} /> */}
+                <span>List Gudang</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="5">
               <Link to="/app/data-produk">
                 {/* <UserOutlined style={{ fontSize: 18 }} /> */}
                 <span>Data Produk</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="5">
-              <Link to="/app/data-warehouse">
-                {/* <UserOutlined style={{ fontSize: 18 }} /> */}
-                <span>Data Warehouse</span>
-              </Link>
-            </Menu.Item>
           </SubMenu>
-          <SubMenu key="sub2" title="Payment">
+          {/* <SubMenu key="sub2" title="">
             <Menu.Item key="6">
               <Link to="/app/data-transaction">
                 <span>Transaction</span>
@@ -137,7 +137,7 @@ export const App = () => {
                 <span>Recive</span>
               </Link>
             </Menu.Item>
-          </SubMenu>
+          </SubMenu> */}
         </Menu>
       </Sider>
       <Layout>

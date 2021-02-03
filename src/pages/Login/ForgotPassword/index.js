@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { observer } from 'mobx-react-lite';
-// import { useStore } from "../../utils/useStores";
-// import { createUseStyles } from "react-jss";
-// import { useHistory } from "react-router-dom";
+import ReCAPTCHA from 'react-google-recaptcha'
 import { useHistory, Link } from "react-router-dom";
 import { Form, Input, Button, Row, Col, Card, Typography, message } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
@@ -12,9 +10,41 @@ export const ForgotPassword = observer(() => {
     let history = useHistory();
     const [loading, setLoading] = useState(false);
     const store = useStore();
+    const [state, setState] = useState({
+        human: false,
+        disabled: true
+    })
     // const enterLoading = () => {
     //   history.push("/app/dashboard");
     // }
+
+    const verifyCaptcha = (res) => {
+        if (res) {
+            //   this.setState({ human: true, humanKey: res })
+            //   this.setState({ disabled: this.isDisabled() })
+            setState({
+                human: true,
+                humanKey: res
+            })
+        }
+    }
+
+    const expireCaptcha = () => {
+        // this.setState({ human: false, humanKey: null })
+        // this.setState({ disabled: this.isDisabled() })
+        setState({
+            human: false,
+            humanKey: null,
+            disabled: isDisabled()
+        })
+    }
+
+    const isDisabled = () => {
+        if (
+          state.human === true
+        ) return false
+        return true
+      }
 
     const { Paragraph } = Typography;
 
@@ -54,40 +84,32 @@ export const ForgotPassword = observer(() => {
                             layout={'vertical'}
                             name="normal_login"
                             className="login-form"
-                            // onFinish={onFinish}
+                        // onFinish={onFinish}
                         >
 
                             <Form.Item
                                 style={{
                                     marginBottom: 30,
                                 }}
-                                label="Password Lama"
-                                name="password_lama"
+                                label="Email"
+                                name="email"
                                 size={'large'}
                                 rules={[{ required: false, message: 'Please input your Password!' }]}
                             >
-                                <Input.Password
-                                    prefix={<LockOutlined className="site-form-item-icon" />}
-                                    type="password"
-                                    placeholder="Password"
+                                <Input
+                                    prefix={<MailOutlined className="site-form-item-icon" />}
+                                    placeholder="Masukan Email"
                                 />
                             </Form.Item>
-
-                            <Form.Item
-                                style={{
-                                    marginBottom: 30,
-                                }}
-                                label="New Password"
-                                name="password_new"
-                                size={'large'}
-                                rules={[{ required: false, message: 'Please input your Password!' }]}
-                            >
-                                <Input.Password
-                                    prefix={<LockOutlined className="site-form-item-icon" />}
-                                    type="password"
-                                    placeholder="Password"
+                            <div>
+                                <ReCAPTCHA
+                                    sitekey={'6LcxG0gaAAAAAOHR1etLjlNK3HXQHoxV7StMjq5W'}
+                                    // render="explicit"
+                                    // onloadCallback={this.onCaptchaLoad}
+                                    onChange={verifyCaptcha}
+                                    onExpired={expireCaptcha}
                                 />
-                            </Form.Item>
+                            </div>
                             <Form.Item
                                 style={{
                                     marginBottom: 0,
