@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 // import { useStore } from "../../utils/useStores";
 // import { createUseStyles } from "react-jss";
 // import { useHistory } from "react-router-dom";
+import ReCAPTCHA from 'react-google-recaptcha'
 import { useHistory, Link } from "react-router-dom";
 import { Form, Input, Button, Row, Col, Card, Typography, message } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
@@ -15,10 +16,44 @@ export const Login = observer(() => {
   // const enterLoading = () => {
   //   history.push("/app/dashboard");
   // }
+  const [state, setState] = useState({
+    human: false,
+    disabled: true,
+    email: ""
+})
 
   const onFinish = values => {
     enterLoading(values);
   };
+
+  const verifyCaptcha = (res) => {
+    if (res) {
+        //   this.setState({ human: true, humanKey: res })
+        //   this.setState({ disabled: this.isDisabled() })
+        setState({
+            human: true,
+            humanKey: res
+        })
+    }
+}
+
+const expireCaptcha = () => {
+    // this.setState({ human: false, humanKey: null })
+    // this.setState({ disabled: this.isDisabled() })
+    setState({
+        human: false,
+        humanKey: null,
+        disabled: isDisabled()
+    })
+}
+
+const isDisabled = () => {
+    if (
+        state.email != null &&
+      state.human === true
+    ) return false
+    return true
+  }
 
   const enterLoading = (e) => {
     setLoading(true);
@@ -103,6 +138,15 @@ export const Login = observer(() => {
                   placeholder="Password"
                 />
               </Form.Item>
+              <div>
+                <ReCAPTCHA
+                  sitekey={'6LcxG0gaAAAAAOHR1etLjlNK3HXQHoxV7StMjq5W'}
+                  // render="explicit"
+                  // onloadCallback={this.onCaptchaLoad}
+                  onChange={verifyCaptcha}
+                  onExpired={expireCaptcha}
+                />
+              </div>
               <Form.Item
                 style={{
                   marginBottom: 0,
