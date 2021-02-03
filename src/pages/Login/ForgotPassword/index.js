@@ -41,6 +41,7 @@ export const ForgotPassword = observer(() => {
 
     const isDisabled = () => {
         if (
+            state.email != null &&
           state.human === true
         ) return false
         return true
@@ -99,6 +100,7 @@ export const ForgotPassword = observer(() => {
                                 <Input
                                     prefix={<MailOutlined className="site-form-item-icon" />}
                                     placeholder="Masukan Email"
+                                    value={state.email}
                                 />
                             </Form.Item>
                             <div>
