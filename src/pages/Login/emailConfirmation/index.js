@@ -23,7 +23,7 @@ export const EmailConfirmation = observer(() => {
         }
         console.log(data)
         store.user.sendEmail(data).then(res => {
-            message.success('Berhasil Masuk');
+            message.success('Berhasil,Silakan Cek Email Anda!!!');
             setLoading(false);
         }).catch(err => {
             message.error(err.message);

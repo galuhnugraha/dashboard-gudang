@@ -19,8 +19,8 @@ export const Login = observer(() => {
   const [state, setState] = useState({
     human: false,
     disabled: true,
-    email: ""
 })
+console.log(state.human,'bro')
 
   const onFinish = values => {
     enterLoading(values);
@@ -69,10 +69,6 @@ const isDisabled = () => {
       message.error(err.message);
       setLoading(false);
     });
-  }
-
-  const sendEmail = () => {
-    store.user.sendEmailConfirmation()
   }
 
   const { Paragraph } = Typography;

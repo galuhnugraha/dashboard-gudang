@@ -39,8 +39,9 @@ export const ForgotPassword = observer(() => {
         }
         console.log(data)
         store.user.resetPassword(id,data).then(res => {
-            message.success('Berhasil Masuk');
+            message.success('Berhasil Ganti Password');
             setLoading(false);
+            history.push("/login")
         }).catch(err => {
             message.error(err.message);
             setLoading(false);
@@ -98,7 +99,7 @@ export const ForgotPassword = observer(() => {
                                 rules={[{ required: false, message: 'Please input your Password!' }]}
                             >
                                 <Input
-                                    // prefix={< className="site-form-item-icon" />}
+                                    prefix={<LockOutlined />}
                                     placeholder="Masukan Password Baru"
                                     type="password"
                                 />
