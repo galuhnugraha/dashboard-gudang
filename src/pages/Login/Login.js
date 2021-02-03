@@ -22,17 +22,16 @@ export const Login = observer(() => {
     human: false,
     disabled: true,
   })
-  console.log(state.human, 'bro')
 
   const onFinish = values => {
     enterLoading(values);
   };
 
   const verifyCaptcha = (res) => {
-    console.log(res)
-    if(email.length <= 0) {
+    console.log(email)
+    if (robot && email.length > 0) {
       setRobot(false)
-      return 
+      return
     }
     setRobot(true)
   }
@@ -63,8 +62,13 @@ export const Login = observer(() => {
   }
 
   const test = (value) => {
-    // console.log('test', value.target.value)
+
     setEmail(value.target.value)
+    if (robot && email) {
+      setRobot(false)
+      return
+    }
+    setRobot(true)
   }
 
   const enterLoading = (e) => {
@@ -154,7 +158,7 @@ export const Login = observer(() => {
               </Form.Item>
               <div>
                 <ReCAPTCHA
-                  sitekey={'6LcxG0gaAAAAAOHR1etLjlNK3HXQHoxV7StMjq5W'}
+                  sitekey={'6LeruUgaAAAAAO0_k7-opVhYZv_G7SM-YtzC7VAX'}
                   // render="explicit"
                   // onloadCallback={this.onCaptchaLoad}
                   onChange={verifyCaptcha}
