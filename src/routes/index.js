@@ -17,7 +17,7 @@ export const MainRoutes = () => {
     <Route path="/register" exact>
       <Register />
     </Route>
-    <Route path="/forgot-password" exact>
+    <Route path="/forgot-password/:id" exact>
       {/* <DetailSuplierScreen /> */}
       <ForgotPassword />
     </Route>
