@@ -4,6 +4,7 @@ import {Login} from "../pages/Login/Login";
 import {Register} from "../pages/Register";
 import {App} from "../pages/App/App";
 import PrivateRoute from "../component/PrivateRoute";
+import { ForgotPassword } from "../pages/Login/ForgotPassword";
 
 export const MainRoutes = () => {
   return <Switch>
@@ -15,6 +16,10 @@ export const MainRoutes = () => {
     </Route>
     <Route path="/register" exact>
       <Register />
+    </Route>
+    <Route path="/forgot-password" exact>
+      {/* <DetailSuplierScreen /> */}
+      <ForgotPassword />
     </Route>
     {/* <Route path="/app">
       <App />

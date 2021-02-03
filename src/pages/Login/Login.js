@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 // import { useStore } from "../../utils/useStores";
 // import { createUseStyles } from "react-jss";
 // import { useHistory } from "react-router-dom";
-import { useHistory,Link } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { Form, Input, Button, Row, Col, Card, Typography, message } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { useStore } from "../../utils/useStores";
@@ -117,12 +117,17 @@ export const Login = observer(() => {
               </Button>
               </Form.Item>
             </Form>
+            <div style={{ marginTop: 10 }}>
+              <Link to="/forgot-password">
+                <p>Forgot Password</p>
+              </Link>
+            </div>
           </Card>
         </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Link to="/register">
-            <p style={{ marginTop:10 }}>
-              Don't account yet! <span style={{color: '#132743'}}>Sign Up</span>
+            <p style={{ marginTop: 10 }}>
+              Don't account yet! <span style={{ color: '#132743' }}>Sign Up</span>
             </p>
           </Link>
         </div>
