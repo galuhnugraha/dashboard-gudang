@@ -158,7 +158,7 @@ export const Login = observer(() => {
               </Form.Item>
               <div>
                 <ReCAPTCHA
-                  sitekey={'6LcxG0gaAAAAAOHR1etLjlNK3HXQHoxV7StMjq5W'}
+                  sitekey={'6LeruUgaAAAAAO0_k7-opVhYZv_G7SM-YtzC7VAX'}
                   // render="explicit"
                   // onloadCallback={this.onCaptchaLoad}
                   onChange={verifyCaptcha}
