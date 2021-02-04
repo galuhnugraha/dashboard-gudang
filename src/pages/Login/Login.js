@@ -156,7 +156,7 @@ export const Login = observer(() => {
                   placeholder="Password"
                 />
               </Form.Item>
-              <div>
+              {/* <div>
                 <ReCAPTCHA
                   sitekey={'6LcxG0gaAAAAAOHR1etLjlNK3HXQHoxV7StMjq5W'}
                   // render="explicit"
@@ -164,7 +164,7 @@ export const Login = observer(() => {
                   onChange={verifyCaptcha}
                   onExpired={expireCaptcha}
                 />
-              </div>
+              </div> */}
               <Form.Item
                 style={{
                   marginBottom: 0,
@@ -173,7 +173,7 @@ export const Login = observer(() => {
                   block
                   htmlType="submit"
                   loading={loading}
-                  disabled={robot}
+                  // disabled={robot}
                   size={'large'}
                   className="login-form-button">
                   Sign In

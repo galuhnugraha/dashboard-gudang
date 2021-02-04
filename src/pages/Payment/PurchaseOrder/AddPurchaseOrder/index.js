@@ -21,7 +21,15 @@ export const AddPurchaseOrder = observer(() => {
     const [newItem, setNewItem] = useState("");
     const [filterQuery, setFilterQuery] = useState({});
     const [form] = Form.useForm();
-
+    const [state, setState] = useState({
+        id: '',
+        productName: '',
+        pricePerUnit: '',
+        quantity: '',
+        rack: '',
+        sku: ''
+    });
+    const [dataTableRow, setDataTableRow] = useState([]);
 
     useEffect(() => {
         fetchData();
@@ -61,29 +69,38 @@ export const AddPurchaseOrder = observer(() => {
         setItem(hero)
     }
 
-
     const dataTable = store.supliers.detailData.map((e) => {
-        let obj = {
-            id: e.product?._id,
-            productName: e.product?.productName,
-            pricePerUnit: e.product?.pricePerUnit,
-            quantity: e.product?.quantity,
-            rack: e.product?.rack,
-            sku: e.product?.sku
-        }
-        return obj;
+        // setState({
+        //     id: e.product?._id,
+        //     productName: e.product?.productName,
+        //     pricePerUnit: e.product?.pricePerUnit,
+        //     quantity: e.product?.quantity,
+        //     rack: e.product?.rack,
+        //     sku: e.product?.sku
+        // })
+        // // let obj = {
+        //     id: e.product?._id,
+        //     productName: e.product?.productName,
+        //     pricePerUnit: e.product?.pricePerUnit,
+        //     quantity: e.product?.quantity,
+        //     rack: e.product?.rack,
+        //     sku: e.product?.sku
+        // // }
+        // // return obj;
+        
     })
+    console.log(state, 'test')
 
     const columns = [
         {
             title: 'Product Name',
             dataIndex: 'productName',
-            width: '30%',
-            editable: true,
+            key: 'productName'
         },
         {
             title: 'Quantity',
             dataIndex: 'quantity',
+            key: 'quantity',
             render: () => <div>
                 <Input onChange={(val) => getQuantity(val)} />
             </div>
@@ -91,22 +108,23 @@ export const AddPurchaseOrder = observer(() => {
         {
             title: 'Action',
             dataIndex: 'action',
-            render: (_, record) =>
-                dataTable.length >= 1 ? (
-                    <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
-                        <a>Delete</a>
-                    </Popconfirm>
-                ) : null,
+            render: (_, record) => (
+                <Popconfirm title="Sure to delete?" onConfirm={handleDelete}>
+                    <a>Delete</a>
+                </Popconfirm>
+            )
         },
     ];
 
     const handleDelete = (id) => {
-        const dataSource = [...dataTable];
-        dataSource.filter((item) => item.id !== id);
-        // console.log(dataSource)
-        return dataSource
+        const dataSource = [...state.dataTableRowDelete];
+        // dataSource.filter((item) => item.id !== id);
+        // // console.log(dataSource)
+        // // return dataSource
+        // dataTable.splice(0, 1)
+        setDataTableRow(dataSource);
+        console.log(item);
     };
-
 
     const getQuantity = (val) => {
         // newItem = val.target.value
@@ -119,7 +137,7 @@ export const AddPurchaseOrder = observer(() => {
 
     const dataPost = (e) => {
         setLoading(true);
-        const item = dataTable.map(r => {
+        const item = state.dataTableRowDelete.map(r => {
             let i = {
                 productId: r.id,
                 quantity: newItem
@@ -207,7 +225,7 @@ export const AddPurchaseOrder = observer(() => {
                         {store.supliers.data.map(d => <Select.Option value={d._id} key={d._id} onChange>{d.suplierName}</Select.Option>)}
                     </Select>
                 </Form.Item>
-                {dataTable.length >= 1 && <Table dataSource={dataTable} columns={columns} rowKey={record => record._id} />}
+                {dataTableRow.length >= 1 && <Table dataSource={dataTableRow} columns={columns} rowKey={record => record._id} />}
                 <Form.Item
                     style={{
                         marginBottom: 25,

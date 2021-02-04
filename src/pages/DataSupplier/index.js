@@ -331,7 +331,6 @@ export const DataSupplierScreen = observer((initialData) => {
           style={{ paddingLeft: '12px' }}
           size={"middle"}
           columns={columns}
-          scroll={{ x: 1200 }}
           dataSource={store.supliers.data.slice()}
           pagination={{
             total: store.supliers.maxLength,

@@ -6,6 +6,7 @@ import { App } from "../pages/App/App";
 import PrivateRoute from "../component/PrivateRoute";
 import { ForgotPassword } from "../pages/Login/ForgotPassword";
 import { EmailConfirmation } from '../pages/Login/emailConfirmation';
+import { ConfirmationScreen } from '../pages/Register/confirmation';
 
 export const MainRoutes = () => {
   return <Switch>
@@ -24,6 +25,9 @@ export const MainRoutes = () => {
     </Route>
     <Route path="/email-confirmation" exact>
       <EmailConfirmation />
+    </Route>
+    <Route path="/confirmation" exact>
+      <ConfirmationScreen />
     </Route>
     <PrivateRoute component={App} path="/app" />
   </Switch>;

@@ -24,6 +24,7 @@ export const AddSupplierScreen = observer(() => {
        
         const suplierAddress2 = {
             address: e.suplierAddress,
+            city: e.city
         }
         const data = {
             suplierName: e.suplierName,

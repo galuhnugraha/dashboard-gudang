@@ -40,6 +40,7 @@ export const AddProduk = observer(() => {
             productType: e.productType,
             productImage: imgData,
             rack: e.rack,
+            termsOfGrosir: e.termsOfGrosir,
             // location: e.location,
             grosirPrice: e.grosirPrice,
             pricePerUnit: e.pricePerUnit,
@@ -96,6 +97,14 @@ export const AddProduk = observer(() => {
                 <Form.Item
                     label="Product Type"
                     name="productType"
+                    size={'large'}
+                    rules={[{ required: true, message: 'Please input your Product Type!' }]}
+                >
+                    <Input style={{ width: '98%' }} />
+                </Form.Item>
+                <Form.Item
+                    label="Term Of Grosir"
+                    name="termsOfGrosir"
                     size={'large'}
                     rules={[{ required: true, message: 'Please input your Product Type!' }]}
                 >

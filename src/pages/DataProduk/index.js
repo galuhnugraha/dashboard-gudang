@@ -409,7 +409,6 @@ export const DataProdukScreen = observer((initialData) => {
   }
 
   function FilterProduct(value) {
-    console.log(value)
     return value.id == filterProductName
   }
   const selectedDataProduct = dataMap.filter(FilterProduct);
@@ -466,9 +465,9 @@ export const DataProdukScreen = observer((initialData) => {
           <Col span={12}>Product Name :  {selectedDataProduct[0]?.productName}</Col>
           <Col span={12}>Product Merek : {selectedDataProduct[0]?.productMark}</Col>
         </Row>
-        <Row>
+        {/* <Row>
           <Col span={12}>Product Type :  {selectedDataProduct[0]?.productType}</Col>
-        </Row>
+        </Row> */}
         <Row>
           <Col span={12}>Rak :  {selectedDataProduct[0]?.rack}</Col>
           <Col span={12}>Selfing :  {selectedDataProduct[0]?.selfing}</Col>
@@ -477,10 +476,9 @@ export const DataProdukScreen = observer((initialData) => {
           <Col span={12}>LT :  {selectedDataProduct[0]?.lt}</Col>
           <Col span={12}>Room : {selectedDataProduct[0]?.room}</Col>
         </Row>
-        <Row>
+        {/* <Row>
           <img src={`${appConfig.apiImage}/${selectedDataProduct[0]?.productImage}`} alt="avatar" style={{ width: 110, height: 110, marginTop: 10, borderRadius: 4 }} />
-          {/* <Col span={12}>LT :  {selectedDataProduct[0]?.lt}</Col> */}
-        </Row>
+        </Row> */}
         {/* <Row>
           <Col lg={6}>
             <Row gutter={[8, 16]}>

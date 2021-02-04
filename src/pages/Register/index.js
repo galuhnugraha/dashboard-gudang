@@ -26,7 +26,7 @@ export const Register = observer(() => {
     store.auth.register(data).then(res => {
       message.success('Berhasil Signup');
       setLoading(false);
-      history.push("/login");
+      history.push("/confirmation");
     }).catch(err => {
       message.error(err.message);
       setLoading(false);
