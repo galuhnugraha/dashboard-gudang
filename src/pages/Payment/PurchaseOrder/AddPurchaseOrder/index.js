@@ -18,78 +18,71 @@ export const AddPurchaseOrder = observer(() => {
     const history = useHistory();
     const [loading, setLoading] = useState(false);
     const [item, setItem] = useState([]);
+    const [my, setMy] = useState("");
     const [newItem, setNewItem] = useState("");
     const [filterQuery, setFilterQuery] = useState({});
     const [form] = Form.useForm();
-    const [state, setState] = useState({
-        id: '',
-        productName: '',
-        pricePerUnit: '',
-        quantity: '',
-        rack: '',
-        sku: ''
-    });
-    const [dataTableRow, setDataTableRow] = useState([]);
+    const [state, setState] = useState(0);
 
     useEffect(() => {
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    function fetchData() {
+    const fetchData = () => {
         store.supliers.getSupplier();
-        store.supliersItem.getSupplierProductReview();
+        // store.supliers.getSupplierProductReview()
     }
 
-    const onDetailProduct = (val) => {
+    const onDetailProduct = async (val) => {
         // console.log(val, 'test')
         store.supliers.detailSuplierQueryItem.suplierId = val
-        store.supliers.getSupplierProductReview()
         setFilterQuery({
             ...filterQuery,
             suplierId: val,
         })
+        await store.supliers.getSupplierProductReview()
+        const dataTable = store.supliers.detailData.map((e, i) => {
+            let obj = {
+                key: i,
+                id: e.product?._id,
+                productName: e.product?.productName,
+                pricePerUnit: e.product?.pricePerUnit,
+                quantity: e.product?.quantity,
+                rack: e.product?.rack,
+                sku: e.product?.sku
+            }
+            return obj;
+        })
+        setItem(dataTable)
     }
 
     const onFinish = values => {
         dataPost(values);
     };
 
-    const showItem = () => {
-        const hero = store.supliers.detailData.map(r => {
-            let item = {
-                productName: r.product?.productName,
-                quantity: r.product?.quantity,
-                selfing: r.product?.selfing,
-                rack: r.product?.rack
-            }
-            return item;
-        })
-        // console.log(myItem)
-        setItem(hero)
-    }
+    // const showItem = () => {
+    //     const dataTable = store.supliers.detailData.map((e) => {
+    //         let obj = {
+    //             id: e.product?._id,
+    //             productName: e.product?.productName,
+    //             pricePerUnit: e.product?.pricePerUnit,
+    //             quantity: e.product?.quantity,
+    //             rack: e.product?.rack,
+    //             sku: e.product?.sku
+    //         }
+    //         return obj;
+    //     })
+    //     setItem(dataTable)
+    //     console.log(dataTable)
+    // }
 
-    const dataTable = store.supliers.detailData.map((e) => {
-        // setState({
-        //     id: e.product?._id,
-        //     productName: e.product?.productName,
-        //     pricePerUnit: e.product?.pricePerUnit,
-        //     quantity: e.product?.quantity,
-        //     rack: e.product?.rack,
-        //     sku: e.product?.sku
-        // })
-        // // let obj = {
-        //     id: e.product?._id,
-        //     productName: e.product?.productName,
-        //     pricePerUnit: e.product?.pricePerUnit,
-        //     quantity: e.product?.quantity,
-        //     rack: e.product?.rack,
-        //     sku: e.product?.sku
-        // // }
-        // // return obj;
-        
-    })
-    console.log(state, 'test')
+
+
+
+
+    // setState(1)
+    // console.log(state)
 
     const columns = [
         {
@@ -109,21 +102,23 @@ export const AddPurchaseOrder = observer(() => {
             title: 'Action',
             dataIndex: 'action',
             render: (_, record) => (
-                <Popconfirm title="Sure to delete?" onConfirm={handleDelete}>
+                <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
                     <a>Delete</a>
                 </Popconfirm>
             )
         },
     ];
 
+
+
     const handleDelete = (id) => {
-        const dataSource = [...state.dataTableRowDelete];
+        // const dataSource = [...state.dataTableRowDelete];
         // dataSource.filter((item) => item.id !== id);
         // // console.log(dataSource)
         // // return dataSource
-        // dataTable.splice(0, 1)
-        setDataTableRow(dataSource);
-        console.log(item);
+        const deletedData = item.filter(item => item.key !== id)
+        setItem(deletedData);
+        // console.log(item);
     };
 
     const getQuantity = (val) => {
@@ -217,7 +212,6 @@ export const AddPurchaseOrder = observer(() => {
                         style={{ width: '98%' }}
                         mode="default"
                         onChange={(value) => {
-                            showItem(value)
                             getID(value)
                             onDetailProduct(value)
                         }}
@@ -225,7 +219,7 @@ export const AddPurchaseOrder = observer(() => {
                         {store.supliers.data.map(d => <Select.Option value={d._id} key={d._id} onChange>{d.suplierName}</Select.Option>)}
                     </Select>
                 </Form.Item>
-                {dataTableRow.length >= 1 && <Table dataSource={dataTableRow} columns={columns} rowKey={record => record._id} />}
+                {item.length >= 1 && <Table dataSource={item} columns={columns} rowKey={record => record._id} />}
                 <Form.Item
                     style={{
                         marginBottom: 25,
