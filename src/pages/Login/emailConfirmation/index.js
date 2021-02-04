@@ -13,8 +13,9 @@ export const EmailConfirmation = observer(() => {
     const [state, setState] = useState({
         human: false,
         disabled: true,
-        email: ""
     })
+    const [robot, setRobot] = useState(true);
+    const [email, setEmail] = useState('');
 
     const enterLoading = (e) => {
         setLoading(true);
@@ -29,6 +30,48 @@ export const EmailConfirmation = observer(() => {
             message.error(err.message);
             setLoading(false);
         });
+    }
+
+    const verifyCaptcha = (res) => {
+        console.log(email)
+        if (robot && email.length > 0) {
+            setRobot(false)
+            return
+        }
+        setRobot(true)
+    }
+
+    const expireCaptcha = () => {
+        setState({
+            human: false,
+            humanKey: null,
+            disabled: isDisabled()
+        })
+    }
+
+    const isDisabled = () => {
+
+        if (
+            state.email != null &&
+            state.human === true
+
+        ) {
+            console.log(state.human, 'bro')
+            setRobot(true)
+            return false
+        }
+        setRobot(false)
+        return true
+    }
+
+    const test = (value) => {
+
+        setEmail(value.target.value)
+        if (robot && email) {
+            setRobot(false)
+            return
+        }
+        setRobot(true)
     }
 
     const { Paragraph } = Typography;
@@ -84,10 +127,12 @@ export const EmailConfirmation = observer(() => {
                                 <Input
                                     prefix={<MailOutlined className="site-form-item-icon" />}
                                     placeholder="Masukan Email"
-                                    value={state.email}
+                                    onChange={(value) => {
+                                        test(value)
+                                    }}
                                 />
                             </Form.Item>
-                            {/* <div>
+                            <div>
                                 <ReCAPTCHA
                                     sitekey={'6LcxG0gaAAAAAOHR1etLjlNK3HXQHoxV7StMjq5W'}
                                     // render="explicit"
@@ -95,7 +140,7 @@ export const EmailConfirmation = observer(() => {
                                     onChange={verifyCaptcha}
                                     onExpired={expireCaptcha}
                                 />
-                            </div> */}
+                            </div>
                             <Form.Item
                                 style={{
                                     marginBottom: 0,
@@ -104,6 +149,7 @@ export const EmailConfirmation = observer(() => {
                                     block
                                     htmlType="submit"
                                     size={'large'}
+                                    disabled={robot}
                                     className="login-form-button">
                                     Submit
                                 </Button>

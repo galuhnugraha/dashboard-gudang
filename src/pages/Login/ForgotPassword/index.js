@@ -104,15 +104,6 @@ export const ForgotPassword = observer(() => {
                                     type="password"
                                 />
                             </Form.Item>
-                            {/* <div>
-                                <ReCAPTCHA
-                                    sitekey={'6LcxG0gaAAAAAOHR1etLjlNK3HXQHoxV7StMjq5W'}
-                                    // render="explicit"
-                                    // onloadCallback={this.onCaptchaLoad}
-                                    onChange={verifyCaptcha}
-                                    onExpired={expireCaptcha}
-                                />
-                            </div> */}
                             <Form.Item
                                 style={{
                                     marginBottom: 0,

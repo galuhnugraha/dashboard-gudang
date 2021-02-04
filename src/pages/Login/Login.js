@@ -173,7 +173,7 @@ export const Login = observer(() => {
                   block
                   htmlType="submit"
                   loading={loading}
-                  disabled={robot}
+                  // disabled={robot}
                   size={'large'}
                   className="login-form-button">
                   Sign In

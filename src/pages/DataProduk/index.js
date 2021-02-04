@@ -60,16 +60,6 @@ export const DataProdukScreen = observer((initialData) => {
 
   const { Search } = Input;
 
-  function confirm(_id) {
-    store.products.deleteProduct(_id).then((res) => {
-      message.success('Success delete Product')
-      history.push('/app/data-produk');
-      fetchData();
-    }).catch(err => {
-      message.error(err.response.body.message)
-    })
-  }
-
   const changeImage = (info) => new Promise((result, reject) => {
     const data = info.target.files[0]
     const reader = new FileReader();
@@ -375,6 +365,7 @@ export const DataProdukScreen = observer((initialData) => {
       pricePerUnit: e.pricePerUnit,
       grosirPrice: e.grosirPrice,
       productMark: e.productMark,
+      productType: e.productType,
       varian: e.varian,
       size: e.size,
       color: e.color,
@@ -395,6 +386,17 @@ export const DataProdukScreen = observer((initialData) => {
     }
     return data
   })
+
+  function confirm(id) {
+    store.products.deleteProduct(id).then((res) => {
+      message.success('Success delete Product')
+      history.push('/app/data-produk');
+      fetchData();
+    }).catch(err => {
+      message.error(err.response.body.message)
+    })
+    console.log(id)
+  }
 
   function FilterWarehouse(value) {
     // console.log(value)
@@ -465,6 +467,9 @@ export const DataProdukScreen = observer((initialData) => {
           <Col span={12}>Product Merek : {selectedDataProduct[0]?.productMark}</Col>
         </Row>
         <Row>
+          <Col span={12}>Product Type :  {selectedDataProduct[0]?.productType}</Col>
+        </Row>
+        <Row>
           <Col span={12}>Rak :  {selectedDataProduct[0]?.rack}</Col>
           <Col span={12}>Selfing :  {selectedDataProduct[0]?.selfing}</Col>
         </Row>
@@ -473,7 +478,7 @@ export const DataProdukScreen = observer((initialData) => {
           <Col span={12}>Room : {selectedDataProduct[0]?.room}</Col>
         </Row>
         <Row>
-        <img src={`${appConfig.apiImage}/${selectedDataProduct[0]?.productImage}`} alt="avatar" style={{ width: 110, height: 110,marginTop: 10, borderRadius: 4 }} />
+          <img src={`${appConfig.apiImage}/${selectedDataProduct[0]?.productImage}`} alt="avatar" style={{ width: 110, height: 110, marginTop: 10, borderRadius: 4 }} />
           {/* <Col span={12}>LT :  {selectedDataProduct[0]?.lt}</Col> */}
         </Row>
         {/* <Row>
@@ -693,7 +698,7 @@ export const DataProdukScreen = observer((initialData) => {
               <Popconfirm
                 title="Are you sure to delete this task?"
                 onConfirm={() => {
-                  confirm(record._id)
+                  confirm(record.id)
                 }}
                 onCancel={cancel}
                 okText="Yes"

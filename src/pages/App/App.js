@@ -121,7 +121,7 @@ export const App = () => {
               </Link>
             </Menu.Item>
           </SubMenu>
-          {/* <SubMenu key="sub2" title="">
+          <SubMenu key="sub2" title="">
             <Menu.Item key="6">
               <Link to="/app/data-transaction">
                 <span>Transaction</span>
@@ -137,7 +137,7 @@ export const App = () => {
                 <span>Recive</span>
               </Link>
             </Menu.Item>
-          </SubMenu> */}
+          </SubMenu>
         </Menu>
       </Sider>
       <Layout>

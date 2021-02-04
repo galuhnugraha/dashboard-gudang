@@ -170,7 +170,7 @@ export const WarehouseScreen = observer((initialData) => {
         <PageHeader
           className="card-page-header"
           subTitle=""
-          title={"Data Warehouse"}
+          title={"List Gudang"}
           extra={[
             <Search
               placeholder="Search...."
