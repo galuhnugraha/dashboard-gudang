@@ -12,17 +12,16 @@ import { observer } from "mobx-react-lite";
 
 export const AddPurchaseOrder = observer(() => {
     var myItem = new Array()
-    // var newItem = ""
     var newID = ""
     const store = useStore();
     const history = useHistory();
     const [loading, setLoading] = useState(false);
     const [item, setItem] = useState([]);
-    const [my, setMy] = useState("");
-    const [newItem, setNewItem] = useState("");
+    // const [my, setMy] = useState("");
     const [filterQuery, setFilterQuery] = useState({});
     const [form] = Form.useForm();
-    const [state, setState] = useState(0);
+    const [newItem,setNewItem] = useState("");
+    // const [state, setState] = useState(0);
 
     useEffect(() => {
         fetchData();
@@ -61,29 +60,6 @@ export const AddPurchaseOrder = observer(() => {
         dataPost(values);
     };
 
-    // const showItem = () => {
-    //     const dataTable = store.supliers.detailData.map((e) => {
-    //         let obj = {
-    //             id: e.product?._id,
-    //             productName: e.product?.productName,
-    //             pricePerUnit: e.product?.pricePerUnit,
-    //             quantity: e.product?.quantity,
-    //             rack: e.product?.rack,
-    //             sku: e.product?.sku
-    //         }
-    //         return obj;
-    //     })
-    //     setItem(dataTable)
-    //     console.log(dataTable)
-    // }
-
-
-
-
-
-    // setState(1)
-    // console.log(state)
-
     const columns = [
         {
             title: 'Product Name',
@@ -95,7 +71,10 @@ export const AddPurchaseOrder = observer(() => {
             dataIndex: 'quantity',
             key: 'quantity',
             render: () => <div>
-                <Input onChange={(val) => getQuantity(val)} />
+                <Input onChange={(val) => {
+                    // setItem(val)
+                    getQuantity(val)
+                }}/>
             </div>
         },
         {
@@ -122,7 +101,6 @@ export const AddPurchaseOrder = observer(() => {
     };
 
     const getQuantity = (val) => {
-        // newItem = val.target.value
         setNewItem(val.target.value)
     }
 
@@ -132,17 +110,25 @@ export const AddPurchaseOrder = observer(() => {
 
     const dataPost = (e) => {
         setLoading(true);
-        const item = state.dataTableRowDelete.map(r => {
-            let i = {
-                productId: r.id,
-                quantity: newItem
+        // const item = state.map(r => {
+        //     let i = {
+        //         productId: r.id,
+        //         quantity: newItem
+        //     }
+        //     return i
+        // })
+        const itemQuantity = store.supliers.detailData.map((e, i) => {
+            let obj = {
+                id: e.product?._id,
+                quantity: newItem,
             }
-            return i
+            return obj;
         })
-        const data = {
+        
+        const data = {  
             purchaseName: e.purchaseName,
             pic: e.pic,
-            item: item,
+            item: itemQuantity,
         }
         store.purchase.AddPurchaseOrder(data).then(res => {
             setLoading(false);
