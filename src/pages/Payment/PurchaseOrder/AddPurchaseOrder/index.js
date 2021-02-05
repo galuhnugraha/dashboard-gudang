@@ -20,7 +20,8 @@ export const AddPurchaseOrder = observer(() => {
     // const [my, setMy] = useState("");
     const [filterQuery, setFilterQuery] = useState({});
     const [form] = Form.useForm();
-    const [newItem,setNewItem] = useState("");
+    const [newItem, setNewItem] = useState("");
+    // const [quantity, setQuantity] = useState([]);
     // const [state, setState] = useState(0);
 
     useEffect(() => {
@@ -70,11 +71,13 @@ export const AddPurchaseOrder = observer(() => {
             title: 'Quantity',
             dataIndex: 'quantity',
             key: 'quantity',
-            render: () => <div>
+            render: (text, record, index) => <div>
                 <Input onChange={(val) => {
                     // setItem(val)
-                    getQuantity(val)
-                }}/>
+                    item[index].quantity = val.target.value;
+                    setItem(item);
+                    // getQuantity(val)
+                }} />
             </div>
         },
         {
@@ -100,9 +103,9 @@ export const AddPurchaseOrder = observer(() => {
         // console.log(item);
     };
 
-    const getQuantity = (val) => {
-        setNewItem(val.target.value)
-    }
+    // const getQuantity = (val) => {
+    //     setNewItem(val.target.value)
+    // }
 
     const getID = (val) => {
         newID = val
@@ -120,12 +123,11 @@ export const AddPurchaseOrder = observer(() => {
         const itemQuantity = store.supliers.detailData.map((e, i) => {
             let obj = {
                 id: e.product?._id,
-                quantity: newItem,
+                quantity: item[i].quantity,
             }
             return obj;
         })
-        
-        const data = {  
+        const data = {
             purchaseName: e.purchaseName,
             pic: e.pic,
             item: itemQuantity,
@@ -218,7 +220,7 @@ export const AddPurchaseOrder = observer(() => {
                     // loading={loading}
                     >
                         Submit
-                </Button>
+                    </Button>
                 </Form.Item>
             </Form>
         </Card>
