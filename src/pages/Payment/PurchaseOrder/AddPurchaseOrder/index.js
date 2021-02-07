@@ -3,7 +3,7 @@ import {
     Input,
     Form,
     message, Breadcrumb, Popconfirm,
-    PageHeader, Card, Button, Select, Table
+    PageHeader, Card, Button, Select, Table, Row, Col
 } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../../utils/useStores";
@@ -17,12 +17,8 @@ export const AddPurchaseOrder = observer(() => {
     const history = useHistory();
     const [loading, setLoading] = useState(false);
     const [item, setItem] = useState([]);
-    // const [my, setMy] = useState("");
     const [filterQuery, setFilterQuery] = useState({});
     const [form] = Form.useForm();
-    const [newItem, setNewItem] = useState("");
-    // const [quantity, setQuantity] = useState([]);
-    // const [state, setState] = useState(0);
 
     useEffect(() => {
         fetchData();
@@ -31,6 +27,7 @@ export const AddPurchaseOrder = observer(() => {
 
     const fetchData = () => {
         store.supliers.getSupplier();
+        store.warehouse.getDataWarehouse();
         // store.supliers.getSupplierProductReview()
     }
 
@@ -76,7 +73,6 @@ export const AddPurchaseOrder = observer(() => {
                     // setItem(val)
                     item[index].quantity = val.target.value;
                     setItem(item);
-                    // getQuantity(val)
                 }} />
             </div>
         },
@@ -94,18 +90,9 @@ export const AddPurchaseOrder = observer(() => {
 
 
     const handleDelete = (id) => {
-        // const dataSource = [...state.dataTableRowDelete];
-        // dataSource.filter((item) => item.id !== id);
-        // // console.log(dataSource)
-        // // return dataSource
         const deletedData = item.filter(item => item.key !== id)
         setItem(deletedData);
-        // console.log(item);
     };
-
-    // const getQuantity = (val) => {
-    //     setNewItem(val.target.value)
-    // }
 
     const getID = (val) => {
         newID = val
@@ -122,7 +109,7 @@ export const AddPurchaseOrder = observer(() => {
         // })
         const itemQuantity = store.supliers.detailData.map((e, i) => {
             let obj = {
-                id: e.product?._id,
+                productId: e.product?._id,
                 quantity: item[i].quantity,
             }
             return obj;
@@ -130,6 +117,13 @@ export const AddPurchaseOrder = observer(() => {
         const data = {
             purchaseName: e.purchaseName,
             pic: e.pic,
+            upperPic: e.upperPic,
+            sender: e.sender,
+            noref: e.noref,
+            warehouseId: e.warehouseId,
+            password: e.password,
+            senderAddress: e.senderAddress,
+            senderPhone: e.senderPhone,           
             item: itemQuantity,
         }
         store.purchase.AddPurchaseOrder(data).then(res => {
@@ -142,7 +136,6 @@ export const AddPurchaseOrder = observer(() => {
         });
     }
 
-
     return <div>
         <Breadcrumb>
             <Breadcrumb.Item>
@@ -150,10 +143,10 @@ export const AddPurchaseOrder = observer(() => {
                 <Link to={'/app/dashboard'}>Home</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-                <Link to={'/app/purchase-order'}>Purchase Order</Link>
+                <Link to={'/app/purchase-order'}>Product In</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-                <span style={{ color: "#132743" }}>Input Purchase Order</span>
+                <span style={{ color: "#132743" }}>Input Product In</span>
             </Breadcrumb.Item>
         </Breadcrumb>
         <Card
@@ -164,7 +157,7 @@ export const AddPurchaseOrder = observer(() => {
             <PageHeader
                 className={"card-page-header"}
                 subTitle=""
-                title={"Input Purchase Order"}
+                title={"Input Product In"}
             />
             <Form
                 layout={'vertical'}
@@ -174,21 +167,111 @@ export const AddPurchaseOrder = observer(() => {
                 form={form}
                 onFinish={onFinish}
             >
+                <Row>
+                    <Col lg={11}>
+                        <Form.Item
+                            label="Purchase Name"
+                            name="purchaseName"
+                            size={'large'}
+                            rules={[{ required: true, message: 'Please input your Product Name!' }]}
+                        >
+                            <Input style={{ width: '98%' }} />
+                        </Form.Item>
+                    </Col>
+                    <Col lg={2} />
+                    <Col lg={11}>
+                        <Form.Item
+                            label="PIC"
+                            name="pic"
+                            size={'large'}
+                            rules={[{ required: true, message: 'Please input your Product Type!' }]}
+                        >
+                            <Input style={{ width: '95%' }} />
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col lg={11}>
+                        <Form.Item
+                            label="Atasan"
+                            name="upperPic"
+                            size={'large'}
+                            // rules={[{ required: true, message: 'Please input your Product Type!' }]}
+                        >
+                            <Input style={{ width: '98%' }} />
+                        </Form.Item>
+                    </Col>
+                    <Col lg={2} />
+                    <Col lg={11}>
+                        <Form.Item
+                            label="Sender"
+                            name="sender"
+                            size={'large'}
+                            rules={[{ required: true, message: 'Please input your Product Type!' }]}
+                        >
+                            <Input style={{ width: '95%' }} />
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col lg={11}>
+                        <Form.Item
+                            label="Password"
+                            name="password"
+                            size={'large'}
+                            // rules={[{ required: true, message: 'Please input your Product Type!' }]}
+                        >
+                            <Input.Password style={{ width: '98%' }} type="password" />
+                        </Form.Item>
+                    </Col>
+                    <Col lg={2} />
+                    <Col lg={11}>
+                        <Form.Item
+                            label="No Ref"
+                            name="noref"
+                            size={'large'}
+                            rules={[{ required: true, message: 'Please input your Product Type!' }]}
+                        >
+                            <Input style={{ width: '95%' }} />
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col lg={11}>
+                        <Form.Item
+                            label="Sender Phone"
+                            name="senderPhone"
+                            size={'large'}
+                            rules={[{ required: true, message: 'Please input your Product Type!' }]}
+                        >
+                            <Input style={{ width: '98%' }} />
+                        </Form.Item>
+                    </Col>
+                    <Col lg={2} />
+                    <Col lg={11}>
+                        <Form.Item
+                            label="Sender Address"
+                            name="senderAddress"
+                            size={'large'}
+                            rules={[{ required: true, message: 'Please input your Product Type!' }]}
+                        >
+                            <Input style={{ width: '95%' }} />
+                        </Form.Item>
+                    </Col>
+                </Row>
                 <Form.Item
-                    label="Purchase Name"
-                    name="purchaseName"
-                    size={'large'}
-                    rules={[{ required: true, message: 'Please input your Product Name!' }]}
+                    name="warehouseId"
+                    label="Warehouse"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your Warehouse!',
+                        },
+                    ]}
                 >
-                    <Input style={{ width: '98%' }} />
-                </Form.Item>
-                <Form.Item
-                    label="PIC"
-                    name="pic"
-                    size={'large'}
-                    rules={[{ required: true, message: 'Please input your Product Type!' }]}
-                >
-                    <Input style={{ width: '98%' }} />
+                    <Select placeholder="Select Warehouse" style={{ width: '45%' }}>
+                        {store.warehouse.data.map(d => <Select.Option value={d._id} key={d._id}>{d.warehouseName}</Select.Option>)}
+                    </Select>
                 </Form.Item>
                 <Form.Item
                     label="Product Item"

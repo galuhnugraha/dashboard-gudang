@@ -51,13 +51,13 @@ export const AppRoutes = () => {
     <Route path="/app/data-transaction" exact>
        <DataTransactionScreen />
     </Route>
-    <Route path="/app/purchase-order" exact>
+    <Route path="/app/product-in" exact>
       <PurchaseOrderScreen />
     </Route>
     <Route path="/app/recive" exact>
       <DataReciveScreen />
     </Route>
-    <Route path="/app/input-purchase-order" exact>
+    <Route path="/app/input-product-in" exact>
       <AddPurchaseOrder />
     </Route>
     <Route path="/app/input-receive" exact>

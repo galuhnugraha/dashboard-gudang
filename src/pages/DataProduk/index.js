@@ -189,7 +189,6 @@ export const DataProdukScreen = observer((initialData) => {
       suplierAddress: value.suplierAddress,
       suplierPhone: value.suplierPhone
     })
-    // console.log(value)
   }
 
   const setEditModeReviewProduct = (value) => {
@@ -223,7 +222,6 @@ export const DataProdukScreen = observer((initialData) => {
       warehouseName: value.warehouseName,
       warehosueLocation: value.warehosueLocation
     })
-    // console.log(value)
   }
 
   const setEditMode = (value) => {
@@ -425,7 +423,6 @@ export const DataProdukScreen = observer((initialData) => {
       title={"Detail Suplier"}
       visible={state.yes}
       footer={null}
-      // onCancel={handleCancel}
       onCancel={handleCancel}
     >
       <Card>
@@ -465,9 +462,6 @@ export const DataProdukScreen = observer((initialData) => {
           <Col span={12}>Product Name :  {selectedDataProduct[0]?.productName}</Col>
           <Col span={12}>Product Merek : {selectedDataProduct[0]?.productMark}</Col>
         </Row>
-        {/* <Row>
-          <Col span={12}>Product Type :  {selectedDataProduct[0]?.productType}</Col>
-        </Row> */}
         <Row>
           <Col span={12}>Rak :  {selectedDataProduct[0]?.rack}</Col>
           <Col span={12}>Selfing :  {selectedDataProduct[0]?.selfing}</Col>
@@ -476,70 +470,6 @@ export const DataProdukScreen = observer((initialData) => {
           <Col span={12}>LT :  {selectedDataProduct[0]?.lt}</Col>
           <Col span={12}>Room : {selectedDataProduct[0]?.room}</Col>
         </Row>
-        {/* <Row>
-          <img src={`${appConfig.apiImage}/${selectedDataProduct[0]?.productImage}`} alt="avatar" style={{ width: 110, height: 110, marginTop: 10, borderRadius: 4 }} />
-        </Row> */}
-        {/* <Row>
-          <Col lg={6}>
-            <Row gutter={[8, 16]}>
-              <Col className="gutter-row" lg={10}><h5>Porduct Name</h5></Col>
-              <Col lg={1}>:</Col>
-              <Col lg={10}><h5>{selectedDataProduct[0]?.productName}</h5></Col>
-            </Row>
-            <Row gutter={[8, 16]}>
-              <Col className="gutter-row" lg={10}><h5>Porduct Mark</h5></Col>
-              <Col lg={1}>:</Col>
-              <Col lg={10}><h5>{selectedDataProduct[0]?.productMark}</h5></Col>
-            </Row>
-            <Row gutter={[8, 16]}>
-              <Col className="gutter-row" lg={10}><h5>Rak</h5></Col>
-              <Col lg={1}>:</Col>
-              <Col lg={10}><h5>{selectedDataProduct[0]?.rack}</h5></Col>
-            </Row>
-            <Row gutter={[8, 16]}>
-              <Col className="gutter-row" lg={10}><h5>Room</h5></Col>
-              <Col lg={1}>:</Col>
-              <Col lg={10}><h5>{selectedDataProduct[0]?.room}</h5></Col>
-            </Row>
-            <Row gutter={[8, 16]}>
-              <Col className="gutter-row" lg={10}><h5>Lt</h5></Col>
-              <Col lg={1}>:</Col>
-              <Col lg={10}><h5>{selectedDataProduct[0]?.lt}</h5></Col>
-            </Row>
-            <Row gutter={[8, 16]}>
-              <Col className="gutter-row" lg={10}><h5>Location</h5></Col>
-              <Col lg={1}>:</Col>
-              <Col lg={10}><h5>{selectedDataProduct[0]?.location}</h5></Col>
-            </Row>
-          </Col>
-          <Col lg={6}>
-          <Row gutter={[8, 16]}>
-              <Col className="gutter-row" lg={10}><h5>Grosir Price</h5></Col>
-              <Col lg={1}>:</Col>
-              <Col lg={10}><h5>{selectedDataProduct[0]?.grosirPrice}</h5></Col>
-            </Row>
-            <Row gutter={[8, 16]}>
-              <Col className="gutter-row" lg={10}><h5>Size</h5></Col>
-              <Col lg={1}>:</Col>
-              <Col lg={10}><h5>{selectedDataProduct[0]?.size}</h5></Col>
-            </Row>
-            <Row gutter={[8, 16]}>
-              <Col className="gutter-row" lg={10}><h5>Suplier Address</h5></Col>
-              <Col lg={1}>:</Col>
-              <Col lg={10}><h5>{selectedDataProduct[0]?.suplierAddress}</h5></Col>
-            </Row>
-            <Row gutter={[8, 16]}>
-              <Col className="gutter-row" lg={10}><h5>Varian</h5></Col>
-              <Col lg={1}>:</Col>
-              <Col lg={10}><h5>{selectedDataProduct[0]?.varian}</h5></Col>
-            </Row>
-            <Row gutter={[8, 16]}>
-              <Col className="gutter-row" lg={10}><h5>Color</h5></Col>
-              <Col lg={1}>:</Col>
-              <Col lg={10}><h5>{selectedDataProduct[0]?.color}</h5></Col>
-            </Row>
-          </Col>
-        </Row> */}
       </Card>
     </Modal>
   }
@@ -565,25 +495,9 @@ export const DataProdukScreen = observer((initialData) => {
               <Col lg={1}>:</Col>
               <Col lg={10}><h5>{selectedDataWarehouse[0]?.warehosueLocation}</h5></Col>
             </Row>
-
           </Col>
         </Row>
       </Card>
-      {/* <Form
-        form={form}
-        layout="vertical"
-        initialValues={initialData}>
-        <Form.Item
-          label="Warehouse Name"
-          name="warehouseName"
-        >
-          <Input disabled={true} />
-        </Form.Item>
-
-        <Form.Item label="Warehouse Location" name="warehosueLocation">
-          <Input disabled={true}/>
-        </Form.Item>
-      </Form> */}
     </Modal>
   }
 

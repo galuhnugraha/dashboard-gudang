@@ -1,12 +1,39 @@
 import { action, observable } from 'mobx';
 import { http } from "../../utils/http";
 
+const defaultStatus = {
+    "status": ""
+};
+
 export class PurchaseOrder {
     @observable isLoading = false;
     @observable data = [];
     @observable currentPage = 1;
     @observable pageSize = 10;
     @observable maxLength = 0;
+
+    @observable filterObject = {};
+
+    @action
+    filterResetStatus() {
+        this.resetStatus = defaultStatus;
+    }
+
+
+
+    @action
+    filterByStatus(status) {
+        this.defaultStatus = status;
+        if (status !== '') {
+            this.filterObject = { "status": status };
+        } else {
+            this.filterObject = {};
+        }
+        this.filterResetStatus();
+        this.getPurchaseOrder();
+    }
+
+
 
     @action
     async getPurchaseOrder() {

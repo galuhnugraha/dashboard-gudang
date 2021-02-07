@@ -11,6 +11,7 @@ import {
     DeleteOutlined,
     EditOutlined,
     PlusOutlined,
+    EyeOutlined
     // DownloadOutlined
 } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
@@ -30,8 +31,10 @@ export const PurchaseOrderScreen = observer((initialData) => {
     const { Search } = Input;
     const [state, setState] = useState({
         success: false,
+        purchase: false
         // warehouseID: '',
     });
+    const [filter, setFilter] = useState('');
 
     useEffect(() => {
         fetchData();
@@ -48,7 +51,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
             history.push('/app/purchase-order');
             fetchData();
         }).catch(err => {
-            // message.error(err.response.message)
         })
     }
 
@@ -73,6 +75,42 @@ export const PurchaseOrderScreen = observer((initialData) => {
         });
     })
 
+    const toggleSuccessReview = (() => {
+        setState({
+            purchase: !state.purchase,
+        });
+    })
+
+    const setEditModeReviewPurchase = (value) => {
+        setState(prevState => ({
+            ...prevState,
+            purchase: true
+        }))
+        form.setFieldsValue({
+            purchase: true,
+            //   warehouseName: value.warehouseName,
+            //   warehosueLocation: value.warehosueLocation
+        })
+    }
+
+    const mapping = store.purchase.data.map((e) => {
+        let data = {
+            id: e._id,
+            status: e.status
+        }
+        console.log(data)
+        return data
+    })
+    console.log(mapping)
+
+    function FilterPurchase(value) {
+        console.log(value.status, 'status')
+        return value.status == filter
+    }
+
+    const selectedDataProduct = mapping.filter(FilterPurchase);
+    console.log(selectedDataProduct.status);
+
     async function editData(e) {
         const data = {
             purchaseName: e.purchaseName,
@@ -95,6 +133,60 @@ export const PurchaseOrderScreen = observer((initialData) => {
         }
     }
 
+    const handleCancel = () => {
+        // setIsModalVisible(false);
+        form.validateFields().then(values => {
+            form.resetFields();
+        });
+        toggleSuccessReview();
+    };
+
+    function ModalItemPurchase() {
+        return <Modal
+            title={"Detail Purchase"}
+            visible={state.purchase}
+            onOk={() => {
+                form
+                    .validateFields()
+                    .then(values => {
+                        // editDetailPurchase(values);
+                    })
+                    .catch(info => {
+                    });
+            }}
+            // onCancel={handleCancel}
+            onCancel={handleCancel}
+        >
+            <Form layout="vertical" form={form} className={'custom-form'} name="form_in_modal">
+                <Form.Item
+                    label="Atasan"
+                    name="upperPic"
+                    size={'large'}
+                // rules={[{ required: true, message: 'Please input your Atasan' }]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Password"
+                    name="password"
+                    size={'large'}
+                // rules={[{ required: true, message: 'Please input your Atasan' }]}
+                >
+                    <Input.Password type="password" />
+                </Form.Item>
+            </Form>
+        </Modal>
+    }
+
+    const dataReview = store.purchase.data.map((e) => {
+        let dataPurchase = {
+            id: e._id,
+            purchaseName: e.purchaseName,
+
+        }
+        return dataPurchase
+    })
+    console.log(dataReview)
 
     {
 
@@ -103,6 +195,12 @@ export const PurchaseOrderScreen = observer((initialData) => {
                 title: 'No Invoice',
                 dataIndex: 'invoiceNo',
                 key: 'invoiceNo',
+                render: (text, record) => {
+                    return (<div onClick={() => {
+                    }} style={{ color: '#132743' }}>
+                        {text}
+                    </div>)
+                },
             },
             {
                 title: 'Purchase Name',
@@ -158,6 +256,12 @@ export const PurchaseOrderScreen = observer((initialData) => {
                                     <DeleteOutlined />
                                 </div>
                             </Popconfirm>
+
+                            <div style={{ marginLeft: 8 }}>
+                                <EyeOutlined onClick={() => {
+                                    setEditModeReviewPurchase(record)
+                                }} />
+                            </div>
                         </div>
                     </Space>
                 ),
@@ -171,14 +275,14 @@ export const PurchaseOrderScreen = observer((initialData) => {
                     <Link to={'/app/dashboard'}>Home</Link>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item>
-                    <span style={{ color: "#132743" }}>Purchase Order</span>
+                    <span style={{ color: "#132743" }}>Product In</span>
                 </Breadcrumb.Item>
             </Breadcrumb>
             <Card bordered={false} className={"shadow"} bodyStyle={{ padding: 0, marginTop: 10, borderRadius: 5, boxShadow: '0 0 10px  0  rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.10)' }}>
                 <PageHeader
                     className="card-page-header"
                     subTitle=""
-                    title={"Purchase Order"}
+                    title={"Product In"}
                     extra={[
                         <Search
                             placeholder="Search...."
@@ -188,13 +292,14 @@ export const PurchaseOrderScreen = observer((initialData) => {
                         <Button
                             key={"1"}
                             onClick={() => {
-                                history.push("/app/input-purchase-order")
+                                history.push("/app/input-product-in")
                             }}
                         >
                             <PlusOutlined /> New
                     </Button>,
                     ]}
                 />
+                {ModalItemPurchase()}
                 {renderModal()}
                 <Table
                     columns={columns}

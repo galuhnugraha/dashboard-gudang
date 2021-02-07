@@ -128,8 +128,8 @@ export const App = () => {
               </Link>
             </Menu.Item>
             <Menu.Item key="7">
-              <Link to="/app/purchase-order">
-                <span>Purchase Order</span>
+              <Link to="/app/product-in">
+                <span>Product In</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="8">
