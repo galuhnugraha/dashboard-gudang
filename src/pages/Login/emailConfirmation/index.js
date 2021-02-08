@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { observer } from 'mobx-react-lite';
 import ReCAPTCHA from 'react-google-recaptcha'
-import { useHistory, Link } from "react-router-dom";
+// import { useHistory} from "react-router-dom";
 import { Form, Input, Button, Row, Col, Card, Typography, message } from 'antd';
-import { MailOutlined, LockOutlined } from '@ant-design/icons';
+import { MailOutlined} from '@ant-design/icons';
 import { useStore } from "../../../utils/useStores";
 
 export const EmailConfirmation = observer(() => {
-    let history = useHistory();
+    // let history = useHistory();
     const [loading, setLoading] = useState(false);
     const store = useStore();
     const [state, setState] = useState({
@@ -150,6 +150,7 @@ export const EmailConfirmation = observer(() => {
                                     htmlType="submit"
                                     size={'large'}
                                     disabled={robot}
+                                    loading={loading}
                                     className="login-form-button">
                                     Submit
                                 </Button>

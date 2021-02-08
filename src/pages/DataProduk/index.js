@@ -81,34 +81,6 @@ export const DataProdukScreen = observer((initialData) => {
   //   })
   // }
 
-  async function editData(e) {
-    const data = {
-      productType: e.productType,
-      quantity: e.quantity,
-      sku: e.sku,
-      pricePerUnit: e.pricePerUnit,
-      grosirPrice: e.grosirPrice,
-      productName: e.productName,
-      selfing: e.selfing,
-      rack: e.rack,
-      location: e.location,
-      productImage: imgData
-    }
-
-    if (e.isEdit) {
-      store.products.updateProduct(e.isEdit, data)
-        .then(res => {
-          message.success('Data Produk Di Update!');
-          toggleSuccess();
-          fetchData();
-        })
-        .catch(err => {
-          message.error(`Error on Updating Member, ${err.message}`);
-          message.error(err.message);
-        });
-    }
-  }
-
   const onFinish = values => {
     // ProductOut(values)
     setFilterProduct(false)
@@ -243,6 +215,7 @@ export const DataProdukScreen = observer((initialData) => {
       selfing: value.selfing,
       rack: value.rack,
       location: value.location,
+      termsOfGrosir: value.termsOfGrosir
     })
     // console.log(value)
   }
@@ -356,9 +329,9 @@ export const DataProdukScreen = observer((initialData) => {
 
   const dataMap = store.products.data.map((e) => {
     let data = {
-      id: e._id,
+      _id: e._id,
       productName: e.productName,
-      suplierName: e.suplierId.suplierName,
+      suplierName: e.suplierId?.suplierName,
       quantity: e.quantity,
       pricePerUnit: e.pricePerUnit,
       grosirPrice: e.grosirPrice,
@@ -368,22 +341,51 @@ export const DataProdukScreen = observer((initialData) => {
       size: e.size,
       color: e.color,
       termsOfGrosir: e.termsOfGrosir,
-      companyName: e.suplierId.companyName,
-      suplierAddress: e.suplierId.suplierAddress?.address,
+      companyName: e.suplierId?.companyName,
+      suplierAddress: e.suplierId?.suplierAddress?.address,
       warehouseName: e.warehouseId?.warehouseName,
       warehosueLocation: e.warehouseId?.warehosueLocation,
-      suplierPhone: e.suplierId.suplierPhone,
-      suplierId: e.suplierId._id,
-      warehouseId: e.warehouseId._id,
+      suplierPhone: e.suplierId?.suplierPhone,
+      suplierId: e.suplierId?._id,
+      warehouseId: e.warehouseId?._id,
       productImage: e.productImage,
       rack: e.rack,
       selfing: e.selfing,
       room: e.room,
       lt: e.lt,
+      sku: e.sku,
       location: e.location
     }
     return data
   })
+
+  async function editData(e) {
+    const data = {
+      productType: e.productType,
+      quantity: e.quantity,
+      sku: e.sku,
+      pricePerUnit: e.pricePerUnit,
+      grosirPrice: e.grosirPrice,
+      productName: e.productName,
+      selfing: e.selfing,
+      rack: e.rack,
+      location: e.location,
+      productImage: imgData
+    }
+
+    if (e.isEdit) {
+      store.products.updateProduct(e.isEdit, data)
+        .then(res => {
+          message.success('Data Produk Di Update!');
+          toggleSuccess();
+          fetchData();
+        })
+        .catch(err => {
+          message.error(`Error on Updating Member, ${err.message}`);
+          message.error(err.message);
+        });
+    }
+  }
 
   function confirm(id) {
     store.products.deleteProduct(id).then((res) => {
@@ -410,13 +412,13 @@ export const DataProdukScreen = observer((initialData) => {
     return value.id == filterProductName
   }
   const selectedDataProduct = dataMap.filter(FilterProduct);
-  console.log(selectedDataProduct);
+  // console.log(selectedDataProduct);
 
   const selectedDataSupliers = dataMap.filter(FilterSupliers);
-  console.log(selectedDataSupliers);
+  // console.log(selectedDataSupliers);
 
   const selectedDataWarehouse = dataMap.filter(FilterWarehouse);
-  console.log(selectedDataWarehouse)
+  // console.log(selectedDataWarehouse)
 
   function modalItem() {
     return <Modal
@@ -426,25 +428,9 @@ export const DataProdukScreen = observer((initialData) => {
       onCancel={handleCancel}
     >
       <Card>
-        <Row>
-          <Col lg={6}>
-            <Row gutter={[8, 16]}>
-              <Col className="gutter-row" lg={10}><h5>Supliers Name</h5></Col>
-              <Col lg={1}>:</Col>
-              <Col lg={10}><h5>{selectedDataSupliers[0]?.suplierAddress}</h5></Col>
-            </Row>
-            <Row gutter={[8, 16]} >
-              <Col className="gutter-row" lg={10}><h5>Company Name</h5></Col>
-              <Col lg={1}>:</Col>
-              <Col lg={10}><h5>{selectedDataSupliers[0]?.companyName}</h5></Col>
-            </Row>
-            <Row gutter={[8, 16]} >
-              <Col className="gutter-row" lg={10}><h5>Supliers Phone</h5></Col>
-              <Col lg={1}>:</Col>
-              <Col lg={10}><h5>{selectedDataSupliers[0]?.suplierPhone}</h5></Col>
-            </Row>
-          </Col>
-        </Row>
+        <Col span={12}>Supliers Name :  {selectedDataSupliers[0]?.suplierAddress}</Col>
+        <Col span={12}>Company Name : {selectedDataSupliers[0]?.companyName}</Col>
+        <Col span={12}>Supliers Phone : {selectedDataSupliers[0]?.suplierPhone}</Col>
       </Card>
     </Modal>
   }
@@ -483,20 +469,8 @@ export const DataProdukScreen = observer((initialData) => {
       onCancel={handleCancelLocation}
     >
       <Card>
-        <Row>
-          <Col lg={6}>
-            <Row gutter={[8, 16]}>
-              <Col className="gutter-row" lg={10}><h5>Warehouse Name</h5></Col>
-              <Col lg={1}>:</Col>
-              <Col lg={10}><h5>{selectedDataWarehouse[0]?.warehouseName}</h5></Col>
-            </Row>
-            <Row gutter={[8, 16]} >
-              <Col className="gutter-row" lg={10}><h5>Warehouse Location</h5></Col>
-              <Col lg={1}>:</Col>
-              <Col lg={10}><h5>{selectedDataWarehouse[0]?.warehosueLocation}</h5></Col>
-            </Row>
-          </Col>
-        </Row>
+        <Col span={12}>Warehouse Name :  {selectedDataWarehouse[0]?.warehouseName}</Col>
+        <Col span={12}>Warehouse Location : {selectedDataWarehouse[0]?.warehosueLocation}</Col>
       </Card>
     </Modal>
   }
@@ -508,15 +482,11 @@ export const DataProdukScreen = observer((initialData) => {
         dataIndex: 'productName',
         key: 'productName',
         render: (text, record) => {
-          return (<div onClick={() => {
-            // setFilterProduct(true)
-            // onDetailProduct(record)
-            // setFilterSupliers(record.suplierId)
-            setFilterProductName(record.id)
-            console.log(record)
-            setEditModeReviewProduct(record)
-          }} style={{ color: '#132743' }}>
-            {text}
+          return (<div>
+            <a onClick={() => {
+              setFilterProductName(record.id)
+              setEditModeReviewProduct(record)
+            }} style={{ color: '#132743' }}>{text}</a>
           </div>)
         },
       },
@@ -569,14 +539,12 @@ export const DataProdukScreen = observer((initialData) => {
         dataIndex: 'suplierName',
         // key: 'location',
         render: (text, record) => {
-          return (<div onClick={() => {
-            // setFilterProduct(true)
-            // onDetailProduct(record)
-            setFilterSupliers(record.suplierId)
-            console.log(record.suplierId)
-            setEditModeReview(record)
-          }} style={{ color: '#132743' }}>
-            {text}
+          return (<div>
+            <a style={{ color: '#132743' }} onClick={() => {
+              setFilterSupliers(record.suplierId)
+              console.log(record.suplierId)
+              setEditModeReview(record)
+            }}>{text}</a>
           </div>)
         },
       },
@@ -586,13 +554,14 @@ export const DataProdukScreen = observer((initialData) => {
         width: 150,
         key: 'location',
         render: (text, record) => {
-          return (<div onClick={() => {
-            // setFilterProduct(true)
-            // onDetailProduct(record)
-            setFilterWarehouse(record.warehouseId)
-            setEditModeReviewLocation(record)
-          }} style={{ color: '#132743' }}>
-            {text}
+          return (<div>
+            <a style={{ color: '#132743' }} onClick={() => {
+              // setFilterProduct(true)
+              // onDetailProduct(record)
+              setFilterWarehouse(record.warehouseId)
+              console.log(record.warehouseId,'testtt')
+              setEditModeReviewLocation(record)
+            }}>{text}</a>
           </div>)
         },
       },
@@ -610,7 +579,8 @@ export const DataProdukScreen = observer((initialData) => {
               <Popconfirm
                 title="Are you sure to delete this task?"
                 onConfirm={() => {
-                  confirm(record.id)
+                  confirm(record._id)
+                  // console.log(record._id)
                 }}
                 onCancel={cancel}
                 okText="Yes"
@@ -678,24 +648,14 @@ export const DataProdukScreen = observer((initialData) => {
         </Button>
           ]}
         />
-        {/* {isModalVisible && (
-          <ShowModalSupliers
-            visible={isModalVisible}
-            onCancel={() => {
-              // setValueCode('')
-              setIsModalVisible(false);
-            }}
-            initialData={state.suplierId}
-          />
-        )} */}
-        {/* {modalProduct()} */}
+        {/* {modalProduct()}  */}
         {modalItemProduct()}
         {modalItem()}
         {modalFilter()}
         {renderModal()}
         {modalItemLocation()}
         <Table
-          rowKey={record => record._id}
+          rowKey={record => record.id}
           hasEmpty
           // style={{ paddingLeft: '12px' }}
           size="small"
@@ -825,7 +785,7 @@ export const DataProdukScreen = observer((initialData) => {
         <Row>
           <Col lg={11}>
             <Form.Item
-              label="Quantity"
+              label="Stok"
               name="quantity"
               size={'large'}
               rules={[{ required: true, message: 'Please input your Product Type!' }]}
@@ -845,14 +805,29 @@ export const DataProdukScreen = observer((initialData) => {
             </Form.Item>
           </Col>
         </Row>
-        <Form.Item
-          label="Selfing"
-          name="selfing"
-          size={'large'}
-          rules={[{ required: true, message: 'Please input your Product Name!' }]}
-        >
-          <Input style={{ width: '98%' }} />
-        </Form.Item>
+        <Row>
+          <Col lg={11}>
+            <Form.Item
+              label="Selfing"
+              name="selfing"
+              size={'large'}
+              rules={[{ required: true, message: 'Please input your Product Name!' }]}
+            >
+              <Input style={{ width: '98%' }} />
+            </Form.Item>
+          </Col>
+          <Col lg={2} />
+          <Col lg={11}>
+            <Form.Item
+              name="termsOfGrosir"
+              label="Grosir Quantity"
+              size={'large'}
+              rules={[{ required: true, message: 'Please input your Product Location!' }]}
+            >
+              <Input style={{ width: '95%' }} />
+            </Form.Item>
+          </Col>
+        </Row>
         <Form.Item
           label="Product Image"
         >

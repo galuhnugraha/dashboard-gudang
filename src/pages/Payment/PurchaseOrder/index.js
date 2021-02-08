@@ -11,14 +11,14 @@ import {
     DeleteOutlined,
     EditOutlined,
     PlusOutlined,
-    EyeOutlined
+    EyeOutlined,
+    PrinterOutlined
     // DownloadOutlined
 } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
 import { observer } from "mobx-react-lite";
-// import axios from 'axios';
-// import download from 'downloadjs';
+import xlsx from 'xlsx';
 
 function cancel(e) {
     message.error('Click on No');
@@ -31,10 +31,14 @@ export const PurchaseOrderScreen = observer((initialData) => {
     const { Search } = Input;
     const [state, setState] = useState({
         success: false,
-        purchase: false
+        purchase: false,
+        delete: false
         // warehouseID: '',
     });
-    const [filter, setFilter] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [productId, setProductId] = useState('');
+    // const [status, setStatus] = useState('');
+    const [prOutId, setPrOut] = useState('')
 
     useEffect(() => {
         fetchData();
@@ -45,13 +49,11 @@ export const PurchaseOrderScreen = observer((initialData) => {
         await store.purchase.getPurchaseOrderList();
     }
 
-    function confirm(_id) {
-        store.purchase.deletePurchaseOrder(_id).then((res) => {
-            message.success('Success delete Purchase Order')
-            history.push('/app/purchase-order');
-            fetchData();
-        }).catch(err => {
-        })
+    const appRender = () => {
+        var workbook = xlsx.utils.book_new();
+        var ws = xlsx.utils.json_to_sheet(dataReview);
+        xlsx.utils.book_append_sheet(workbook, ws, "Results");
+        xlsx.writeFile(workbook, 'out.xlsx', { type: 'file' });
     }
 
     const setEditMode = (value) => {
@@ -81,6 +83,23 @@ export const PurchaseOrderScreen = observer((initialData) => {
         });
     })
 
+
+    const toggleSuccessPassword = (() => {
+        setState({
+            delete: !state.delete,
+        });
+    })
+
+    const setEditModeReviewPassword = (value) => {
+        setState(prevState => ({
+            ...prevState,
+            delete: true
+        }))
+        form.setFieldsValue({
+            delete: true,
+        })
+    }
+
     const setEditModeReviewPurchase = (value) => {
         setState(prevState => ({
             ...prevState,
@@ -88,28 +107,8 @@ export const PurchaseOrderScreen = observer((initialData) => {
         }))
         form.setFieldsValue({
             purchase: true,
-            //   warehouseName: value.warehouseName,
-            //   warehosueLocation: value.warehosueLocation
         })
     }
-
-    const mapping = store.purchase.data.map((e) => {
-        let data = {
-            id: e._id,
-            status: e.status
-        }
-        console.log(data)
-        return data
-    })
-    console.log(mapping)
-
-    function FilterPurchase(value) {
-        console.log(value.status, 'status')
-        return value.status == filter
-    }
-
-    const selectedDataProduct = mapping.filter(FilterPurchase);
-    console.log(selectedDataProduct.status);
 
     async function editData(e) {
         const data = {
@@ -141,20 +140,105 @@ export const PurchaseOrderScreen = observer((initialData) => {
         toggleSuccessReview();
     };
 
+    const handleCancelProduct = () => {
+        // setIsModalVisible(false);
+        form.validateFields().then(values => {
+            form.resetFields();
+        });
+        toggleSuccessPassword();
+    };
+
+    const onFinish = values => {
+        dataPost(values);
+    };
+
+    const dataPost = (e) => {
+        setLoading(true);
+        const data = {
+            purchaseId: productId,
+            upperPic: e.upperPic,
+            password: e.password,
+
+        }
+        store.purchase.approve(data).then(res => {
+            setLoading(false);
+            message.success('Berhasil Approve');
+            history.push("/app/product-in");
+            fetchData()
+        }).catch(err => {
+            setLoading(false);
+            message.error(err.message);
+        });
+    }
+
+    const deleteData = (e) => {
+        const data = {
+            PoId: prOutId,
+            responsible: e.responsible,
+            password: e.password,
+        }
+        // console.log(data)
+        store.purchase.deleteProductIn(data).then((res) => {
+            message.success('Success delete Purchase Order')
+            history.push('/app/product-in');
+            fetchData();
+        }).catch(err => {
+            message.error(err)
+        })
+    }
+
+    function ModalItemPassword() {
+        return <Modal
+            title={"Silakan Masukan Password Anda"}
+            visible={state.delete}
+            onOk={() => {
+                form
+                    .validateFields()
+                    .then(values => {
+                        // editDetailPurchase(values);
+                        // onFinish(values)
+                        deleteData(values)
+                    })
+                    .catch(info => {
+                    });
+            }}
+            onCancel={handleCancelProduct}
+        >
+            <Form layout="vertical" form={form} className={'custom-form'} name="form_in_modal">
+                <Form.Item
+                    label="Nama"
+                    name="responsible"
+                    size={'large'}
+                // rules={[{ required: true, message: 'Please input your Atasan' }]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Password"
+                    name="password"
+                    size={'large'}
+                // rules={[{ required: true, message: 'Please input your Atasan' }]}
+                >
+                    <Input.Password type="password" />
+                </Form.Item>
+            </Form>
+        </Modal>
+    }
+
     function ModalItemPurchase() {
         return <Modal
-            title={"Detail Purchase"}
+            title={"Form Product In"}
             visible={state.purchase}
             onOk={() => {
                 form
                     .validateFields()
                     .then(values => {
                         // editDetailPurchase(values);
+                        onFinish(values)
                     })
                     .catch(info => {
                     });
             }}
-            // onCancel={handleCancel}
             onCancel={handleCancel}
         >
             <Form layout="vertical" form={form} className={'custom-form'} name="form_in_modal">
@@ -162,7 +246,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
                     label="Atasan"
                     name="upperPic"
                     size={'large'}
-                // rules={[{ required: true, message: 'Please input your Atasan' }]}
                 >
                     <Input />
                 </Form.Item>
@@ -182,11 +265,25 @@ export const PurchaseOrderScreen = observer((initialData) => {
         let dataPurchase = {
             id: e._id,
             purchaseName: e.purchaseName,
-
+            invoiceNo: e.invoiceNo,
+            suplierName: e.suplierName,
+            destination: e.destination,
+            pic: e.pic,
+            totalPurchaseItem: e.totalPurchaseItem,
+            status: e.status
         }
         return dataPurchase
     })
-    console.log(dataReview)
+    
+
+    // function FilterPurchase(value) {
+    //     // console.log(value.status)
+    //     console.log(value)
+    //     return value == status
+    // }
+
+    // const selectedDataProduct = dataReview.filter(FilterPurchase);
+    // console.log(selectedDataProduct.status)
 
     {
 
@@ -243,10 +340,12 @@ export const PurchaseOrderScreen = observer((initialData) => {
                                     setEditMode(record)
                                 }} />
                             </div>
-                            <Popconfirm
+                            {/* <Popconfirm
                                 title="Are you sure to delete this task?"
                                 onConfirm={() => {
-                                    confirm(record._id)
+                                    // console.log(record.id)
+                                    // confirm(record.id)
+                                    setEditModeReviewPassword(record)
                                 }}
                                 onCancel={cancel}
                                 okText="Yes"
@@ -255,11 +354,21 @@ export const PurchaseOrderScreen = observer((initialData) => {
                                 <div style={{ marginLeft: 8 }}>
                                     <DeleteOutlined />
                                 </div>
-                            </Popconfirm>
-
+                            </Popconfirm> */}
+                            <div style={{ marginLeft: 8 }}>
+                                <DeleteOutlined onClick={() => {
+                                    // setStatus(record.id)
+                                    setPrOut(record.id)
+                                    console.log(record.id)
+                                    setEditModeReviewPassword(true)
+                                    // console.log(record.id)
+                                }} />
+                            </div>
                             <div style={{ marginLeft: 8 }}>
                                 <EyeOutlined onClick={() => {
-                                    setEditModeReviewPurchase(record)
+                                    // console.log(record.id)
+                                    setProductId(record.id)
+                                    setEditModeReviewPurchase(true)
                                 }} />
                             </div>
                         </div>
@@ -296,15 +405,25 @@ export const PurchaseOrderScreen = observer((initialData) => {
                             }}
                         >
                             <PlusOutlined /> New
+                        </Button>,
+                        <Button
+                            key={"2"}
+                            onClick={() => {
+                                appRender()
+                            }}
+                        >
+                            <PrinterOutlined /> Export
                     </Button>,
                     ]}
                 />
+                {ModalItemPassword()}
                 {ModalItemPurchase()}
                 {renderModal()}
                 <Table
                     columns={columns}
-                    rowKey={record => record._id}
-                    dataSource={store.purchase.data.slice()}
+                    rowKey={record => record.id}
+                    dataSource={dataReview}
+                    loading={store.purchase.isLoading}
                     style={{ paddingLeft: '12px' }}
                     size="small"
                 />

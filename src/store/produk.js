@@ -61,10 +61,10 @@ export class ProdukStore {
   }
 
   @action
-  updateProduct = async (id, data) => {
+  updateProduct = async (_id, data) => {
     this.isLoading = true;
     const token = localStorage.getItem("token")
-    return http.put(`/products/updateProduct/${id}`).set({ 'authorization': `Bearer ${token}` }).send(data)
+    return http.put(`/products/updateProduct/${_id}`).set({ 'authorization': `Bearer ${token}` }).send(data)
       .then((res) => {
         this.isLoading = false;
         return res;

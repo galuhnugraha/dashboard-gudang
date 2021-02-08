@@ -10,6 +10,7 @@ import { PurchaseOrder } from './PurchaseOrder';
 import { TransactionStore } from './Transaction';
 import { ReceiveStore } from './Receive';
 import {SupplierReviewStore} from './SupliersItem';
+import {ProductOutScreen} from './ProductOut';
 
 export class Store {
   @observable token = "";
@@ -24,6 +25,7 @@ export class Store {
   purchase = new PurchaseOrder(this);
   transaction = new TransactionStore(this);
   receive = new ReceiveStore(this);
+  productOut = new ProductOutScreen(this);
 
   @action
   setToken(token) {

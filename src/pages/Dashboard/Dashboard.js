@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
-import { Row, Col, Collapse } from 'antd';
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../utils/useStores";
 
 export const Dashboard = observer(() => {
   const store = useStore();
-  const { Panel } = Collapse;
 
   useEffect(() => {
     store.products.getAll();
@@ -13,7 +11,7 @@ export const Dashboard = observer(() => {
   }, [])
 
   return <div className="card-page-header">
-    <Row gutter={16}>
+    {/* <Row gutter={16}>
       <Col span={12}>
         <Collapse defaultActiveKey={['1']}>
           <Panel header="Data Supplier" key="1">
@@ -28,7 +26,6 @@ export const Dashboard = observer(() => {
           </Panel>
         </Collapse>
       </Col>
-    </Row>
-
+    </Row> */}
   </div>
 });

@@ -41,6 +41,10 @@ export const AddProduk = observer(() => {
             productImage: imgData,
             rack: e.rack,
             termsOfGrosir: e.termsOfGrosir,
+            productMark: e.productMark,
+            varian: e.varian,
+            size: e.size,
+            color: e.color,
             // location: e.location,
             grosirPrice: e.grosirPrice,
             pricePerUnit: e.pricePerUnit,
@@ -86,30 +90,52 @@ export const AddProduk = observer(() => {
                 style={{ marginLeft: 23 }}
                 onFinish={onFinish}
             >
-                <Form.Item
-                    label="Product Name"
-                    name="productName"
-                    size={'large'}
-                    rules={[{ required: true, message: 'Please input your Product Name!' }]}
-                >
-                    <Input style={{ width: '98%' }} />
-                </Form.Item>
-                <Form.Item
-                    label="Product Type"
-                    name="productType"
-                    size={'large'}
-                    rules={[{ required: true, message: 'Please input your Product Type!' }]}
-                >
-                    <Input style={{ width: '98%' }} />
-                </Form.Item>
-                <Form.Item
-                    label="Term Of Grosir"
-                    name="termsOfGrosir"
-                    size={'large'}
-                    rules={[{ required: true, message: 'Please input your Product Type!' }]}
-                >
-                    <Input style={{ width: '98%' }} />
-                </Form.Item>
+                <Row>
+                    <Col lg={11}>
+                        <Form.Item
+                            label="Product Name"
+                            name="productName"
+                            size={'large'}
+                            rules={[{ required: true, message: 'Please input your Product Name!' }]}
+                        >
+                            <Input style={{ width: '98%' }} />
+                        </Form.Item>
+                    </Col>
+                    <Col lg={2} />
+                    <Col lg={11}>
+                        <Form.Item
+                            label="Product Type"
+                            name="productType"
+                            size={'large'}
+                            rules={[{ required: true, message: 'Please input your Product Type!' }]}
+                        >
+                            <Input style={{ width: '95%' }} />
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col lg={11}>
+                        <Form.Item
+                            label="Term Of Grosir"
+                            name="termsOfGrosir"
+                            size={'large'}
+                            rules={[{ required: true, message: 'Please input your Product Type!' }]}
+                        >
+                            <Input style={{ width: '98%' }} />
+                        </Form.Item>
+                    </Col>
+                    <Col lg={2} />
+                    <Col lg={11}>
+                    <Form.Item
+                            label="Product Merk"
+                            name="productMark"
+                            size={'large'}
+                            rules={[{ required: true, message: 'Please input your Product Type!' }]}
+                        >
+                            <Input style={{ width: '95%' }} />
+                        </Form.Item>
+                    </Col>
+                </Row>
                 <Row>
                     <Col lg={11}>
                         <Form.Item
@@ -146,7 +172,7 @@ export const AddProduk = observer(() => {
                                 },
                             ]}
                         >
-                            <Input type="number" />
+                            <Input type="number" style={{ width: '98%' }}/>
                         </Form.Item>
                     </Col>
                     <Col lg={2} />
@@ -194,7 +220,7 @@ export const AddProduk = observer(() => {
                                 },
                             ]}
                         >
-                            <Select placeholder="Select Warehouse" style={{ width: '98%' }}>
+                            <Select placeholder="Select Warehouse" style={{ width: '95%' }}>
                                 {store.warehouse.data.map(d => <Select.Option value={d._id} key={d._id}>{d.warehouseName}</Select.Option>)}
                             </Select>
                         </Form.Item>
@@ -203,7 +229,6 @@ export const AddProduk = observer(() => {
                 <Form.Item label="Product Image" rules={[{ required: true, message: 'Please input file Image!' }]} >
                     <input type='file' id="productImage" onChange={addImage} />
                 </Form.Item>
-
                 <Form.Item
                     style={{
                         marginBottom: 25,

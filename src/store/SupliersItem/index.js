@@ -1,6 +1,6 @@
 import { action, observable } from 'mobx';
 import { http } from "../../utils/http";
-import debounce from "lodash.debounce";
+// import debounce from "lodash.debounce";
 import * as qs from "querystring";
 
 export class SupplierReviewStore {

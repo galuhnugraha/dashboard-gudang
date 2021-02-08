@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from "react";
 import {
-    Input,
-    Form,
-    message, Breadcrumb, Popconfirm,
-    PageHeader, Card, Button, Select, Table, Row, Col
+    Table,
+    Space,
+    Popconfirm, Input,
+    Form, Modal,
+    message, Breadcrumb, Row, Col,
+    PageHeader, Card, Button,
+    Select
 } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../../utils/useStores";
 import { observer } from "mobx-react-lite";
 
 
-export const AddPurchaseOrder = observer(() => {
-    var myItem = new Array()
+export const InputProductOut = observer(() => {
     var newID = ""
+    const [form] = Form.useForm();
     const store = useStore();
-    const history = useHistory();
     const [loading, setLoading] = useState(false);
+    const history = useHistory();
     const [item, setItem] = useState([]);
     const [filterQuery, setFilterQuery] = useState({});
-    const [form] = Form.useForm();
+
 
     useEffect(() => {
         fetchData();
@@ -54,9 +57,49 @@ export const AddPurchaseOrder = observer(() => {
         setItem(dataTable)
     }
 
+    const handleDelete = (id) => {
+        const deletedData = item.filter(item => item.key !== id)
+        setItem(deletedData);
+    };
+
+    const getID = (val) => {
+        newID = val
+    }
+
     const onFinish = values => {
         dataPost(values);
     };
+
+    const dataPost = (e) => {
+        setLoading(true);
+        const itemQuantity = store.supliers.detailData.map((e, i) => {
+            let obj = {
+                productId: e.product?._id,
+                quantity: item[i].quantity,
+            }
+            return obj;
+        })
+        const data = {
+            formName: e.formName,
+            pic: e.pic,
+            upperPic: e.upperPic,
+            sender: e.sender,
+            noref: e.noref,
+            password: e.password,
+            warehouseId: e.warehouseId,
+            senderAddress: e.senderAddress,
+            senderPhone: e.senderPhone,
+            item: itemQuantity,
+        }
+        store.productOut.addProductOut(data).then(res => {
+            setLoading(false);
+            message.success('Berhasil Add Product');
+            history.push("/app/product-out");
+        }).catch(err => {
+            setLoading(false);
+            message.error(err.message);
+        });
+    }
 
     const columns = [
         {
@@ -87,48 +130,6 @@ export const AddPurchaseOrder = observer(() => {
         },
     ];
 
-
-
-    const handleDelete = (id) => {
-        const deletedData = item.filter(item => item.key !== id)
-        setItem(deletedData);
-    };
-
-    const getID = (val) => {
-        newID = val
-    }
-
-    const dataPost = (e) => {
-        setLoading(true);
-        const itemQuantity = store.supliers.detailData.map((e, i) => {
-            let obj = {
-                productId: e.product?._id,
-                quantity: item[i].quantity,
-            }
-            return obj;
-        })
-        const data = {
-            purchaseName: e.purchaseName,
-            pic: e.pic,
-            upperPic: e.upperPic,
-            sender: e.sender,
-            noref: e.noref,
-            warehouseId: e.warehouseId,
-            password: e.password,
-            senderAddress: e.senderAddress,
-            senderPhone: e.senderPhone,           
-            item: itemQuantity,
-        }
-        store.purchase.AddPurchaseOrder(data).then(res => {
-            setLoading(false);
-            message.success('Berhasil Add Product');
-            history.push("/app/product-in");
-        }).catch(err => {
-            setLoading(false);
-            message.error(err.message);
-        });
-    }
-
     return <div>
         <Breadcrumb>
             <Breadcrumb.Item>
@@ -136,10 +137,10 @@ export const AddPurchaseOrder = observer(() => {
                 <Link to={'/app/dashboard'}>Home</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-                <Link to={'/app/product-in'}>Product In</Link>
+                <Link to={'/app/product-out'}>Product Out</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-                <span style={{ color: "#132743" }}>Input Product In</span>
+                <span style={{ color: "#132743" }}>Input Product Out</span>
             </Breadcrumb.Item>
         </Breadcrumb>
         <Card
@@ -150,7 +151,7 @@ export const AddPurchaseOrder = observer(() => {
             <PageHeader
                 className={"card-page-header"}
                 subTitle=""
-                title={"Input Product In"}
+                title={"Input Product Out"}
             />
             <Form
                 layout={'vertical'}
@@ -163,8 +164,8 @@ export const AddPurchaseOrder = observer(() => {
                 <Row>
                     <Col lg={11}>
                         <Form.Item
-                            label="Purchase Name"
-                            name="purchaseName"
+                            label="Form Name"
+                            name="formName"
                             size={'large'}
                             rules={[{ required: true, message: 'Please input your Product Name!' }]}
                         >
@@ -189,7 +190,7 @@ export const AddPurchaseOrder = observer(() => {
                             label="Atasan"
                             name="upperPic"
                             size={'large'}
-                            // rules={[{ required: true, message: 'Please input your Product Type!' }]}
+                        // rules={[{ required: true, message: 'Please input your Product Type!' }]}
                         >
                             <Input style={{ width: '98%' }} />
                         </Form.Item>
@@ -212,7 +213,7 @@ export const AddPurchaseOrder = observer(() => {
                             label="Password"
                             name="password"
                             size={'large'}
-                            // rules={[{ required: true, message: 'Please input your Product Type!' }]}
+                        // rules={[{ required: true, message: 'Please input your Product Type!' }]}
                         >
                             <Input.Password style={{ width: '98%' }} type="password" />
                         </Form.Item>
@@ -293,7 +294,7 @@ export const AddPurchaseOrder = observer(() => {
                         block
                         htmlType="submit"
                         size={'large'}
-                        loading={loading}
+                    // loading={loading}
                     >
                         Submit
                     </Button>

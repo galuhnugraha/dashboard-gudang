@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 // import { useStore } from "../../utils/useStores";
 // import { createUseStyles } from "react-jss";
 // import { useHistory } from "react-router-dom";
-import ReCAPTCHA from 'react-google-recaptcha'
+// import ReCAPTCHA from 'react-google-recaptcha'
 import { useHistory, Link } from "react-router-dom";
 import { Form, Input, Button, Row, Col, Card, Typography, message } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
@@ -27,39 +27,39 @@ export const Login = observer(() => {
     enterLoading(values);
   };
 
-  const verifyCaptcha = (res) => {
-    console.log(email)
-    if (robot && email.length > 0) {
-      setRobot(false)
-      return
-    }
-    setRobot(true)
-  }
+  // const verifyCaptcha = (res) => {
+  //   console.log(email)
+  //   if (robot && email.length > 0) {
+  //     setRobot(false)
+  //     return
+  //   }
+  //   setRobot(true)
+  // }
 
-  const expireCaptcha = () => {
-    // this.setState({ human: false, humanKey: null })
-    // this.setState({ disabled: this.isDisabled() })
-    setState({
-      human: false,
-      humanKey: null,
-      disabled: isDisabled()
-    })
-  }
+  // const expireCaptcha = () => {
+  //   // this.setState({ human: false, humanKey: null })
+  //   // this.setState({ disabled: this.isDisabled() })
+  //   setState({
+  //     human: false,
+  //     humanKey: null,
+  //     disabled: isDisabled()
+  //   })
+  // }
 
-  const isDisabled = () => {
+  // const isDisabled = () => {
 
-    if (
-      state.email != null &&
-      state.human === true
+  //   if (
+  //     state.email != null &&
+  //     state.human === true
 
-    ) {
-      console.log(state.human, 'bro')
-      setRobot(true)
-      return false
-    }
-    setRobot(false)
-    return true
-  }
+  //   ) {
+  //     console.log(state.human, 'bro')
+  //     setRobot(true)
+  //     return false
+  //   }
+  //   setRobot(false)
+  //   return true
+  // }
 
   const test = (value) => {
 

@@ -120,23 +120,33 @@ export const App = () => {
                 <span>Data Produk</span>
               </Link>
             </Menu.Item>
-          </SubMenu>
-          <SubMenu key="sub2" title="">
-            <Menu.Item key="6">
+             {/* <Menu.Item key="6">
               <Link to="/app/data-transaction">
                 <span>Transaction</span>
               </Link>
-            </Menu.Item>
+            </Menu.Item> */}
+          </SubMenu>
+          <SubMenu key="sub2" title="Barang Masuk / Keluar">
+            {/* <Menu.Item key="6">
+              <Link to="/app/data-transaction">
+                <span>Transaction</span>
+              </Link>
+            </Menu.Item> */}
             <Menu.Item key="7">
               <Link to="/app/product-in">
                 <span>Product In</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="8">
+              <Link to="/app/product-out">
+                <span>Product Out</span>
+              </Link>
+            </Menu.Item>
+            {/* <Menu.Item key="8">
               <Link to="/app/recive">
                 <span>Recive</span>
               </Link>
-            </Menu.Item>
+            </Menu.Item> */}
           </SubMenu>
         </Menu>
       </Sider>

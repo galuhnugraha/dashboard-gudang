@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { observer } from 'mobx-react-lite';
-import ReCAPTCHA from 'react-google-recaptcha'
-import { useHistory, Link, useParams } from "react-router-dom";
+// import ReCAPTCHA from 'react-google-recaptcha'
+import { useHistory,useParams } from "react-router-dom";
 import { Form, Input, Button, Row, Col, Card, Typography, message } from 'antd';
-import { MailOutlined, LockOutlined } from '@ant-design/icons';
+import {LockOutlined } from '@ant-design/icons';
 import { useStore } from "../../../utils/useStores";
 
 export const ForgotPassword = observer(() => {
@@ -21,16 +21,16 @@ export const ForgotPassword = observer(() => {
     //   history.push("/app/dashboard");
     // }
 
-    const verifyCaptcha = (res) => {
-        if (res) {
-            //   this.setState({ human: true, humanKey: res })
-            //   this.setState({ disabled: this.isDisabled() })
-            setState({
-                human: true,
-                humanKey: res
-            })
-        }
-    }
+    // const verifyCaptcha = (res) => {
+    //     if (res) {
+    //         //   this.setState({ human: true, humanKey: res })
+    //         //   this.setState({ disabled: this.isDisabled() })
+    //         setState({
+    //             human: true,
+    //             humanKey: res
+    //         })
+    //     }
+    // }
 
       const onFinish = (e) => {
         setLoading(true);
@@ -112,6 +112,7 @@ export const ForgotPassword = observer(() => {
                                     block
                                     htmlType="submit"
                                     size={'large'}
+                                    loading={loading}
                                     className="login-form-button">
                                     Submit
                                 </Button>

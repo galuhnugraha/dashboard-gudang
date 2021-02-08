@@ -33,8 +33,6 @@ export class PurchaseOrder {
         this.getPurchaseOrder();
     }
 
-
-
     @action
     async getPurchaseOrder() {
         // if (filter != null) {
@@ -77,10 +75,10 @@ export class PurchaseOrder {
     }
 
     @action
-    deletePurchaseOrder = async (_id) => {
+    deletePurchaseOrder = async (id) => {
         this.isLoading = true;
         const token = localStorage.getItem("token")
-        return http.del(`/purchaseOrder/deletePo/${_id}`).set({ 'authorization': `Bearer ${token}` }).then(res => {
+        return http.del(`/purchaseOrder/deletePo/${id}`).set({ 'authorization': `Bearer ${token}` }).then(res => {
             // this.data = res.body.data;
             this.isLoading = false;
             return res;
@@ -95,6 +93,37 @@ export class PurchaseOrder {
         this.isLoading = true;
         const token = localStorage.getItem("token")
         return http.put(`/purchaseOrder/updatePo/${_id}`).set({ 'authorization': `Bearer ${token}` }).send(data)
+            .then((res) => {
+                this.isLoading = false;
+                return res;
+            })
+            .catch((err) => {
+                this.isLoading = false;
+                throw err;
+            });
+    }
+
+
+    @action
+    approve = async (data) => {
+        this.isLoading = true;
+        const token = localStorage.getItem("token")
+        return http.put(`/purchaseOrder/assignmentPo`).set({ 'authorization': `Bearer ${token}` }).send(data)
+            .then((res) => {
+                this.isLoading = false;
+                return res;
+            })
+            .catch((err) => {
+                this.isLoading = false;
+                throw err;
+            });
+    }
+
+    @action
+    deleteProductIn = async (data) => {
+        this.isLoading = true;
+        const token = localStorage.getItem("token")
+        return http.del(`/purchaseOrder/deletePo`).set({ 'authorization': `Bearer ${token}` }).send(data)
             .then((res) => {
                 this.isLoading = false;
                 return res;
