@@ -17,6 +17,7 @@ import { ReceiveScreen } from "../pages/Payment/Recive/AddReceive";
 import { DetailSuplierScreen } from "../pages/DataSupplier/DetailSuplier";
 import { ProductOut } from "../pages/Payment/ProductOut";
 import {InputProductOut} from "../pages/Payment/ProductOut/addProductOut";
+import {DetailPrintOut} from "../pages/Payment/Detail";
 
 export const AppRoutes = () => {
   return <Switch>
@@ -73,6 +74,10 @@ export const AppRoutes = () => {
     </Route>
     <Route path="/app/input-product-out" exact>
       <InputProductOut />
+    </Route>
+    <Route path="/app/detail-printout" exact>
+      {/* <InputProductOut /> */}
+      <DetailPrintOut />
     </Route>
   </Switch>
 };
