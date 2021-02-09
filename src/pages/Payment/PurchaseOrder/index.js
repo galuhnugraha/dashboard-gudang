@@ -299,11 +299,11 @@ export const PurchaseOrderScreen = observer((initialData) => {
                     </div>)
                 },
             },
-            {
-                title: 'Purchase Name',
-                dataIndex: 'purchaseName',
-                key: 'purchaseName',
-            },
+            // {
+            //     title: 'Purchase Name',
+            //     dataIndex: 'purchaseName',
+            //     key: 'purchaseName',
+            // },
             {
                 title: 'Suplier Name',
                 dataIndex: 'suplierName',
@@ -340,21 +340,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
                                     setEditMode(record)
                                 }} />
                             </div>
-                            {/* <Popconfirm
-                                title="Are you sure to delete this task?"
-                                onConfirm={() => {
-                                    // console.log(record.id)
-                                    // confirm(record.id)
-                                    setEditModeReviewPassword(record)
-                                }}
-                                onCancel={cancel}
-                                okText="Yes"
-                                cancelText="No"
-                            >
-                                <div style={{ marginLeft: 8 }}>
-                                    <DeleteOutlined />
-                                </div>
-                            </Popconfirm> */}
                             <div style={{ marginLeft: 8 }}>
                                 <DeleteOutlined onClick={() => {
                                     // setStatus(record.id)

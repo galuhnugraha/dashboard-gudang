@@ -11,15 +11,13 @@ export class PurchaseOrder {
     @observable currentPage = 1;
     @observable pageSize = 10;
     @observable maxLength = 0;
-
+    @observable dataRef = [];
     @observable filterObject = {};
 
     @action
     filterResetStatus() {
         this.resetStatus = defaultStatus;
     }
-
-
 
     @action
     filterByStatus(status) {
@@ -132,5 +130,5 @@ export class PurchaseOrder {
                 this.isLoading = false;
                 throw err;
             });
-    }
+    }    
 }

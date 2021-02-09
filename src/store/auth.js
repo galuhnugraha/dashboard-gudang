@@ -29,6 +29,8 @@ export class AuthStore {
         return http.post(`/login`).send(data)
             .then((res) => {
                 const token = res.body.data.token
+                const name = res.body.data.UserName
+                localStorage.setItem("name",name);
                 localStorage.setItem("token", token)
                 this.isLoading = false;
                 return res;

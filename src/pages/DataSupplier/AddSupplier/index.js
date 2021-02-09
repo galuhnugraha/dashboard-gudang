@@ -21,7 +21,6 @@ export const AddSupplierScreen = observer(() => {
     }
 
     const enterLoading = (e) => {
-       
         const suplierAddress2 = {
             address: e.suplierAddress,
             city: e.city

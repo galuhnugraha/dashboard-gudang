@@ -11,6 +11,7 @@ import { TransactionStore } from './Transaction';
 import { ReceiveStore } from './Receive';
 import {SupplierReviewStore} from './SupliersItem';
 import {ProductOutScreen} from './ProductOut';
+import {NoFormScreen} from './PurchaseOrder/noForm';
 
 export class Store {
   @observable token = "";
@@ -26,6 +27,7 @@ export class Store {
   transaction = new TransactionStore(this);
   receive = new ReceiveStore(this);
   productOut = new ProductOutScreen(this);
+  noRef = new NoFormScreen(this);
 
   @action
   setToken(token) {
