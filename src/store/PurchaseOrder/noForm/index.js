@@ -15,7 +15,6 @@ export class NoFormScreen {
         const data = await http.get("/purchaseOrder/getNoForm").set({ 'authorization': `Bearer ${token}` });
         // console.log(data.body.codeNumber)
         this.data = data.body.codeNumber;
-        console.log(this.data,'data')
         // this.maxLength = data.body.totalData;
         this.isLoading = false;
     }

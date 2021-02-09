@@ -18,6 +18,8 @@ import { DetailSuplierScreen } from "../pages/DataSupplier/DetailSuplier";
 import { ProductOut } from "../pages/Payment/ProductOut";
 import {InputProductOut} from "../pages/Payment/ProductOut/addProductOut";
 import {DetailPrintOut} from "../pages/Payment/Detail";
+import {DataUserScreen} from "../pages/Users";
+import { DataInputUserScreen } from "../pages/Users/AddUsers";
 
 export const AppRoutes = () => {
   return <Switch>
@@ -78,6 +80,13 @@ export const AppRoutes = () => {
     <Route path="/app/detail-printout" exact>
       {/* <InputProductOut /> */}
       <DetailPrintOut />
+    </Route>
+    <Route path="/app/user-privillage" exact>
+      <DataUserScreen />
+    </Route>
+    <Route path="/app/input-user-privillage" exact>
+      {/* <DataUserScreen /> */}
+      <DataInputUserScreen />
     </Route>
   </Switch>
 };

@@ -22,8 +22,9 @@ export const AddPurchaseOrder = observer(() => {
     const [form] = Form.useForm();
     const [state, setState] = useState({
         success: false,
+        form: false
     })
-    const [noRef, setNoRef] = useState('');
+    const [location , setLocation] =  useState('')
     let x = '';
     
     useEffect(() => {
@@ -39,11 +40,16 @@ export const AddPurchaseOrder = observer(() => {
     }
 
     x = store.noRef.data;
-    console.log(x);
 
     const toggleSuccess = (() => {
         setState({
             success: !state.success,
+        });
+    })
+
+    const toggleSuccessReview = (() => {
+        setState({
+            form: !state.form,
         });
     })
 
@@ -55,6 +61,17 @@ export const AddPurchaseOrder = observer(() => {
         form.setFieldsValue({
             isEdit: value._id,
             success: true,
+        })
+    }
+
+    const setEditModeReview = (value) => {
+        setState(prevState => ({
+            ...prevState,
+            form: true
+        }))
+        form.setFieldsValue({
+            isEdit: value._id,
+            form: true,
         })
     }
 
@@ -91,6 +108,14 @@ export const AddPurchaseOrder = observer(() => {
         toggleSuccess();
     };
 
+    const handleCancelReview = () => {
+        // setIsModalVisible(false);
+        form.validateFields().then(values => {
+            form.resetFields();
+        });
+        toggleSuccessReview();
+    };
+
     const onFinishSupliers = values => {
         enterLoading(values);
     };
@@ -113,6 +138,24 @@ export const AddPurchaseOrder = observer(() => {
         }).catch(err => {
             message.error(err.message);
         });
+    }
+
+    function ModalItemPurchaseReview() {
+        return <Modal
+            title={"Detail Product Name"}
+            visible={state.form}
+            onOk={() => {
+                form
+                    .validateFields()
+                    .then(values => {
+
+                    })
+                    .catch(info => {
+                    });
+            }}
+            onCancel={handleCancelReview}
+        >
+        </Modal>
     }
 
     function ModalItemPurchase() {
@@ -189,7 +232,14 @@ export const AddPurchaseOrder = observer(() => {
         {
             title: 'Product Name',
             dataIndex: 'productName',
-            key: 'productName'
+            key: 'productName',
+            render: (text, record) => {
+                return (<div>
+                  <a style={{ color: '#132743' }} onClick={() => {
+                      setEditModeReview(record)
+                  }}>{text}</a>
+                </div>)
+              },
         },
         {
             title: 'Quantity',
@@ -328,8 +378,10 @@ export const AddPurchaseOrder = observer(() => {
                                 // defaultValue="Sony"
                                 style={{ marginLeft: 10, width: 200 }}
                                 onChange={(value) => {
-                                    getID(value)
-                                    onDetailProduct(value)
+                                    getID(value[1])
+                                    onDetailProduct(value[1])
+                                    setLocation(value[0])
+                                    console.log(value)
                                 }}
                                 dropdownRender={menu => (
                                     <div>
@@ -349,11 +401,11 @@ export const AddPurchaseOrder = observer(() => {
                                     </div>
                                 )}
                             >
-                                {store.supliers.data.map(d => <Select.Option value={d._id} key={d._id} onChange>{d.suplierName}</Select.Option>)}
+                                {store.supliers.data.map(d => <Select.Option value={[d.suplierName,d._id]} key={d._id}>{d.suplierName}</Select.Option>)}
                             </Select>
                         </Row>
                         <div style={{ marginTop: 25 }}>
-                            <p>Alamat  : - </p>
+                            <p>Alamat  : {location}</p>
                         </div>
                     </Col>
                     <Col>
@@ -364,6 +416,7 @@ export const AddPurchaseOrder = observer(() => {
                 </Row>
             </div>
             {ModalItemPurchase()}
+            {ModalItemPurchaseReview()}
             <Table dataSource={item} columns={columns} rowKey={record => record._id} style={{ marginLeft: '12px' }} />
             {/* {item.length >= 1 && <Table dataSource={item} columns={columns} rowKey={record => record._id} style={{ marginLeft: '12px' }} />} */}
             <Form

@@ -120,18 +120,13 @@ export const App = () => {
                 <span>Data Produk</span>
               </Link>
             </Menu.Item>
-             {/* <Menu.Item key="6">
+            {/* <Menu.Item key="6">
               <Link to="/app/data-transaction">
                 <span>Transaction</span>
               </Link>
             </Menu.Item> */}
           </SubMenu>
           <SubMenu key="sub2" title="Barang Masuk / Keluar">
-            {/* <Menu.Item key="6">
-              <Link to="/app/data-transaction">
-                <span>Transaction</span>
-              </Link>
-            </Menu.Item> */}
             <Menu.Item key="7">
               <Link to="/app/product-in">
                 <span>Product In</span>
@@ -142,12 +137,12 @@ export const App = () => {
                 <span>Product Out</span>
               </Link>
             </Menu.Item>
-            {/* <Menu.Item key="8">
-              <Link to="/app/recive">
-                <span>Recive</span>
-              </Link>
-            </Menu.Item> */}
           </SubMenu>
+          <Menu.Item key="6">
+            <Link to="/app/user-privillage">
+              <span>User Privillage</span>
+            </Link>
+          </Menu.Item>
         </Menu>
       </Sider>
       <Layout>
@@ -165,9 +160,9 @@ export const App = () => {
             <Col>
               <div className="ant-dropdown-link" href="#" style={{ color: 'grey', display: 'flex', flexDirection: 'row', height: 50 }}>
                 <Dropdown overlay={menu} trigger={['click']}>
-                  <Avatar icon={<UserOutlined />} style={{ marginRight: 35, marginTop: 15 }} />
+                  <Avatar icon={<UserOutlined />} style={{ marginRight: 15, marginTop: 15 }} />
                 </Dropdown>
-                {/* <p style={{marginRight: 25}}>Halo {store.auth.email}</p> */}
+                <p style={{ marginRight: 25 }}>Halo {localStorage.getItem("name")}</p>
               </div>
             </Col>
           </Row>

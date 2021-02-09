@@ -106,28 +106,28 @@ export const DetailWarehouseScreen = observer((initialData) => {
         render: (record) => <span>{record}</span>
       },
       {
-        title: 'Quantity',
+        title: 'Suplier',
         dataIndex: 'quantity',
         key: 'quantity',
       },
       {
-        title: 'Status',
+        title: 'History Barang',
         dataIndex: 'status',
         key: 'status',
         render: (record) => <span>{record}</span>
       },
-      {
-        title: 'Created at',
-        dataIndex: 'createdAt',
-        key: 'createdAt',
-        render: (record) => moment(record).format("DD/MM/YY, H:mm:ss")
-      },
-      {
-        title: 'Updated at',
-        dataIndex: 'updatedAt',
-        key: 'updatedAt',
-        render: (record) => moment(record).format("DD/MM/YY, H:mm:ss")
-      },
+      // {
+      //   title: 'Created at',
+      //   dataIndex: 'createdAt',
+      //   key: 'createdAt',
+      //   render: (record) => moment(record).format("DD/MM/YY, H:mm:ss")
+      // },
+      // {
+      //   title: 'Updated at',
+      //   dataIndex: 'updatedAt',
+      //   key: 'updatedAt',
+      //   render: (record) => moment(record).format("DD/MM/YY, H:mm:ss")
+      // },
       {
         title: 'Action',
         key: 'action',
