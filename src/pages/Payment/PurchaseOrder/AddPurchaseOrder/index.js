@@ -26,7 +26,7 @@ const renderContent = (value, row, index) => {
     return obj;
 };
 
-export const AddPurchaseOrder = observer(() => {
+export const AddPurchaseOrder = observer((initialData) => {
     var myItem = new Array()
     var newID = ""
     const store = useStore();
@@ -38,7 +38,8 @@ export const AddPurchaseOrder = observer(() => {
     const [state, setState] = useState({
         success: false,
         form: false,
-        detail: false
+        detail: false,
+        edit: false
     })
     const [location, setLocation] = useState('');
     const [filterProductSupliers, setFilterProductSupliers] = useState('');
@@ -76,6 +77,12 @@ export const AddPurchaseOrder = observer(() => {
         });
     })
 
+    const toggleSuccessReviewDetailEdit = (() => {
+        setState({
+            edit: !state.edit,
+        });
+    })
+
     const setEditMode = (value) => {
         setState(prevState => ({
             ...prevState,
@@ -104,8 +111,20 @@ export const AddPurchaseOrder = observer(() => {
             detail: true
         }))
         form.setFieldsValue({
-            isEdit: value._id,
+            // isEdit: value._id,
             detail: true,
+        })
+    }
+
+    const setDetailEditMode = (value) => {
+        setState(prevState => ({
+            ...prevState,
+            edit: true
+        }))
+        form.setFieldsValue({
+            isEdit: value.id,
+            productName: value.productName,
+            edit: true,
         })
     }
 
@@ -153,6 +172,14 @@ export const AddPurchaseOrder = observer(() => {
         toggleSuccessReview();
     };
 
+    const handleCancelReviewEdit = () => {
+        // setIsModalVisible(false);
+        form.validateFields().then(values => {
+            form.resetFields();
+        });
+        toggleSuccessReviewDetailEdit();
+    };
+
     const handleCancelReviewDetail = () => {
         // setIsModalVisible(false);
         form.validateFields().then(values => {
@@ -190,15 +217,13 @@ export const AddPurchaseOrder = observer(() => {
             title={"Detail Product Name"}
             visible={state.detail}
             onOk={() => {
-                form
-                    .validateFields()
-                    .then(values => {
-
-                    })
-                    .catch(info => {
-                    });
+                form.validateFields().then(values => {
+                    form.resetFields();
+                });
+                toggleSuccessReviewDetail();
             }}
             onCancel={handleCancelReviewDetail}
+        // footer={null}
         >
             <Row>
                 <Col span={12}>Product Name : {item[0]?.productName}</Col>
@@ -226,10 +251,59 @@ export const AddPurchaseOrder = observer(() => {
         </Modal>
     }
 
+    async function editData(e) {
+        const data = {
+            productName: e.productName,
+        }
+
+        if (e.isEdit) {
+            store.products.updateProduct(e.isEdit, data)
+                .then(res => {
+                    message.success('Data Produk Di Update!');
+                    toggleSuccess();
+                    fetchData();
+                })
+                .catch(err => {
+                    message.error(`Error on Updating Member, ${err.message}`);
+                    message.error(err.message);
+                });
+        }
+    }
+
+    function ModalItemPurchaseEdit() {
+        return <Modal
+            title={"Edit Product"}
+            visible={state.edit}
+            onOk={() => {
+                form
+                    .validateFields()
+                    .then(values => {
+                        editData(values)
+                    })
+                    .catch(info => {
+                    });
+            }}
+            onCancel={handleCancelReviewEdit}
+        >
+            <Form layout="vertical" form={form} className={'custom-form'} name="form_in_modal" initialValues={initialData}>
+                <Form.Item name="isEdit" hidden={true}>
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="ProductName"
+                    name="productName"
+                    size={'large'}
+                    rules={[{ required: true, message: 'Please input your Product Name!' }]}
+                >
+                    <Input style={{ width: '98%' }} />
+                </Form.Item>
+            </Form>
+        </Modal>
+    }
 
     function ModalItemPurchaseReview() {
         return <Modal
-            title={"Detail Product Name"}
+            title={"Detail Product"}
             visible={state.form}
             onOk={() => {
                 form
@@ -377,7 +451,9 @@ export const AddPurchaseOrder = observer(() => {
                     <a style={{ marginRight: 10 }} onClick={() => {
                         setEditModeReviewDetail(record)
                     }}>Detail</a>
-                    <a style={{ marginRight: 10 }} >Edit</a>
+                    <a style={{ marginRight: 10 }} onClick={() => {
+                        setDetailEditMode(record)
+                    }}>Edit</a>
                     <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
                         <DeleteOutlined />
                     </Popconfirm>
@@ -457,7 +533,7 @@ export const AddPurchaseOrder = observer(() => {
             senderPhone: e.senderPhone,
             item: itemQuantity,
         }
-        console.log(data)
+        // console.log(data)
         store.purchase.AddPurchaseOrder(data).then(res => {
             setLoading(false);
             message.success('Berhasil Add Product');
@@ -549,6 +625,7 @@ export const AddPurchaseOrder = observer(() => {
                     </Col>
                 </Row>
             </div>
+            {ModalItemPurchaseEdit()}
             {ModalItemPurchaseReviewDetail()}
             {ModalItemPurchase()}
             {ModalItemPurchaseReview()}
