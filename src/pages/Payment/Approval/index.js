@@ -19,7 +19,20 @@ import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
 import { observer } from "mobx-react-lite";
 
-export const DetailPrintOut = observer(() => {
+export const ApprovalScreen = observer(() => {
+    const store = useStore();
+    const history = useHistory();
+
+    useEffect(() => {
+        fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const fetchData = () => {
+        // store.purchase.approveList();
+        // store.supliers.getSupplierProductReview()
+    }
+
     return <div>
         <Breadcrumb>
             <Breadcrumb.Item>
@@ -27,12 +40,8 @@ export const DetailPrintOut = observer(() => {
                 <Link to={'/app/dashboard'}>Home</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-                <span style={{ color: "#132743" }}>Product In</span>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>
-                <span style={{ color: "#132743" }}>Detail Print</span>
+                <span style={{ color: "#132743" }}>Approval</span>
             </Breadcrumb.Item>
         </Breadcrumb>
-        <h1>Berhasil Guys</h1>
     </div>
 })

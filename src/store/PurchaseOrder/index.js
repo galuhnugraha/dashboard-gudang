@@ -1,11 +1,13 @@
 import { action, observable } from 'mobx';
 import { http } from "../../utils/http";
+import * as qs from "querystring";
 
 const defaultStatus = {
     "status": ""
 };
 
 export class PurchaseOrder {
+    baseUrl: '/purchaseOrder';
     @observable isLoading = false;
     @observable data = [];
     @observable currentPage = 1;
@@ -13,6 +15,12 @@ export class PurchaseOrder {
     @observable maxLength = 0;
     @observable dataRef = [];
     @observable filterObject = {};
+    @observable query = {
+        pg: 1,
+        lm: 10,
+        warehouseId: '',
+      }
+
 
     @action
     filterResetStatus() {
@@ -45,13 +53,13 @@ export class PurchaseOrder {
     }
 
     @action
-    async getPurchaseOrderList() {
-        // if (filter != null) {
-        //   this.query.filter = filter;
-        // }
+    async getPurchaseOrderList(filter) {
+        if (filter != null) {
+          this.query.filter = filter;
+        }
         this.isLoading = true;
         const token = localStorage.getItem("token")
-        const data = await http.get("/purchaseOrder").set({ 'authorization': `Bearer ${token}` });
+        const data = await http.get('/purchaseOrder' + '?' + qs.stringify(this.query)).set({ 'authorization': `Bearer ${token}` });
         this.data = data.body.data;
         this.maxLength = data.body.totalData;
         this.isLoading = false;
@@ -130,5 +138,20 @@ export class PurchaseOrder {
                 this.isLoading = false;
                 throw err;
             });
-    }    
+    }   
+    
+    @action
+    approveList = async () => {
+        this.isLoading = true;
+        const token = localStorage.getItem("token")
+        return http.get(`/purchaseOrder/needApprovalList`).set({ 'authorization': `Bearer ${token}` })
+            .then((res) => {
+                this.isLoading = false;
+                return res;
+            })
+            .catch((err) => {
+                this.isLoading = false;
+                throw err;
+            });
+    }
 }

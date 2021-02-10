@@ -137,6 +137,11 @@ export const App = () => {
                 <span>Product Out</span>
               </Link>
             </Menu.Item>
+            <Menu.Item key="9">
+              <Link to="/app/approval">
+                <span>Approval</span>
+              </Link>
+            </Menu.Item>
           </SubMenu>
           <Menu.Item key="6">
             <Link to="/app/user-privillage">

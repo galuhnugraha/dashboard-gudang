@@ -6,10 +6,25 @@ import {
     PageHeader, Card, Button, Select, Table, Row, Col
 } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
+import {
+    DeleteOutlined,
+} from '@ant-design/icons';
 import { useStore } from "../../../../utils/useStores";
 import { observer } from "mobx-react-lite";
 import { PlusOutlined } from '@ant-design/icons';
 import moment from 'moment';
+
+
+const renderContent = (value, row, index) => {
+    const obj = {
+        children: value,
+        props: {},
+    };
+    if (index === 4) {
+        obj.props.colSpan = 0;
+    }
+    return obj;
+};
 
 export const AddPurchaseOrder = observer(() => {
     var myItem = new Array()
@@ -22,11 +37,13 @@ export const AddPurchaseOrder = observer(() => {
     const [form] = Form.useForm();
     const [state, setState] = useState({
         success: false,
-        form: false
+        form: false,
+        detail: false
     })
-    const [location , setLocation] =  useState('')
+    const [location, setLocation] = useState('');
+    const [filterProductSupliers, setFilterProductSupliers] = useState('');
     let x = '';
-    
+
     useEffect(() => {
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -53,6 +70,12 @@ export const AddPurchaseOrder = observer(() => {
         });
     })
 
+    const toggleSuccessReviewDetail = (() => {
+        setState({
+            detail: !state.detail,
+        });
+    })
+
     const setEditMode = (value) => {
         setState(prevState => ({
             ...prevState,
@@ -75,6 +98,17 @@ export const AddPurchaseOrder = observer(() => {
         })
     }
 
+    const setEditModeReviewDetail = (value) => {
+        setState(prevState => ({
+            ...prevState,
+            detail: true
+        }))
+        form.setFieldsValue({
+            isEdit: value._id,
+            detail: true,
+        })
+    }
+
 
     const onDetailProduct = async (val) => {
         store.supliers.detailSuplierQueryItem.suplierId = val
@@ -88,17 +122,20 @@ export const AddPurchaseOrder = observer(() => {
                 key: i,
                 id: e.product?._id,
                 productName: e.product?.productName,
+                suplierName: e.suplier?.suplierName,
+                suplierPhone: e.suplier?.suplierPhone,
+                suplierAddress: e.suplier?.suplierAddress?.address,
                 pricePerUnit: e.product?.pricePerUnit,
                 quantity: e.product?.quantity,
                 rack: e.product?.rack,
+                location: e.product?.location,
+                grosirPrice: e.product?.grosirPrice,
                 sku: e.product?.sku
             }
             return obj;
         })
         setItem(dataTable)
     }
-
-
 
     const handleCancel = () => {
         // setIsModalVisible(false);
@@ -114,6 +151,14 @@ export const AddPurchaseOrder = observer(() => {
             form.resetFields();
         });
         toggleSuccessReview();
+    };
+
+    const handleCancelReviewDetail = () => {
+        // setIsModalVisible(false);
+        form.validateFields().then(values => {
+            form.resetFields();
+        });
+        toggleSuccessReviewDetail();
     };
 
     const onFinishSupliers = values => {
@@ -140,6 +185,48 @@ export const AddPurchaseOrder = observer(() => {
         });
     }
 
+    function ModalItemPurchaseReviewDetail() {
+        return <Modal
+            title={"Detail Product Name"}
+            visible={state.detail}
+            onOk={() => {
+                form
+                    .validateFields()
+                    .then(values => {
+
+                    })
+                    .catch(info => {
+                    });
+            }}
+            onCancel={handleCancelReviewDetail}
+        >
+            <Row>
+                <Col span={12}>Product Name : {item[0]?.productName}</Col>
+            </Row>
+            <Row>
+                <Col span={12}>Grosir Price : {item[0]?.grosirPrice}</Col>
+                {/* <Col span={12}>Rak :  {selectedDataProduct[0]?.rack}</Col>
+                <Col span={12}>Selfing :  {selectedDataProduct[0]?.selfing}</Col> */}
+            </Row>
+            <Row>
+                <Col span={12}>Price Per Unit : {item[0]?.pricePerUnit}</Col>
+                {/* <Col span={12}>LT :  {selectedDataProduct[0]?.lt}</Col>
+                <Col span={12}>Room : {selectedDataProduct[0]?.room}</Col> */}
+            </Row>
+            <Row>
+                <Col span={12}>SKU : {item[0]?.sku}</Col>
+                {/* <Col span={12}>LT :  {selectedDataProduct[0]?.lt}</Col>
+                <Col span={12}>Room : {selectedDataProduct[0]?.room}</Col> */}
+            </Row>
+            <Row>
+                <Col span={12}>Location : {item[0]?.location}</Col>
+                {/* <Col span={12}>LT :  {selectedDataProduct[0]?.lt}</Col>
+                <Col span={12}>Room : {selectedDataProduct[0]?.room}</Col> */}
+            </Row>
+        </Modal>
+    }
+
+
     function ModalItemPurchaseReview() {
         return <Modal
             title={"Detail Product Name"}
@@ -155,6 +242,19 @@ export const AddPurchaseOrder = observer(() => {
             }}
             onCancel={handleCancelReview}
         >
+            <Row>
+                <Col span={12}>Supliers Name : {item[0]?.suplierName}</Col>
+            </Row>
+            <Row>
+                <Col span={12}>Supliers Phone : {item[0]?.suplierPhone}</Col>
+                {/* <Col span={12}>Rak :  {selectedDataProduct[0]?.rack}</Col>
+                <Col span={12}>Selfing :  {selectedDataProduct[0]?.selfing}</Col> */}
+            </Row>
+            <Row>
+                <Col span={12}>Supliers Address : {item[0]?.suplierAddress}</Col>
+                {/* <Col span={12}>LT :  {selectedDataProduct[0]?.lt}</Col>
+                <Col span={12}>Room : {selectedDataProduct[0]?.room}</Col> */}
+            </Row>
         </Modal>
     }
 
@@ -212,17 +312,7 @@ export const AddPurchaseOrder = observer(() => {
         </Modal>
     }
 
-    // const onFinish = values => {
-    //     dataPost(values);
-    // };
-
     const columns = [
-        // {
-        //     title: 'No',
-        //     dataIndex: 'no',
-        //     key: 'no',
-        //     // record: (text,record) => <span>{record+1}</span>
-        // },
         {
             title: 'Kode Barang',
             dataIndex: 'sku',
@@ -235,11 +325,13 @@ export const AddPurchaseOrder = observer(() => {
             key: 'productName',
             render: (text, record) => {
                 return (<div>
-                  <a style={{ color: '#132743' }} onClick={() => {
-                      setEditModeReview(record)
-                  }}>{text}</a>
+                    <a style={{ color: '#132743' }} onClick={() => {
+                        console.log(record)
+                        setFilterProductSupliers(record)
+                        setEditModeReview(record)
+                    }}>{text}</a>
                 </div>)
-              },
+            },
         },
         {
             title: 'Quantity',
@@ -270,21 +362,71 @@ export const AddPurchaseOrder = observer(() => {
             dataIndex: 'status',
             key: 'status',
             render: (text, record, index) => <div>
-            <Input onChange={(val) => {
-                // setItem(val)
-                item[index].status = val.target.value;
-                setItem(item);
-            }} />
-        </div>
+                <Input onChange={(val) => {
+                    // setItem(val)
+                    item[index].status = val.target.value;
+                    setItem(item);
+                }} />
+            </div>
         },
         {
             title: 'Action',
             dataIndex: 'action',
             render: (_, record) => (
-                <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
-                    <a>Delete</a>
-                </Popconfirm>
+                <div>
+                    <a style={{ marginRight: 10 }} onClick={() => {
+                        setEditModeReviewDetail(record)
+                    }}>Detail</a>
+                    <a style={{ marginRight: 10 }} >Edit</a>
+                    <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
+                        <DeleteOutlined />
+                    </Popconfirm>
+                </div>
             )
+        },
+    ];
+
+    const columnsReview = [
+        {
+            title: 'Di input oleh ',
+            dataIndex: 'pic',
+            render: (record) => <span>
+                <h3>{localStorage.getItem("name")}</h3>
+                <p>{moment().format('MMMM Do YYYY, h:mm:ss a')}</p>
+            </span>
+        },
+        {
+            title: 'Kepala Gudang',
+            colSpan: 2,
+            dataIndex: 'tel',
+            render: (value, row, index) => <span>
+                {/* <Input onChange={(val) => {
+                    // setItem(val)
+                    // item[index].quantity = val.target.value;
+                    // setItem(item);
+                }} /> */}
+                <p>Kosong</p>
+                {/* <p>{moment().format('MMMM Do YYYY, h:mm:ss a')}</p> */}
+            </span>
+        },
+        {
+            title: 'Phone',
+            colSpan: 0,
+            dataIndex: 'phone',
+            render: () => <span>
+                <p>Kosong</p>
+            </span>,
+        }
+    ];
+
+    const data = [
+        {
+            key: '1',
+            name: 'John Brown',
+            age: 32,
+            tel: '0571-22098909',
+            phone: 18889898989,
+            address: 'New York No. 1 Lake Park',
         },
     ];
 
@@ -296,8 +438,6 @@ export const AddPurchaseOrder = observer(() => {
     const getID = (val) => {
         newID = val
     }
-
-
 
     const dataPost = (e) => {
         setLoading(true);
@@ -311,17 +451,13 @@ export const AddPurchaseOrder = observer(() => {
             return obj;
         })
         const data = {
-            // purchaseName: e.purchaseName,
             pic: localStorage.getItem("name"),
-            upperPic: e.upperPic,
             sender: e.sender,
-            noref: e.noref,
-            warehouseId: e.warehouseId,
-            // password: e.password,
-            senderAddress: e.senderAddress,
+            // noref: e.noref,
             senderPhone: e.senderPhone,
             item: itemQuantity,
         }
+        console.log(data)
         store.purchase.AddPurchaseOrder(data).then(res => {
             setLoading(false);
             message.success('Berhasil Add Product');
@@ -332,17 +468,15 @@ export const AddPurchaseOrder = observer(() => {
         });
     }
 
-    // console.log(store.noRef.data.codeNumber)
-
     return <div>
         <Breadcrumb>
             <Breadcrumb.Item>
                 {/* Home */}
                 <Link to={'/app/dashboard'}>Home</Link>
             </Breadcrumb.Item>
-            <Breadcrumb.Item>
+            {/* <Breadcrumb.Item>
                 <Link to={'/app/product-in'}>Product In</Link>
-            </Breadcrumb.Item>
+            </Breadcrumb.Item> */}
             <Breadcrumb.Item>
                 <span style={{ color: "#132743" }}>Input Product In</span>
             </Breadcrumb.Item>
@@ -401,11 +535,11 @@ export const AddPurchaseOrder = observer(() => {
                                     </div>
                                 )}
                             >
-                                {store.supliers.data.map(d => <Select.Option value={[d.suplierName,d._id]} key={d._id}>{d.suplierName}</Select.Option>)}
+                                {store.supliers.data.map(d => <Select.Option value={[d.suplierName, d._id]} key={d._id}>{d.suplierName}</Select.Option>)}
                             </Select>
                         </Row>
                         <div style={{ marginTop: 25 }}>
-                            <p>Alamat  : {location}</p>
+                            <p>Alamat  : {item[0]?.suplierAddress}</p>
                         </div>
                     </Col>
                     <Col>
@@ -415,6 +549,7 @@ export const AddPurchaseOrder = observer(() => {
                     </Col>
                 </Row>
             </div>
+            {ModalItemPurchaseReviewDetail()}
             {ModalItemPurchase()}
             {ModalItemPurchaseReview()}
             <Table dataSource={item} columns={columns} rowKey={record => record._id} style={{ marginLeft: '12px' }} />
@@ -437,10 +572,10 @@ export const AddPurchaseOrder = observer(() => {
                         </Form.Item>
                     </Col>
                     <Col style={{ marginRight: 45, marginTop: 10 }}>
-                        <p>Di Input Oleh : </p>
+                        {/* <p>Di Input Oleh : </p>
                         <h3>{localStorage.getItem("name")}</h3>
-                        <p>{moment().format('MMMM Do YYYY, h:mm:ss a')}</p>
-                        {/* <Table columns={columnsBarang} dataSource={dataBarang}/> */}
+                        <p>{moment().format('MMMM Do YYYY, h:mm:ss a')}</p> */}
+                        <Table columns={columnsReview} dataSource={data} bordered pagination={false} />
                     </Col>
                 </Row>
                 <Form.Item

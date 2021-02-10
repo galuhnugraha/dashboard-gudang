@@ -55,11 +55,11 @@ export const DetailSuplierScreen = observer(() => {
             dataIndex: 'pricePerUnit',
             key: 'pricePerUnit',
         },
-        {
-            title: 'Quantity',
-            dataIndex: 'quantity',
-            key: 'quantity',
-        },
+        // {
+        //     title: 'Stok',
+        //     dataIndex: 'quantity',
+        //     key: 'quantity',
+        // },
     ];
 
     return <div>

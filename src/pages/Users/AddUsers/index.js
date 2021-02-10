@@ -19,7 +19,7 @@ export const DataInputUserScreen = observer(() => {
             <PageHeader
                 className={"card-page-header"}
                 subTitle=""
-                title={"Input Users"}
+                title={"Input Departemen"}
             />
             <Form
                 layout={'vertical'}
@@ -34,21 +34,6 @@ export const DataInputUserScreen = observer(() => {
                     rules={[{ required: true, message: 'Please input your Product Name!' }]}
                 >
                     <Input style={{ width: '98%' }} />
-                </Form.Item>
-                <Form.Item
-                    label="Password"
-                    // name="productName"
-                    size={'large'}
-                    rules={[{ required: true, message: 'Please input your Product Name!' }]}
-                >
-                    <Input.Password style={{ width: '98%' }} type="password" />
-                </Form.Item>
-                <Form.Item label="Role">
-                    <Select defaultValue="Pilih Role" style={{ width: '98%' }}>
-                        <Option value="Admin">Admin</Option>
-                        <Option value="Supervisor">Supervisor</Option>
-                        <Option value="HRD">HRD</Option>
-                    </Select>
                 </Form.Item>
                 <Form.Item
                     style={{

@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
-import { Form, Input, Breadcrumb, message, PageHeader, Card, Button,Table } from 'antd';
+import { Form, Input, Breadcrumb, Space, PageHeader, Card, Button, Table } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../utils/useStores";
 import {
   PlusOutlined,
+  EditOutlined,
+  DeleteOutlined
 } from '@ant-design/icons';
 import { observer } from "mobx-react-lite";
 
@@ -15,26 +17,38 @@ export const DataUserScreen = observer(() => {
     {
       key: '1',
       name: 'Mike',
-      age: 32,
-      address: '10 Downing Street',
     },
     {
       key: '2',
       name: 'John',
-      age: 42,
-      address: '10 Downing Street',
     },
   ];
-  
+
   const columns = [
     {
-      title: 'Name',
-    },
-    {
-      title: 'Role',
+      title: 'Nama Departemen',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
       title: 'Action',
+      render: (text, record) => (
+        <Space size="middle">
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div>
+              <EditOutlined />
+            </div>
+            <div style={{ marginLeft: 8 }}>
+              <DeleteOutlined />
+            </div>
+            <div style={{marginLeft: 8}}>
+              <PlusOutlined  onClick={() => {
+                history.push("/app/privillage")
+              }}/>
+            </div>
+          </div>
+        </Space>
+      ),
     },
   ];
 
@@ -52,12 +66,12 @@ export const DataUserScreen = observer(() => {
       <PageHeader
         className="card-page-header"
         subTitle=""
-        title={"Users"}
+        title={"Data Departemen"}
         extra={[
           <Search
             placeholder="Search...."
             style={{ width: 200 }}
-            // key={row => row._id}
+          // key={row => row._id}
           />,
           <Button
             key={"1"}
@@ -65,11 +79,11 @@ export const DataUserScreen = observer(() => {
               history.push("/app/input-user-privillage")
             }}
           >
-            <PlusOutlined /> New
+            Tambah
           </Button>,
         ]}
       />
-      <Table  columns={columns} hasEmpty style={{marginLeft: '12px'}}/>
+      <Table dataSource={dataSource} columns={columns} size="small" hasEmpty style={{ marginLeft: '12px' }} />
     </Card>
   </div>
 })

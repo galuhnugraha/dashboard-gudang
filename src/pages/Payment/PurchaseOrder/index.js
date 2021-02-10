@@ -5,14 +5,15 @@ import {
     Popconfirm, Input,
     Form, Modal,
     message, Breadcrumb,
-    PageHeader, Card, Button,
+    PageHeader, Card, Button,Select
 } from 'antd';
 import {
     DeleteOutlined,
     EditOutlined,
     PlusOutlined,
     EyeOutlined,
-    PrinterOutlined
+    PrinterOutlined,
+    FilterOutlined
     // DownloadOutlined
 } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
@@ -32,28 +33,68 @@ export const PurchaseOrderScreen = observer((initialData) => {
     const [state, setState] = useState({
         success: false,
         purchase: false,
-        delete: false
-        // warehouseID: '',
+        delete: false,
+        warehouseId: '',
     });
     const [loading, setLoading] = useState(false);
     const [productId, setProductId] = useState('');
-    // const [status, setStatus] = useState('');
-    const [prOutId, setPrOut] = useState('')
+    const [id,setId] = useState('');
+    const [filterModal, setFilterModal] = useState(false);
+    const [filterQuery, setFilterQuery] = useState({});
+    const [prOutId, setPrOut] = useState('');
+    const [newModal,setNewModal] = useState(false);
 
     useEffect(() => {
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [filterQuery])
 
     async function fetchData() {
         await store.purchase.getPurchaseOrderList();
+        await store.barang.getDropdown();
     }
 
-    const appRender = () => {
-        var workbook = xlsx.utils.book_new();
-        var ws = xlsx.utils.json_to_sheet(dataReview);
-        xlsx.utils.book_append_sheet(workbook, ws, "Results");
-        xlsx.writeFile(workbook, 'out.xlsx', { type: 'file' });
+    // const appRender = () => {
+    //     var workbook = xlsx.utils.book_new();
+    //     var ws = xlsx.utils.json_to_sheet(dataReview);
+    //     xlsx.utils.book_append_sheet(workbook, ws, "Results");
+    //     xlsx.writeFile(workbook, 'out.xlsx', { type: 'file' });
+    // }
+
+    const barang = store.barang.data.map((e) => {
+        // console.log(barang)
+        let data = {
+            id: e._id,
+            warehouseName: e.warehouseName,
+            warehosueLocation: e.warehosueLocation
+        }
+        return data;
+    })
+
+    console.log(barang)
+
+    function onOkFilter() {
+        console.log()
+        // console.log(value)
+        // setNewModal(false);
+        history.push("/app/input-product-in")
+        // return value.id == id
+    }
+
+    function resetFilter() {
+        form.validateFields().then((values) => {
+            form.resetFields();
+        });
+
+        setState({
+            warehouseId: '',
+        });
+        store.purchase.query.warehouseId = ''
+        delete filterQuery['warehouse']
+        setFilterQuery({
+            ...filterQuery,
+        })
+        setFilterModal(false);
     }
 
     const setEditMode = (value) => {
@@ -70,6 +111,80 @@ export const PurchaseOrderScreen = observer((initialData) => {
             pic: value.pic,
         })
     }
+
+    function modalFilterNew() {
+        return <Modal
+            maskClosable={false}
+            closable={false}
+            afterClose={() => {
+                setNewModal(false)
+            }}
+            title={"New"}
+            visible={newModal}
+            footer={[
+                // <Button key="reset" onClick={() => {
+                //     resetFilter()
+                // }}>Reset Filter</Button>,
+                <Button key="2" onClick={() => setNewModal(false)}>
+                    Cancel
+                </Button>,
+                <Button key="1" style={{ backgroundColor: '#132743', color: 'white' }} onClick={(value) => {
+                    onOkFilter()
+                }}>
+                    New
+                </Button>,
+            ]}
+        >
+            <Form initialValues={initialData} form={form} layout="vertical">
+                <Form.Item label="Warehouse" name="_id" >
+                    <Select placeholder="Select Warehouse" style={{ width: '97%' }} onChange={(value) => {
+                        // setState({ warehouseId: value });
+                        // setId(value)
+                        console.log(value)
+                    }}>
+                        {store.barang.data.map(d => <Select.Option value={d._id} key={d._id}>{d.warehouseName}</Select.Option>)}
+                    </Select>
+                </Form.Item>
+            </Form>
+        </Modal>
+    }
+
+    // function modalFilter() {
+    //     return <Modal
+    //         maskClosable={false}
+    //         closable={false}
+    //         afterClose={() => {
+    //             setFilterModal(false)
+    //         }}
+    //         title={"Filter"}
+    //         visible={filterModal}
+    //         footer={[
+    //             <Button key="reset" onClick={() => {
+    //                 resetFilter()
+    //             }}>Reset Filter</Button>,
+    //             <Button key="2" onClick={() => setFilterModal(false)}>
+    //                 Cancel
+    //             </Button>,
+    //             <Button key="1" style={{ backgroundColor: '#132743', color: 'white' }} onClick={(value) => {
+    //                 onOkFilter()
+    //             }}>
+    //                 Filter
+    //             </Button>,
+    //         ]}
+    //     >
+    //         <Form initialValues={initialData} form={form} layout="vertical">
+    //             <Form.Item label="Warehouse" name="_id" >
+    //                 <Select placeholder="Select Warehouse" style={{ width: '97%' }} onChange={(value) => {
+    //                     // setState({ warehouseId: value });
+    //                     // setId(value)
+    //                     console.log(value)
+    //                 }}>
+    //                     {store.barang.data.map(d => <Select.Option value={d._id} key={d._id}>{d.warehouseName}</Select.Option>)}
+    //                 </Select>
+    //             </Form.Item>
+    //         </Form>
+    //     </Modal>
+    // }
 
     const toggleSuccess = (() => {
         setState({
@@ -274,7 +389,7 @@ export const PurchaseOrderScreen = observer((initialData) => {
         }
         return dataPurchase
     })
-    
+
 
     // function FilterPurchase(value) {
     //     // console.log(value.status)
@@ -386,22 +501,23 @@ export const PurchaseOrderScreen = observer((initialData) => {
                         <Button
                             key={"1"}
                             onClick={() => {
-                                history.push("/app/input-product-in")
+                                // history.push("/app/input-product-in")
+                                setNewModal(true)
                             }}
                         >
                             <PlusOutlined /> New
                         </Button>,
                         <Button
                             key={"2"}
-                            onClick={() => {
-                                appRender()
-                            }}
+                            onClick={() => setFilterModal(true)}
                         >
-                            <PrinterOutlined /> Export
+                            <FilterOutlined /> Filter
                     </Button>,
                     ]}
                 />
-                {ModalItemPassword()}
+                {/* {modalFilter()} */}
+                {/* {ModalItemPassword()} */}
+                {modalFilterNew()}
                 {ModalItemPurchase()}
                 {renderModal()}
                 <Table

@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
 import {
-  Table,
-  Space,
-  Popconfirm, Input,
-  message, Breadcrumb,
-  PageHeader, Card,Modal, Form,
+  message, Tabs, Breadcrumb, Card, PageHeader, Input, Button
 } from 'antd';
-import {
-  DeleteOutlined,
-} from '@ant-design/icons';
+// import {
+//   DeleteOutlined,
+// } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
 import { observer } from "mobx-react-lite";
-import moment from "moment";
+import { DetailWarehouseBarangScreen } from "./DetailBarang";
+import { DetailWarehouseSuplierScreen } from "./DetailSuplier";
+import { DetailWarehouseHistoryBarangScreen } from "./DetailHistoryBarang";
+// import moment from "moment";
 
 
 function cancel(e) {
@@ -22,11 +21,8 @@ function cancel(e) {
 export const DetailWarehouseScreen = observer((initialData) => {
   const store = useStore();
   const history = useHistory();
-  const [form] = Form.useForm();
-  const [state, setState] = useState({
-    success: false,
-    warehouseId: '',
-  });
+  const { TabPane } = Tabs;
+  const { Search } = Input;
   // const [filterQuery, setFilterQuery] = useState({});
   useEffect(() => {
     fetchData();
@@ -42,217 +38,38 @@ export const DetailWarehouseScreen = observer((initialData) => {
     // await store.barang.getDropdown();
   }
 
-  const data = store.warehouse.data.map((e) => {
-    return {
-      productName: e.productName,
-      status: e.status,
-      quantity: e.product?.quantity,
-      createdAt: e.createdAt,
-      updatedAt: e.updatedAt,
-      _id: e._id,
-      // warehouseName: e.warehouse?.warehouseName
-    } 
-  })
-  // console.log(data.warehouse.warehouseName,'test')
 
-  function confirm(_id) {
-    store.warehouse.deleteWarehouse(_id).then((res) => {
-      message.success('Success delete Warehouse')
-      history.push('/app/data-warehouse');
-      fetchData();
-    }).catch(err => {
-      // message.error(err.response.body.message)
-    })
+  function callback(key) {
+    console.log(key);
   }
 
-  const deleteClick = (_id) => {
-    confirm(_id);
-  }
-
-  const { Search } = Input;
-
-  const toggleSuccess = (() => {
-    setState({
-      success: !state.success,
-    });
-  })
-
-  async function editData(e) {
-    const data = {
-      quantity: e.quantity
-    }
-
-    if (e.isEdit) {
-      store.warehouse.updateWarehouse(e.isEdit, data)
-        .then(res => {
-          message.success('Data Warehouse Di Update!');
-          toggleSuccess();
-          fetchData();
-        })
-        .catch(err => {
-          message.error(`Error on Updating Warehouse, ${err.message}`);
-          message.error(err.message);
-        });
-    }
-  }
-
-  {
-    const columns = [
-
-      {
-        title: 'Nama Barang',
-        dataIndex: 'productName',
-        key: 'productName',
-        render: (record) => <span>{record}</span>
-      },
-      {
-        title: 'Suplier',
-        dataIndex: 'quantity',
-        key: 'quantity',
-      },
-      {
-        title: 'History Barang',
-        dataIndex: 'status',
-        key: 'status',
-        render: (record) => <span>{record}</span>
-      },
-      // {
-      //   title: 'Created at',
-      //   dataIndex: 'createdAt',
-      //   key: 'createdAt',
-      //   render: (record) => moment(record).format("DD/MM/YY, H:mm:ss")
-      // },
-      // {
-      //   title: 'Updated at',
-      //   dataIndex: 'updatedAt',
-      //   key: 'updatedAt',
-      //   render: (record) => moment(record).format("DD/MM/YY, H:mm:ss")
-      // },
-      {
-        title: 'Action',
-        key: 'action',
-        render: (text, record) => (
-          <Space size="middle">
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <Popconfirm
-                title="Apakah Anda Yakin Ingin Hapus Data Ini?"
-                onConfirm={() => {
-                  deleteClick(record._id)
-                }}
-                onCancel={cancel}
-                okText="Yes"
-                cancelText="No"
-              >
-                <DeleteOutlined style={{ marginLeft: 6 }} />
-              </Popconfirm>
-            </div>
-          </Space>
-        ),
-      },
-    ];
-
-
-    return <div style={{ paddingLeft: 10, paddingRight: 10 }}>
-      <Breadcrumb>
-        <Breadcrumb.Item>
-          {/* Home */}
-          <Link to={'/app/dashboard'}>Home</Link>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>
-          {/* Home */}
-          <Link to={'/app/data-warehouse'}>Data Warehouse</Link>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>
-          <span style={{ color: "#132743" }}>Detail Warehouse</span>
-        </Breadcrumb.Item>
-      </Breadcrumb>
-      <Card bordered={false} className={"shadow"} bodyStyle={{ padding: 0, marginTop: 25, borderRadius: 10, boxShadow: '0 0 10px  0  rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.10)' }}>
-        <PageHeader
-          className={"card-page-header"}
-          subTitle=""
-          title={"Detail Warehouse"}
-          extra={[
-            <Search
-              placeholder="Search...."
-              style={{ width: 200 }}
-              key={row => row._id}
-              onSearch={(value) => {
-                store.warehouseData.selectedFilterValue = value;
-                // store.warehouse.setPage(1);
-                // store.member.search(value);
-                console.log(value,'tes')
-              }}
-              onChange={event => {
-                // onSearchProduct(event.target.value)
-                store.warehouse.selectedFilterValue = event.target.value;
-                // store.warehouse.detailWarehouseQuery.warehouseId = event
-                store.warehouse.setPageDebounced();
-              }}
-            />,
-          ]}
-        />
-        {/* {modalFilter()} */}
-        {renderModal()}
-        <Table
-          rowKey={record => record._id}
-          hasEmpty
-          style={{ paddingLeft: '12px' }}
-          size={"small"}
-          columns={columns}
-          dataSource={data}
-          onChange={(page) => {
-            store.warehouse.setPage(page.current);
-          }}
-          current={store.warehouse.currentPage}
-          pagination={{
-            total: store.warehouse.maxLength,
-            onShowSizeChange: (current, pageSize) => {
-              store.warehouse.setCurrentPage(pageSize);
-            }
-          }}
-          loading={store.warehouse.isLoading}
-        />
-      </Card>
-    </div>
-  }
-  function renderModal() {
-    return <Modal visible={state.success}
-      closable={false}
-      confirmLoading={false}
-      destroyOnClose={true} title="Update Warehouse"
-      okText="Save"
-      cancelText="Cancel"
-      bodyStyle={{ background: '#f7fafc' }}
-      onCancel={() => {
-        form.validateFields().then(values => {
-          form.resetFields();
-        });
-        toggleSuccess();
-      }}
-      onOk={() => {
-        form
-          .validateFields()
-          .then(values => {
-            editData(values)
-          })
-          .catch(info => {
-
-          });
-      }}
-    >
-      <Form layout="vertical" form={form} className={'custom-form'} name="form_in_modal" initialValues={initialData}>
-        <Form.Item name="isEdit" hidden={true}>
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Quantity"
-          name="quantity"
-          size={'large'}
-          rules={[{ required: true, message: 'Please input your Product Name!' }]}
-        >
-          <Input style={{ width: '98%' }} />
-        </Form.Item>
-      </Form>
-    </Modal>
-  }
+  return <div>
+    <Breadcrumb>
+      <Breadcrumb.Item>
+        {/* Home */}
+        <Link to={'/app/dashboard'}>Home</Link>
+      </Breadcrumb.Item>
+      <Breadcrumb.Item>
+        <span style={{ color: "#132743" }}>Data Supplier</span>
+      </Breadcrumb.Item>
+    </Breadcrumb>
+    <Card bordered={false} className={"shadow"} bodyStyle={{ padding: 0, marginTop: 25, borderRadius: 10, boxShadow: '0 0 10px  0  rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.10)' }}>
+      <PageHeader
+        className={"card-page-header"}
+        subTitle=""
+        title={"Detail Warehouse"}
+      />
+      <Tabs defaultActiveKey="1" onChange={callback} style={{marginLeft: '18px'}}>
+        <TabPane tab="Barang" key="1">
+          <DetailWarehouseBarangScreen />
+        </TabPane>
+        <TabPane tab="Supplier" key="2">
+          <DetailWarehouseSuplierScreen />
+        </TabPane>
+        <TabPane tab="History Barang" key="3">
+          <DetailWarehouseHistoryBarangScreen />
+        </TabPane>
+      </Tabs>
+    </Card>
+  </div>
 })
