@@ -21,7 +21,10 @@ export const DataUserScreen = observer((initialData) => {
   const [loading, setLoading] = useState(false);
   const [state, setState] = useState({
     success: false,
+    dapartment: '',
+    postion: ''
   });
+  const [filterQuery, setFilterQuery] = useState({});
 
   useEffect(() => {
     fetchData();
@@ -30,6 +33,19 @@ export const DataUserScreen = observer((initialData) => {
 
   function fetchData() {
     store.user.getAll();
+  }
+
+  function onDetailProduct(value) {
+    // setState({warehouseId: value})
+    // store.user.query.dapartment = value.option
+    // store.user.query.postion = value.subOption
+    setFilterQuery({
+      ...filterQuery,
+      dapartment: state.position,
+      postion: state.position
+    })
+    history.push("/app/privillage-detail/" + value.option + value.subOption)
+    // console.log(value,'console ')
   }
 
   const toggleSuccess = (() => {
@@ -98,7 +114,7 @@ export const DataUserScreen = observer((initialData) => {
     {
       title: 'Nama Departemen',
       dataIndex: 'option',
-      key: 'option',
+      key: 'option'
     },
     {
       title: 'Posisi',
@@ -168,7 +184,26 @@ export const DataUserScreen = observer((initialData) => {
         ]}
       />
       {renderModal()}
-      <Table dataSource={store.user.data.slice()} columns={columns} loading={store.user.loading} size="small" hasEmpty style={{ marginLeft: '12px' }} />
+      <Table dataSource={store.user.data.slice()} columns={columns}
+       loading={store.user.loading} size="small" 
+       hasEmpty 
+       style={{ marginLeft: '12px' }} 
+      //  onHeaderRow={(columns, index) => {
+      //   return {
+      //     onClick: () => {
+      //       console.log(columns)
+      //       console.log(index)
+      //     }, // click header row
+      //   };
+      // }}
+      onRow={(record, rowIndex) => {
+        return {
+          onClick: event => {
+            onDetailProduct(record)
+          }, // click row
+        };
+      }}
+       />
     </Card>
   </div>
   function renderModal() {
