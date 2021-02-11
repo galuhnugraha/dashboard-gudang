@@ -250,7 +250,6 @@ export const DataProdukScreen = observer((initialData) => {
       ...filterQuery,
       warehouseID: state.warehouseID
     })
-
     setFilterModal(false);
   }
 

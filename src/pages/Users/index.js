@@ -29,23 +29,29 @@ export const DataUserScreen = observer((initialData) => {
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [filterQuery]);
 
   function fetchData() {
     store.user.getAll();
+    store.user.getUsersPrivillage();
   }
 
   function onDetailProduct(value) {
-    // setState({warehouseId: value})
-    // store.user.query.dapartment = value.option
-    // store.user.query.postion = value.subOption
+    store.user.query.dapartment = value
     setFilterQuery({
       ...filterQuery,
-      dapartment: state.position,
-      postion: state.position
+      dapartment: value,
     })
-    history.push("/app/privillage-detail/" + value.option + value.subOption)
-    // console.log(value,'console ')
+    history.push("/app/privillage-detail")
+  }
+
+  function onDetailProductReview(value) {
+    store.user.query.postion = value
+    setFilterQuery({
+      ...filterQuery,
+      postion: value,
+    })
+    // history.push("/app/privillage-detail")
   }
 
   const toggleSuccess = (() => {
@@ -197,11 +203,25 @@ export const DataUserScreen = observer((initialData) => {
       //   };
       // }}
       onRow={(record, rowIndex) => {
+        // return {
+        //   onClick: event => {
+        //     // console.log(rowIndex)
+        //     onDetailProduct(record)
+        //     console.log(record)
+        //   }, // click row
+        // };
         return {
           onClick: event => {
-            onDetailProduct(record)
+            // console.log(rowIndex)
+            // console.log(record._id)
+            onDetailProduct(record.option)
+            // console.log(record.option)
+            onDetailProductReview(record.subOption)
           }, // click row
-        };
+          onChange: page => setState({
+            dapartment: page
+          })
+        }
       }}
        />
     </Card>

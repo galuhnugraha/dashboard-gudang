@@ -97,7 +97,7 @@ export const AppRoutes = () => {
     <Route path="/app/input-privillage" exact>
       <AddPrivillageScreen />
     </Route>
-    <Route path="/app/privillage-detail/:id" exact>
+    <Route path="/app/privillage-detail" exact>
       <DetailPrivillageScreen />
     </Route>
   </Switch>
