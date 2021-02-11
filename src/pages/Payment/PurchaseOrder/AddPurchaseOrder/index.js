@@ -53,7 +53,7 @@ export const AddPurchaseOrder = observer((initialData) => {
     const fetchData = () => {
         store.supliers.getSupplier();
         store.warehouse.getDataWarehouse();
-        store.noRef.getNoRef();
+        // store.noRef.get
         // store.supliers.getSupplierProductReview()
     }
 
@@ -529,7 +529,7 @@ export const AddPurchaseOrder = observer((initialData) => {
         const data = {
             pic: localStorage.getItem("name"),
             sender: e.sender,
-            // noref: e.noref,
+            noref: x,
             senderPhone: e.senderPhone,
             item: itemQuantity,
         }

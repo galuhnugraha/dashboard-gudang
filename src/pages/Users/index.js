@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Form, Input, Breadcrumb, Space, PageHeader, Card, Button, Table } from 'antd';
+import React, { useEffect, useState } from "react";
+import { Form, Input, Breadcrumb, Switch, Space,Popconfirm, PageHeader, Card, Button, message, Table, Modal } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../utils/useStores";
 import {
@@ -9,26 +9,101 @@ import {
 } from '@ant-design/icons';
 import { observer } from "mobx-react-lite";
 
-export const DataUserScreen = observer(() => {
-  const { Search } = Input;
-  const history = useHistory()
+function cancel(e) {
+  message.error('Click on No');
+}
 
-  const dataSource = [
-    {
-      key: '1',
-      name: 'Mike',
-    },
-    {
-      key: '2',
-      name: 'John',
-    },
-  ];
+export const DataUserScreen = observer((initialData) => {
+  const { Search } = Input;
+  let history = useHistory();
+  const [form] = Form.useForm();
+  const store = useStore();
+  const [loading, setLoading] = useState(false);
+  const [state, setState] = useState({
+    success: false,
+  });
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function fetchData() {
+    store.user.getAll();
+  }
+
+  const toggleSuccess = (() => {
+    setState({
+      success: !state.success,
+    });
+  })
+
+  const setEditMode = (value) => {
+    setState(prevState => ({
+      ...prevState,
+      success: true
+    }))
+    form.setFieldsValue({
+      isEdit: value._id,
+      isActive: value.isActive,
+      success: true,
+      option: value.option,
+      subOption: value.subOption,
+      url: value.url
+    })
+  }
+
+  async function editData(e) {
+    setLoading(true);
+    const data = {
+      option: e.option,
+      isActive: e.isActive,
+      subOption: e.subOption,
+      url: e.url
+    }
+
+    if (e.isEdit) {
+      store.user.updateDepartement(e.isEdit, data)
+        .then(res => {
+          setLoading(false);
+          message.success('Data Produk Di Update!');
+          toggleSuccess();
+          fetchData();
+        })
+        .catch(err => {
+          setLoading(false);
+          // message.error(err.message);
+        });
+    }
+  }
+
+  const deleteClick = (_id) => {
+    confirm(_id);
+  }
+
+  function confirm(_id) {
+    setLoading(true);
+    store.user.deleteDepartemen(_id).then((res) => {
+      setLoading(false);
+      message.success('Success delete Suplier')
+      history.push('/app/user-privillage');
+      fetchData();
+    }).catch(err => {
+      setLoading(false);
+      // message.error(err)
+    })
+  }
 
   const columns = [
     {
       title: 'Nama Departemen',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'option',
+      key: 'option',
+    },
+    {
+      title: 'Posisi',
+      dataIndex: 'subOption',
+      key: 'subOption',
     },
     {
       title: 'Action',
@@ -36,15 +111,24 @@ export const DataUserScreen = observer(() => {
         <Space size="middle">
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             <div>
-              <EditOutlined />
+              <EditOutlined onClick={() => {
+                setEditMode(record)
+              }} />
             </div>
             <div style={{ marginLeft: 8 }}>
-              <DeleteOutlined />
-            </div>
-            <div style={{marginLeft: 8}}>
-              <PlusOutlined  onClick={() => {
-                history.push("/app/privillage")
-              }}/>
+              <Popconfirm
+                title="Are you sure to delete this task?"
+                onConfirm={() => {
+                  deleteClick(record._id)
+                }}
+                onCancel={cancel}
+                okText="Yes"
+                cancelText="No"
+              >
+                <div style={{ marginLeft: 8 }}>
+                  <DeleteOutlined />
+                </div>
+              </Popconfirm>
             </div>
           </div>
         </Space>
@@ -83,7 +167,72 @@ export const DataUserScreen = observer(() => {
           </Button>,
         ]}
       />
-      <Table dataSource={dataSource} columns={columns} size="small" hasEmpty style={{ marginLeft: '12px' }} />
+      {renderModal()}
+      <Table dataSource={store.user.data.slice()} columns={columns} loading={store.user.loading} size="small" hasEmpty style={{ marginLeft: '12px' }} />
     </Card>
   </div>
+  function renderModal() {
+    return <Modal visible={state.success}
+      closable={false}
+      confirmLoading={false}
+      destroyOnClose={true} title="Update Departemen"
+      okText="Save"
+      cancelText="Cancel"
+      bodyStyle={{ background: '#f7fafc' }}
+      onCancel={() => {
+        form.validateFields().then(values => {
+          form.resetFields();
+        });
+        toggleSuccess();
+      }}
+      onOk={() => {
+        form
+          .validateFields()
+          .then(values => {
+            editData(values);
+          })
+          .catch(info => {
+
+          });
+      }}
+    >
+      <Form layout="vertical" form={form} className={'custom-form'} name="form_in_modal" initialValues={initialData}>
+        <Form.Item name="isEdit" hidden={true}>
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Nama Departemen"
+          name="option"
+          size={'large'}
+          rules={[{ required: true, message: 'Please input your Product Name!' }]}
+        >
+          <Input style={{ width: '98%' }} />
+        </Form.Item>
+        <Form.Item
+          label="Posisi"
+          name="subOption"
+          size={'large'}
+          rules={[{ required: true, message: 'Please input your Product Type!' }]}
+        >
+          <Input style={{ width: '98%' }} />
+        </Form.Item>
+        <Form.Item
+          label="Active"
+          name="isActive"
+          size={'large'}
+          rules={[{ required: true, message: 'Please input your Product Type!' }]}
+        >
+          <Switch defaultChecked />
+        </Form.Item>
+        <Form.Item
+          label="Url"
+          name="url"
+          size={'large'}
+          rules={[{ required: true, message: 'Please input your Product Type!' }]}
+        >
+          <Input style={{ width: '98%' }} />
+        </Form.Item>
+      </Form>
+    </Modal>
+  }
 })

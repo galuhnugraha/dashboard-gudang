@@ -19,7 +19,7 @@ import { ProductOut } from "../pages/Payment/ProductOut";
 import {InputProductOut} from "../pages/Payment/ProductOut/addProductOut";
 import {ApprovalScreen} from "../pages/Payment/Approval";
 import {DataUserScreen} from "../pages/Users";
-import { DataInputUserScreen } from "../pages/Users/AddUsers";
+import { DataInputUserScreen } from "../pages/Users/AddPrivillage";
 import {DataPrivillageScreen} from "../pages/Users/Privillage";
 import {AddPrivillageScreen} from "../pages/Users/Privillage/AddPrivillage";
 

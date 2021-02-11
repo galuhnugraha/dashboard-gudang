@@ -4,7 +4,7 @@ import { http } from "../../utils/http";
 export class ReceiveStore {
     @observable isLoading = false;
     @observable data = [];
-
+    @observable status = '';
 
     @action
     async getReceive() {
@@ -61,5 +61,22 @@ export class ReceiveStore {
                 this.isLoading = false;
                 throw err;
             });
+    }
+
+    @action
+    approveList = async () => {
+        this.isLoading = true;
+        const token = localStorage.getItem("token")
+        // return http.get(`/purchaseOrder/needAprovalList`).set({ 'authorization': `Bearer ${token}` })
+        //     .then((res) => {
+        //         this.isLoading = false;
+        //         return res;
+        //     })
+        //     .catch((err) => {
+        //         this.isLoading = false;
+        //         throw err;
+        //     });
+        const data = await http.get(`/purchaseOrder/needAprovalList`).set({ 'authorization': `Bearer ${token}` });
+        this.data = data.body.data;
     }
 }

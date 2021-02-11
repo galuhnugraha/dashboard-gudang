@@ -143,11 +143,18 @@ export const App = () => {
               </Link>
             </Menu.Item>
           </SubMenu>
-          <Menu.Item key="6">
-            <Link to="/app/user-privillage">
-              <span>User Privillage</span>
-            </Link>
-          </Menu.Item>
+          <SubMenu key="sub3" title="Privillage">
+            <Menu.Item key="6">
+              <Link to="/app/user-privillage">
+                <span>Data Departemen</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="10">
+              <Link to="/app/user">
+                <span>User</span>
+              </Link>
+            </Menu.Item>
+          </SubMenu>
         </Menu>
       </Sider>
       <Layout>

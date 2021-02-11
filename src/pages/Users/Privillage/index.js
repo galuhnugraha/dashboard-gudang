@@ -12,17 +12,17 @@ import { observer } from "mobx-react-lite";
 export const DataPrivillageScreen = observer(() => {
     const { Search } = Input;
     const history = useHistory();
+    const store = useStore();
 
-    const dataSource = [
-        {
-            key: '1',
-            name: 'Mike',
-        },
-        {
-            key: '2',
-            name: 'John',
-        },
-    ];
+
+    useEffect(() => {
+        fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, []);
+    
+      function fetchData() {
+        store.user.getPrivillage();
+      }
 
     const columns = [
         {
