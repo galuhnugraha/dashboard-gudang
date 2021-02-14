@@ -20,7 +20,7 @@ export const ApprovalScreen = observer(() => {
     const history = useHistory();
     const [form] = Form.useForm();
     // const [filterProduct, setFilterProduct] = useState(false);
-    const [productId, setProductId] = useState('');
+    const [purchaseId, setPurchaseId] = useState('');
     const [state, setState] = useState({
         success: false,
     });
@@ -101,19 +101,27 @@ export const ApprovalScreen = observer(() => {
     const dataPost = (e) => {
         // setLoading(true);
         const data = {
-            purchaseId: productId,
+            purchaseId: purchaseId,
             upperPic: e.upperPic,
             password: e.password,
 
         }
         store.purchase.approve(data).then(res => {
-            // setLoading(false);
             message.success('Berhasil Approve');
             history.push("/app/product-in");
             fetchData()
+
         }).catch(err => {
+            if (err) {
+                store.purchase.approve2(data).then(res => {
+                    message.success('Berhasil Approve');
+                    history.push("/app/product-in");
+                    fetchData()
+
+                })
+            }
             // setLoading(false);
-            message.error(err.message);
+            // message.error(err.message);
         });
     }
 
@@ -150,8 +158,8 @@ export const ApprovalScreen = observer(() => {
             render: (text, record) => (
                 <Space size="middle">
                     <a onClick={() => {
-                        console.log(record)
-                        setProductId(record.id)
+                        console.log(record._id)
+                        setPurchaseId(record._id)
                         setEditModeReviewPurchase(true)
                     }}>
                         Approval

@@ -111,6 +111,22 @@ export class PurchaseOrder {
             });
     }
 
+
+    @action
+    approve2 = async (data) => {
+        this.isLoading = true;
+        const token = localStorage.getItem("token")
+        return http.put(`/purchaseOrder/assignmentPo2`).set({ 'authorization': `Bearer ${token}` }).send(data)
+            .then((res) => {
+                this.isLoading = false;
+                return res;
+            })
+            .catch((err) => {
+                this.isLoading = false;
+                throw err;
+            });
+    }
+
     @action
     deleteProductIn = async (data) => {
         this.isLoading = true;
