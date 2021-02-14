@@ -120,7 +120,13 @@ export const DataUserScreen = observer((initialData) => {
     {
       title: 'Nama Departemen',
       dataIndex: 'option',
-      key: 'option'
+      key: 'option',
+      onCell: (record, rowIndex) => ({
+        onClick: () => {
+          onDetailProduct(record.option)
+          onDetailProductReview(record.subOption)
+        }
+      })
     },
     {
       title: 'Posisi',
@@ -191,20 +197,21 @@ export const DataUserScreen = observer((initialData) => {
       />
       {renderModal()}
       <Table dataSource={store.user.data.slice()} columns={columns}
-        loading={store.user.loading} size="small"
+        loading={store.user.isLoading} size="small"
         hasEmpty
         style={{ marginLeft: '12px' }}
-        onRow={(record, rowIndex) => {
-          return {
-            onClick: event => {
-              onDetailProduct(record.option)
-              onDetailProductReview(record.subOption)
-            }, // click row
-            onChange: page => setState({
-              dapartment: page
-            })
-          }
-        }}
+        rowKey={(record) => record._id}
+      //   onRow={(record, rowIndex) => {
+      //   return {
+      //     onClick: event => {
+      //       onDetailProduct(record.option)
+      //       onDetailProductReview(record.subOption)
+      //     }, // click row
+      //     onChange: page => setState({
+      //       dapartment: page
+      //     })
+      //   }
+      // }}
       />
     </Card>
   </div>

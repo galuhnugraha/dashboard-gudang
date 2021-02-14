@@ -30,7 +30,7 @@ export const DetailWarehouseHistoryBarangScreen = observer(() => {
   }, []);
 
   async function fetchData() {
-    await store.purchase.getPurchaseOrder();
+    // await store.purchase.getPurchaseOrder();
     // await store.barang.getDropdown();
   }
 

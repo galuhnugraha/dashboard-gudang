@@ -80,9 +80,8 @@ export const PurchaseOrderScreen = observer((initialData) => {
         form.setFieldsValue({
             isEdit: value._id,
             success: true,
-            purchaseName: value.purchaseName,
             suplierName: value.suplierName,
-            destination: value.destination,
+            senderPhone: value.senderPhone,
             pic: value.pic,
         })
     }
@@ -105,22 +104,15 @@ export const PurchaseOrderScreen = observer((initialData) => {
         });
     })
 
-
-    const toggleSuccessPassword = (() => {
-        setState({
-            delete: !state.delete,
-        });
-    })
-
-    const setEditModeReviewPassword = (value) => {
-        setState(prevState => ({
-            ...prevState,
-            delete: true
-        }))
-        form.setFieldsValue({
-            delete: true,
-        })
-    }
+    // const setEditModeReviewPassword = (value) => {
+    //     setState(prevState => ({
+    //         ...prevState,
+    //         delete: true
+    //     }))
+    //     form.setFieldsValue({
+    //         delete: true,
+    //     })
+    // }
 
     const setEditModeReviewNew = (value) => {
         setState(prevState => ({
@@ -134,9 +126,8 @@ export const PurchaseOrderScreen = observer((initialData) => {
 
     async function editData(e) {
         const data = {
-            purchaseName: e.purchaseName,
             suplierName: e.suplierName,
-            destination: e.destination,
+            senderPhone: e.senderPhone,
             pic: e.pic,
             totalPurchaseItem: e.totalPurchaseItem
         }
@@ -144,7 +135,7 @@ export const PurchaseOrderScreen = observer((initialData) => {
         if (e.isEdit) {
             store.purchase.updatePurchase(e.isEdit, data)
                 .then(res => {
-                    message.success('Data Produk Di Update!');
+                    message.success('Data Produk In Di Update!');
                     toggleSuccess();
                     fetchData();
                 })
@@ -169,8 +160,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
         });
         toggleSuccessNew();
     };
-
-    // handleCancelReviewItem
 
     const onFinish = values => {
         dataPost(values);
@@ -197,11 +186,10 @@ export const PurchaseOrderScreen = observer((initialData) => {
 
     const dataReview = store.purchase.data.map((e) => {
         let dataPurchase = {
-            id: e._id,
-            purchaseName: e.purchaseName,
+            _id: e._id,
             invoiceNo: e.invoiceNo,
             suplierName: e.suplierName,
-            destination: e.destination,
+            senderPhone: e.senderPhone,
             pic: e.pic,
             totalPurchaseItem: e.totalPurchaseItem,
             status: e.status
@@ -219,8 +207,13 @@ export const PurchaseOrderScreen = observer((initialData) => {
 
     function ModalItemWarehouse() {
         return <Modal
+            maskClosable={false}
+            closable={false}
+            afterClose={() => {
+                setFilterModal(false)
+            }}
             title={"Pilih Warehouse"}
-            visible={state.new}
+            visible={filterModal}
             onOk={() => {
                 form
                     .validateFields()
@@ -257,8 +250,51 @@ export const PurchaseOrderScreen = observer((initialData) => {
                     </Select>
                 </Form.Item>
             </Form>
-        </Modal >
+        </Modal>
     }
+
+    // function ModalItemWarehouse() {
+    //     return <Modal
+    //         title={"Pilih Warehouse"}
+    //         visible={state.new}
+    //         onOk={() => {
+    //             form
+    //                 .validateFields()
+    //                 .then(values => {
+    //                     // editDetailPurchase(values);
+    //                     // onFinish(values)
+    //                     // deleteData(values)
+    //                 })
+    //                 .catch(info => {
+    //                 });
+    //         }}
+    //         onCancel={handleCancelReviewItem}
+    //         footer={[
+    //             <Button key="2" onClick={() => setFilterModal(false)}>
+    //                 Cancel
+    //           </Button>,
+    //             <Button key="1" style={{ backgroundColor: '#132743', color: 'white' }} onClick={onOkFilter}>
+    //                 Ok
+    //           </Button>,
+    //         ]}
+    //     >
+    //         <Form layout="vertical" form={form} className={'custom-form'} name="form_in_modal">
+    //             <Form.Item
+    //                 label="Warehouse"
+    //                 name="_id"
+    //                 size={'large'}
+    //             // rules={[{ required: true, message: 'Please input your Atasan' }]}
+    //             >
+    //                 <Select placeholder="Select Warehouse" style={{ width: '97%' }} onChange={(value) => {
+    //                     setState({ warehouseId: value });
+    //                     console.log(value)
+    //                 }}>
+    //                     {store.barang.data.map(d => <Select.Option value={d._id} key={d._id}>{d.warehouseName}</Select.Option>)}
+    //                 </Select>
+    //             </Form.Item>
+    //         </Form>
+    //     </Modal>
+    // }
 
     {
 
@@ -274,20 +310,15 @@ export const PurchaseOrderScreen = observer((initialData) => {
                     </div>)
                 },
             },
-            // {
-            //     title: 'Purchase Name',
-            //     dataIndex: 'purchaseName',
-            //     key: 'purchaseName',
-            // },
             {
                 title: 'Suplier Name',
                 dataIndex: 'suplierName',
                 key: 'suplierName',
             },
             {
-                title: 'Destination',
-                dataIndex: 'destination',
-                key: 'destination',
+                title: 'Sender Phone',
+                dataIndex: 'senderPhone',
+                key: 'senderPhone',
             },
             {
                 title: 'PIC',
@@ -319,8 +350,8 @@ export const PurchaseOrderScreen = observer((initialData) => {
                                 <DeleteOutlined onClick={() => {
                                     // setStatus(record.id)
                                     setPrOut(record.id)
-                                    console.log(record.id)
-                                    setEditModeReviewPassword(true)
+                                    // console.log(record.id)
+                                    // setEditModeReviewPassword(true)
                                     // console.log(record.id)
                                 }} />
                             </div>
@@ -354,19 +385,20 @@ export const PurchaseOrderScreen = observer((initialData) => {
                         <Button
                             key={"1"}
                             onClick={() => {
-                                setEditModeReviewNew(true)
+                                setFilterModal(true)
                             }}
                         >
                             <PlusOutlined /> New
                         </Button>,
-                        <Button
-                            key={"2"}
-                            onClick={() => setFilterModal(true)}
-                        >
-                            <FilterOutlined /> Filter
-                    </Button>,
+                    //     <Button
+                    //         key={"2"}
+                    //         // onClick={() => setFilterModal(true)}
+                    //     >
+                    //         <FilterOutlined /> Filter
+                    // </Button>,
                     ]}
                 />
+                {/* {ModalItemWarehouse()} */}
                 {ModalItemWarehouse()}
                 {renderModal()}
                 <Table
@@ -410,14 +442,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
                     <Input />
                 </Form.Item>
                 <Form.Item
-                    label="Purchase Name"
-                    name="purchaseName"
-                    size={'large'}
-                    rules={[{ required: true, message: 'Please input your Product Name!' }]}
-                >
-                    <Input style={{ width: '98%' }} />
-                </Form.Item>
-                <Form.Item
                     label="Suplier Name"
                     name="suplierName"
                     size={'large'}
@@ -426,8 +450,8 @@ export const PurchaseOrderScreen = observer((initialData) => {
                     <Input style={{ width: '98%' }} />
                 </Form.Item>
                 <Form.Item
-                    label="Destination"
-                    name="destination"
+                    label="Sender Phone"
+                    name="senderPhone"
                     size={'large'}
                     rules={[{ required: true, message: 'Please input your Product Type!' }]}
                 >

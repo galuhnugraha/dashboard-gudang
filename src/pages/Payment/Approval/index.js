@@ -19,7 +19,7 @@ export const ApprovalScreen = observer(() => {
     const store = useStore();
     const history = useHistory();
     const [form] = Form.useForm();
-    // const [filterProduct, setFilterProduct] = useState(false);
+    const { Search } = Input;
     const [purchaseId, setPurchaseId] = useState('');
     const [state, setState] = useState({
         success: false,
@@ -179,7 +179,21 @@ export const ApprovalScreen = observer(() => {
                 <span style={{ color: "#132743" }}>Approval</span>
             </Breadcrumb.Item>
         </Breadcrumb>
-        {ModalItemPurchase()}
-        <Table dataSource={store.receive.data.slice()} columns={columns} />
+        <Card bordered={false} className={"shadow"} bodyStyle={{ padding: 0, marginTop: 25, borderRadius: 10, boxShadow: '0 0 10px  0  rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.10)' }}>
+            <PageHeader
+                className={"card-page-header"}
+                subTitle=""
+                title={"Approval"}
+                extra={[
+                    <Search
+                        placeholder="Search...."
+                        style={{ width: 200 }}
+                        key={row => row._id}
+                    />
+                ]}
+            />
+            {ModalItemPurchase()}
+            <Table dataSource={store.receive.data.slice()} columns={columns} />
+        </Card>
     </div>
 })
