@@ -53,7 +53,9 @@ export const DetailWarehouseBarangScreen = observer(() => {
             title: 'Nama Barang',
             dataIndex: 'productName',
             key: 'productName',
-            render: (record) => <span>{record}</span>
+            render: (record) => <span onClick={() => {
+                console.log(record._id)
+            }}>{record}</span>
           },
           {
             title: 'Stok',

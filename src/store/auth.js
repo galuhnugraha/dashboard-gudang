@@ -24,6 +24,20 @@ export class AuthStore {
     }
 
     @action
+    registerUsers = async (data) => {
+        this.isLoading = true;
+        const token = localStorage.getItem("token")
+        return http.post("/register").set({ 'authorization': `Bearer ${token}` }).send(data)
+            .then((res) => {
+                this.isLoading = false;
+                return res;
+            }).catch((err) => {
+                this.isLoading = false;
+                throw err;
+            });
+    }
+
+    @action
     login = async (data) => {
         this.isLoading = true;
         return http.post(`/login`).send(data)

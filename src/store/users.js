@@ -4,8 +4,10 @@ import * as qs from "querystring";
 
 export class UserStore {
   baseUrl = "/users/DapartmentAndPosition";
+  baseUrl2 = "/previlages";
   @observable isLoading = false;
   @observable data = [];
+  @observable dataQuery = {};
   @observable currentPage = 1;
   @observable pageSize = 10;
   @observable maxLength = 0;
@@ -13,7 +15,12 @@ export class UserStore {
     pg: 1,
     lm: 10,
     dapartment: '',
-    postion: ''
+    position: ''
+  }
+  @observable queryDetail = {
+    pg: 1,
+    lm: 10,
+    userId: ''
   }
 
 
@@ -113,5 +120,32 @@ export class UserStore {
     const data = await http.get(this.baseUrl + '?' + qs.stringify(this.query)).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
     this.isLoading = false;
+  }
+
+  @action
+  addPrivillage = async (data) => {
+    this.isLoading = true;
+    const token = localStorage.getItem("token")
+    return http.post(`/createPrevilages`).set({ 'authorization': `Bearer ${token}` }).send(data)
+      .then((res) => {
+        this.isLoading = false;
+        return res;
+      })
+      .catch((err) => {
+        this.isLoading = false;
+        throw err;
+      });
+  }
+
+  @action
+  async getPrivillage(filter) {
+    this.isLoading = true;
+    if (filter != null) {
+      this.queryDetail.filter = filter;
+    }
+    const token = localStorage.getItem("token")
+    const data = await http.get(this.baseUrl2 + '?' + qs.stringify(this.queryDetail)).set({ 'authorization': `Bearer ${token}` });
+    return data.body.data.docs;
+    // this.isLoading = false;
   }
 }

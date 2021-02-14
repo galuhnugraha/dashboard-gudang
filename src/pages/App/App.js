@@ -149,11 +149,11 @@ export const App = () => {
                 <span>Data Departemen</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="10">
+            {/* <Menu.Item key="10">
               <Link to="/app/user">
                 <span>User</span>
               </Link>
-            </Menu.Item>
+            </Menu.Item> */}
           </SubMenu>
         </Menu>
       </Sider>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Breadcrumb, Switch, Space,Popconfirm, PageHeader, Card, Button, message, Table, Modal } from 'antd';
+import { Form, Input, Breadcrumb, Switch, Space, Popconfirm, PageHeader, Card, Button, message, Table, Modal } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../utils/useStores";
 import {
@@ -22,7 +22,7 @@ export const DataUserScreen = observer((initialData) => {
   const [state, setState] = useState({
     success: false,
     dapartment: '',
-    postion: ''
+    position: ''
   });
   const [filterQuery, setFilterQuery] = useState({});
 
@@ -46,10 +46,10 @@ export const DataUserScreen = observer((initialData) => {
   }
 
   function onDetailProductReview(value) {
-    store.user.query.postion = value
+    store.user.query.position = value
     setFilterQuery({
       ...filterQuery,
-      postion: value,
+      position: value,
     })
     // history.push("/app/privillage-detail")
   }
@@ -191,39 +191,21 @@ export const DataUserScreen = observer((initialData) => {
       />
       {renderModal()}
       <Table dataSource={store.user.data.slice()} columns={columns}
-       loading={store.user.loading} size="small" 
-       hasEmpty 
-       style={{ marginLeft: '12px' }} 
-      //  onHeaderRow={(columns, index) => {
-      //   return {
-      //     onClick: () => {
-      //       console.log(columns)
-      //       console.log(index)
-      //     }, // click header row
-      //   };
-      // }}
-      onRow={(record, rowIndex) => {
-        // return {
-        //   onClick: event => {
-        //     // console.log(rowIndex)
-        //     onDetailProduct(record)
-        //     console.log(record)
-        //   }, // click row
-        // };
-        return {
-          onClick: event => {
-            // console.log(rowIndex)
-            // console.log(record._id)
-            onDetailProduct(record.option)
-            // console.log(record.option)
-            onDetailProductReview(record.subOption)
-          }, // click row
-          onChange: page => setState({
-            dapartment: page
-          })
-        }
-      }}
-       />
+        loading={store.user.loading} size="small"
+        hasEmpty
+        style={{ marginLeft: '12px' }}
+        onRow={(record, rowIndex) => {
+          return {
+            onClick: event => {
+              onDetailProduct(record.option)
+              onDetailProductReview(record.subOption)
+            }, // click row
+            onChange: page => setState({
+              dapartment: page
+            })
+          }
+        }}
+      />
     </Card>
   </div>
   function renderModal() {

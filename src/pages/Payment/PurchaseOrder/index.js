@@ -132,16 +132,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
         })
     }
 
-    const setEditModeReviewPurchase = (value) => {
-        setState(prevState => ({
-            ...prevState,
-            purchase: true
-        }))
-        form.setFieldsValue({
-            purchase: true,
-        })
-    }
-
     async function editData(e) {
         const data = {
             purchaseName: e.purchaseName,
@@ -170,14 +160,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
             form.resetFields();
         });
         toggleSuccessReview();
-    };
-
-    const handleCancelProduct = () => {
-        // setIsModalVisible(false);
-        form.validateFields().then(values => {
-            form.resetFields();
-        });
-        toggleSuccessPassword();
     };
 
     const handleCancelReviewItem = () => {
@@ -213,48 +195,25 @@ export const PurchaseOrderScreen = observer((initialData) => {
         });
     }
 
-    // const deleteData = (e) => {
-    //     const data = {
-    //         PoId: prOutId,
-    //         responsible: e.responsible,
-    //         password: e.password,
-    //     }
-    //     // console.log(data)
-    //     store.purchase.deleteProductIn(data).then((res) => {
-    //         message.success('Success delete Purchase Order')
-    //         history.push('/app/product-in');
-    //         fetchData();
-    //     }).catch(err => {
-    //         message.error(err)
-    //     })
-    // }
+    const dataReview = store.purchase.data.map((e) => {
+        let dataPurchase = {
+            id: e._id,
+            purchaseName: e.purchaseName,
+            invoiceNo: e.invoiceNo,
+            suplierName: e.suplierName,
+            destination: e.destination,
+            pic: e.pic,
+            totalPurchaseItem: e.totalPurchaseItem,
+            status: e.status
+        }
+        return dataPurchase
+    })
 
-    async function onOkFilter() {
-        // store.purchase.query.warehouseId = state.warehouseId;
+    function onOkFilter() {
         store.noRef.warehouseId = state.warehouseId
         store.purchase.coy = state.warehouseId
-        // setFilterQuery({
-        //     ...filterQuery,
-        //     warehouseId: state.warehouseId
-        // })
-        await store.noRef.getNoRef()
+        store.noRef.getNoRef()
         history.push("/app/input-product-in")
-        setFilterModal(false);
-    }
-
-    function resetFilter() {
-        form.validateFields().then((values) => {
-            form.resetFields();
-        });
-
-        setState({
-            warehouseId: '',
-        });
-        store.noRef.warehouseId = ''
-        delete filterQuery['warehouse']
-        setFilterQuery({
-            ...filterQuery,
-        })
         setFilterModal(false);
     }
 
@@ -275,9 +234,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
             }}
             onCancel={handleCancelReviewItem}
             footer={[
-                <Button key="reset" onClick={() => {
-                    resetFilter()
-                }}>Reset Filter</Button>,
                 <Button key="2" onClick={() => setFilterModal(false)}>
                     Cancel
               </Button>,
@@ -303,104 +259,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
             </Form>
         </Modal >
     }
-
-    // function ModalItemPassword() {
-    //     return <Modal
-    //         title={"Silakan Masukan Password Anda"}
-    //         visible={state.delete}
-    //         onOk={() => {
-    //             form
-    //                 .validateFields()
-    //                 .then(values => {
-    //                     // editDetailPurchase(values);
-    //                     // onFinish(values)
-    //                     deleteData(values)
-    //                 })
-    //                 .catch(info => {
-    //                 });
-    //         }}
-    //         onCancel={handleCancelProduct}
-    //     >
-    //         <Form layout="vertical" form={form} className={'custom-form'} name="form_in_modal">
-    //             <Form.Item
-    //                 label="Nama"
-    //                 name="responsible"
-    //                 size={'large'}
-    //             // rules={[{ required: true, message: 'Please input your Atasan' }]}
-    //             >
-    //                 <Input />
-    //             </Form.Item>
-    //             <Form.Item
-    //                 label="Password"
-    //                 name="password"
-    //                 size={'large'}
-    //             // rules={[{ required: true, message: 'Please input your Atasan' }]}
-    //             >
-    //                 <Input.Password type="password" />
-    //             </Form.Item>
-    //         </Form>
-    //     </Modal>
-    // }
-
-    function ModalItemPurchase() {
-        return <Modal
-            title={"Form Product In"}
-            visible={state.purchase}
-            onOk={() => {
-                form
-                    .validateFields()
-                    .then(values => {
-                        // editDetailPurchase(values);
-                        onFinish(values)
-                    })
-                    .catch(info => {
-                    });
-            }}
-            onCancel={handleCancel}
-        >
-            <Form layout="vertical" form={form} className={'custom-form'} name="form_in_modal">
-                <Form.Item
-                    label="Atasan"
-                    name="upperPic"
-                    size={'large'}
-                >
-                    <Input />
-                </Form.Item>
-                <Form.Item
-                    label="Password"
-                    name="password"
-                    size={'large'}
-                // rules={[{ required: true, message: 'Please input your Atasan' }]}
-                >
-                    <Input.Password type="password" />
-                </Form.Item>
-            </Form>
-        </Modal>
-    }
-
-    const dataReview = store.purchase.data.map((e) => {
-        let dataPurchase = {
-            id: e._id,
-            purchaseName: e.purchaseName,
-            invoiceNo: e.invoiceNo,
-            suplierName: e.suplierName,
-            destination: e.destination,
-            pic: e.pic,
-            totalPurchaseItem: e.totalPurchaseItem,
-            status: e.status
-        }
-        return dataPurchase
-    })
-
-
-    // function FilterPurchase(value) {
-    //     // console.log(value.status)
-    //     console.log(value)
-    //     return value == status
-    // }
-
-    // const selectedDataProduct = dataReview.filter(FilterPurchase);
-    // console.log(selectedDataProduct.status)
 
     {
 
@@ -466,13 +324,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
                                     // console.log(record.id)
                                 }} />
                             </div>
-                            {/* <div style={{ marginLeft: 8 }}>
-                                <EyeOutlined onClick={() => {
-                                    // console.log(record.id)
-                                    setProductId(record.id)
-                                    setEditModeReviewPurchase(true)
-                                }} />
-                            </div> */}
                         </div>
                     </Space>
                 ),
@@ -502,10 +353,8 @@ export const PurchaseOrderScreen = observer((initialData) => {
                         />,
                         <Button
                             key={"1"}
-                            onClick={(value) => {
-                                // history.push("/app/input-product-in")
-                                // history.push("/app/input-product-in")
-                                setEditModeReviewNew(value)
+                            onClick={() => {
+                                setEditModeReviewNew(true)
                             }}
                         >
                             <PlusOutlined /> New
@@ -519,7 +368,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
                     ]}
                 />
                 {ModalItemWarehouse()}
-                {ModalItemPurchase()}
                 {renderModal()}
                 <Table
                     columns={columns}
