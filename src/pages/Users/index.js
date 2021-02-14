@@ -171,7 +171,7 @@ export const DataUserScreen = observer((initialData) => {
         <Link to={'/app/dashboard'}>Home</Link>
       </Breadcrumb.Item>
       <Breadcrumb.Item>
-        <span style={{ color: "#132743" }}>User Privillage</span>
+        <span style={{ color: "#132743" }}>Data Departemen</span>
       </Breadcrumb.Item>
     </Breadcrumb>
     <Card bordered={false} className={"shadow"} bodyStyle={{ padding: 0, marginTop: 10, borderRadius: 10, boxShadow: '0 0 10px  0  rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.10)' }}>
@@ -201,6 +201,7 @@ export const DataUserScreen = observer((initialData) => {
         hasEmpty
         style={{ marginLeft: '12px' }}
         rowKey={(record) => record._id}
+        
       //   onRow={(record, rowIndex) => {
       //   return {
       //     onClick: event => {
