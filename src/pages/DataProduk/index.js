@@ -49,7 +49,7 @@ export const DataProdukScreen = observer((initialData) => {
 
   function fetchData() {
     store.products.getAll();
-    store.warehouse.getWarehouse()
+    // store.warehouse.getWarehouse()
     store.barang.getDropdown();
   }
 

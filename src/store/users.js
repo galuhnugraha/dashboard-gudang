@@ -148,4 +148,33 @@ export class UserStore {
     return data.body.data.docs;
     // this.isLoading = false;
   }
+
+  @action
+  updatedPrivillage = async (_id, data) => {
+    this.isLoading = true;
+    const token = localStorage.getItem("token")
+    return http.put(`/users/updateMemberUser/${_id}`).set({ 'authorization': `Bearer ${token}` }).send(data)
+      .then((res) => {
+        this.isLoading = false;
+        return res;
+      })
+      .catch((err) => {
+        this.isLoading = false;
+        throw err;
+      });
+  }
+
+  @action
+  deletedPrivillage = async (_id) => {
+    this.isLoading = true;
+    const token = localStorage.getItem("token")
+    return http.del(`/users/deleteMemberUser/${_id}`).set({ 'authorization': `Bearer ${token}` }).then(res => {
+      this.delete = res.body.data;
+      this.isLoading = false;
+      return res;
+    })
+      .catch(err => {
+        throw err;
+      })
+  }
 }

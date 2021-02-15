@@ -18,7 +18,7 @@ import {
   PlusOutlined,
   EditOutlined,
   DeleteOutlined,
-  // MinusOutlined
+  MinusOutlined
 } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../utils/useStores";
@@ -71,15 +71,6 @@ export const DataSupplierScreen = observer((initialData) => {
       ...prevState,
       success: true
     }))
-    // const halo = value.suplierProduct.map(result => {
-    //   // const product = [
-    //   //   {
-    //   //     productName: result.productName,
-    //   //     price: result.price
-    //   //   }
-    //   // ]
-    //   return result.productName
-    // })
     form.setFieldsValue(
       {
         isEdit: value._id,
