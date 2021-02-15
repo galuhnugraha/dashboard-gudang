@@ -98,6 +98,7 @@ export const WarehouseScreen = observer((initialData) => {
   function onDetailProduct(value) {
     // setState({warehouseId: value})
     store.warehouse.detailWarehouseQuery.warehouseId = value
+    store.warehouseData.queryDetail.warehouseId = value
     setFilterQuery({
       ...filterQuery,
       warehouseId: state.warehouseId,

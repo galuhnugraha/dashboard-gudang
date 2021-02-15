@@ -37,11 +37,12 @@ export const DetailWarehouseBarangScreen = observer(() => {
 
     const data = store.warehouse.data.map((e) => {
         return {
-            productName: e.productName,
+            productName: e.product?.productName,
             status: e.status,
             quantity: e.product?.quantity,
-            createdAt: e.createdAt,
-            updatedAt: e.updatedAt,
+            location: e.product?.location,
+            pricePerUnit: e.product?.pricePerUnit,
+            grosirPrice: e.product?.grosirPrice,
             _id: e._id,
             // warehouseName: e.warehouse?.warehouseName
         }
@@ -56,18 +57,27 @@ export const DetailWarehouseBarangScreen = observer(() => {
             render: (record) => <span onClick={() => {
                 console.log(record._id)
             }}>{record}</span>
-          },
-          {
+        },
+        {
             title: 'Stok',
             dataIndex: 'quantity',
             key: 'quantity',
-          },
-          {
-            title: 'Status',
-            dataIndex: 'status',
-            key: 'status',
-            render: (record) => <span>{record}</span>
-          },
+        },
+        {
+            title: 'Location',
+            dataIndex: 'location',
+            key: 'location',
+        },
+        {
+            title: 'Price Per Unit',
+            dataIndex: 'pricePerUnit',
+            key: 'pricePerUnit',
+        },
+        {
+            title: 'Grosir Price',
+            dataIndex: 'grosirPrice',
+            key: 'grosirPrice',
+        },
     ];
 
     return <Table

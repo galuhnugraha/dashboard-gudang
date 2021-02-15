@@ -12,32 +12,50 @@ import { observer } from "mobx-react-lite";
 
 
 export const DetailWarehouseSuplierScreen = observer(() => {
+  const store = useStore();
+  const history = useHistory();
+
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function fetchData() {
+    await store.warehouseData.getHistoryBarang();
+  }
+
+  const data = store.warehouseData.data.map((e) => {
+    return {
+      suplierName: e.suplier?.suplierName,
+      suplierPhone: e.suplier?.suplierPhone,
+      suplierAddress: e.suplier?.suplierAddress.address,
+      _id: e._id,
+      // warehouseName: e.warehouse?.warehouseName
+    }
+  })
+  console.log(data,'test')
 
   const columns = [
     {
       title: 'Suplier Name',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'suplierName',
+      key: 'suplierName',
     },
     {
-      title: 'Company Name',
-      dataIndex: 'age',
-      key: 'age',
+      title: 'Suplier Phone',
+      dataIndex: 'suplierPhone',
+      key: 'suplierPhone',
     },
     {
-      title: 'Supliers Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
-      title: 'Supliers Phone',
-      dataIndex: 'address',
-      key: 'address',
+      title: 'Address',
+      dataIndex: 'suplierAddress',
+      key: 'suplierAddress',
     },
   ];
 
 
   return <div>
-    <Table columns={columns} hasEmpty/>
+    <Table dataSource={data} columns={columns} hasEmpty/>
   </div>
 })

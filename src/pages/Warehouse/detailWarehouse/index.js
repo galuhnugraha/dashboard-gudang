@@ -23,7 +23,11 @@ export const DetailWarehouseScreen = observer((initialData) => {
   const history = useHistory();
   const { TabPane } = Tabs;
   const { Search } = Input;
-  // const [filterQuery, setFilterQuery] = useState({});
+  const [filterQuery, setFilterQuery] = useState({});
+  const [state, setState] = useState({
+    warehouseId: '',
+  });
+
   useEffect(() => {
     fetchData();
     return () => {
@@ -31,16 +35,11 @@ export const DetailWarehouseScreen = observer((initialData) => {
       // store.warehouse.query.lm = 10;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [filterQuery]);
 
   async function fetchData() {
     await store.warehouse.getWarehouse();
     // await store.barang.getDropdown();
-  }
-
-
-  function callback(key) {
-    console.log(key);
   }
 
   return <div>
@@ -59,7 +58,7 @@ export const DetailWarehouseScreen = observer((initialData) => {
         subTitle=""
         title={"Detail Warehouse"}
       />
-      <Tabs defaultActiveKey="1" onChange={callback} style={{marginLeft: '18px'}}>
+      <Tabs defaultActiveKey="1" style={{marginLeft: '18px'}}>
         <TabPane tab="Barang" key="1">
           <DetailWarehouseBarangScreen />
         </TabPane>
@@ -67,7 +66,9 @@ export const DetailWarehouseScreen = observer((initialData) => {
           <DetailWarehouseSuplierScreen />
         </TabPane>
         <TabPane tab="History Barang" key="3">
-          <DetailWarehouseHistoryBarangScreen />
+          <DetailWarehouseHistoryBarangScreen onChange={(val) => {
+            console.log(val,'test')
+          }}/>
         </TabPane>
       </Tabs>
     </Card>

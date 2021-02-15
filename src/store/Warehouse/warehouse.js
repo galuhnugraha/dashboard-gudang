@@ -12,6 +12,11 @@ export class WarehouseDataStore {
     pg: 1,
     lm: 10,
   }
+  @observable queryDetail = {
+    pg: 1,
+    lm: 10,
+    warehouseId: ''
+  }
   // @observable selectedFilterValue = '';
 
   @action
@@ -101,5 +106,16 @@ export class WarehouseDataStore {
     const data = await http.get(`/warehouse?pg=${this.query.pg}&lm=${this.query.lm}&search=${filterValue}`).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
     this.isLoading = false;
+  }
+
+  @action
+  async getHistoryBarang() {
+    this.isLoading = true;
+    const token = localStorage.getItem("token")
+    const data = await http.get('/warehouseTransaction' + '?' + qs.stringify(this.queryDetail)).set({ 'authorization': `Bearer ${token}` });
+    this.data = data.body.data;
+    console.log(data.body.data,'testtt')
+    this.isLoading = false;
+    // this.isLoading = false;
   }
 }
