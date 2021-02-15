@@ -27,10 +27,12 @@ export const DetailWarehouseHistoryBarangScreen = observer(() => {
 
   const data = store.warehouseData.data.map((e) => {
     return {
-      pic: e.transaction?.pic,
+      pic: e.pic?.UserName,
       status: e.transaction?.status,
       suplierName: e.transaction?.suplierName,
       sender: e.transaction?.sender,
+      approval1: e.approval1?.UserName,
+      approval2: e.approval2?.UserName,
       senderPhone: e.transaction?.senderPhone,
       totalPurchaseItem: e.transaction?.totalPurchaseItem,
       _id: e._id,
@@ -57,6 +59,16 @@ export const DetailWarehouseHistoryBarangScreen = observer(() => {
       title: 'Sender',
       dataIndex: 'sender',
       key: 'sender',
+    },
+    {
+      title: 'Approval 1',
+      dataIndex: 'approval1',
+      key: 'approval1',
+    },
+    {
+      title: 'Approval 2',
+      dataIndex: 'approval2',
+      key: 'approval2',
     },
     {
       title: 'Sender Phone',

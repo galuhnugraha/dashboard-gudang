@@ -56,13 +56,6 @@ export const ApprovalScreen = observer(() => {
         >
             <Form layout="vertical" form={form} className={'custom-form'} name="form_in_modal">
                 <Form.Item
-                    label="Atasan"
-                    name="upperPic"
-                    size={'large'}
-                >
-                    <Input />
-                </Form.Item>
-                <Form.Item
                     label="Password"
                     name="password"
                     size={'large'}

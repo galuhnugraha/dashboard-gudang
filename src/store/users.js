@@ -177,4 +177,28 @@ export class UserStore {
         throw err;
       })
   }
+
+  @action
+  async getTest() {
+    this.isLoading = true;
+    const token = localStorage.getItem("token")
+    const data = await http.get('/test').set({ 'authorization': `Bearer ${token}` });
+    return data.body.data;
+    // this.isLoading = false;
+  }
+
+  @action
+  updatedPrivillageDetail = async (_id, data) => {
+    this.isLoading = true;
+    const token = localStorage.getItem("token")
+    return http.put(`/previlages/updatePrevilages/${_id}`).set({ 'authorization': `Bearer ${token}` }).send(data)
+      .then((res) => {
+        this.isLoading = false;
+        return res;
+      })
+      .catch((err) => {
+        this.isLoading = false;
+        throw err;
+      });
+  }
 }

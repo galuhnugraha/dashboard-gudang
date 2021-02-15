@@ -13,7 +13,7 @@ function cancel(e) {
   message.error('Click on No');
 }
 
-export const DetailPrivillageScreen = observer((initialData) => {
+export const DetailPrivillageScreen = observer((initialData, initialValue) => {
   const { Search } = Input;
   let history = useHistory();
   const [form] = Form.useForm();
@@ -135,11 +135,104 @@ export const DetailPrivillageScreen = observer((initialData) => {
     console.log(value)
   }
 
-  function modalFilter() {
+  async function editData(e) {
+    const data = {
+      name: e.name,
+      email: e.email,
+      phone: e.phone,
+    }
+
+    if (e.isEdit) {
+      store.user.updatedPrivillage(e.isEdit, data)
+        .then(res => {
+          message.success('Data Users Privillage Diubah!');
+          toggleSuccessUsers();
+          fetchData();
+        })
+        .catch(err => {
+          message.error(`Error on Updating Member, ${err.message}`);
+          message.error(err.message);
+        });
+    }
+  }
+
+  async function editDataDetail(value) {
+    store.user.queryDetail.userId = value._id
+    const dataOption = await store.user.getPrivillage();
+    const objOPtion = dataOption[0]
+    const data = {
+      insert: objOPtion.insert,
+      deleted: objOPtion.deleted,
+      read: objOPtion.read,
+      update: objOPtion.update
+    }
+
+    if (value.isEdit) {
+      store.user.updatedPrivillageDetail(value.isEdit, data)
+        .then(res => {
+          message.success('Data Users Privillage Diubah!');
+          toggleSuccessPrivillage();
+          fetchData();
+        })
+        .catch(err => {
+          message.error(`Error on Updating Member, ${err.message}`);
+          message.error(err.message);
+        });
+    }
+  }
+
+  const userMapping = store.user.data.map((e) => {
+    return {
+      _id: e._id,
+      UserName: e.UserName,
+      email: e.email,
+      phone: e.phone,
+      position: e.position
+    }
+  })
+
+  const deleteClick = (id) => {
+    confirm(id);
+  }
+
+  function confirm(id) {
+    store.user.deletedPrivillage(id).then((res) => {
+      message.success('Success delete Users Departemen')
+      history.push('/app/privillage-detail');
+      fetchData();
+    }).catch(err => {
+      message.error(err.response.body.message)
+    })
+    console.log(id)
+  }
+
+  const setEditModePrivillage = async (value) => {
+    store.user.queryDetail.userId = value._id
+    const dataOption = await store.user.getPrivillage();
+    const objOPtion = dataOption[0]
+    setInsert(objOPtion.insert)
+    setUpdated(objOPtion.update)
+    setDeleted(objOPtion.deleted)
+    setRead(objOPtion.read)
+    setState(prevState => ({
+      ...prevState,
+      privillage: true
+    }))
+    form.setFieldsValue({
+      privillage: true,
+      isEdit: value._id,
+      insert: objOPtion.insert,
+      deleted: objOPtion.deleted,
+      read: objOPtion.read,
+      update: objOPtion.update
+    })
+  }
+
+  function modalFilterNew() {
     return <Modal
       maskClosable={false}
       closable={false}
-      title={"Update Privillage"}
+      title={"Detail Privillage"}
       visible={state.success}
       destroyOnClose={true}
       // footer={null}
@@ -209,11 +302,21 @@ export const DetailPrivillageScreen = observer((initialData) => {
         });
         toggleSuccessPrivillage();
       }}
+      onOk={() => {
+        form
+          .validateFields()
+          .then(values => {
+            editDataDetail(values);
+          })
+          .catch(info => {
+
+          });
+      }}
     >
       <Form layout="vertical" form={form} className={'custom-form'} name="form_in_modal" initialValues={initialData}>
-        {/* <Form.Item name="isEdit" hidden={true}>
+        <Form.Item name="isEdit" hidden={true}>
           <Input />
-        </Form.Item> */}
+        </Form.Item>
         <Form.Item
           label="Insert"
           name="insert"
@@ -245,34 +348,10 @@ export const DetailPrivillageScreen = observer((initialData) => {
     </Modal>
   }
 
-  async function editData(e) {
-    const data = {
-      name: e.name,
-      email: e.email,
-      phone: e.phone,
-    }
-
-    if (e.isEdit) {
-      store.user.updatedPrivillage(e.isEdit, data)
-        .then(res => {
-          message.success('Data Users Privillage Diubah!');
-          toggleSuccess();
-          fetchData();
-        })
-        .catch(err => {
-          message.error(`Error on Updating Member, ${err.message}`);
-          message.error(err.message);
-        });
-    }
-  }
-
   function modalUpdateUsers() {
     return <Modal
-      maskClosable={false}
-      closable={false}
       title={"Update Users"}
       visible={state.users}
-      destroyOnClose={true}
       // footer={null}
       onCancel={() => {
         form.validateFields().then(values => {
@@ -291,7 +370,7 @@ export const DetailPrivillageScreen = observer((initialData) => {
           });
       }}
     >
-      <Form layout="vertical" form={form} className={'custom-form'} name="form_in_modal" initialValues={initialData}>
+      <Form layout="vertical" form={form} className={'custom-form'} name="form_in_out" initialValues={initialData}>
         <Form.Item name="isEdit" hidden={true}>
           <Input />
         </Form.Item>
@@ -324,16 +403,6 @@ export const DetailPrivillageScreen = observer((initialData) => {
     </Modal>
   }
 
-  const userMapping = store.user.data.map((e) => {
-    return {
-      _id: e._id,
-      UserName: e.UserName,
-      email: e.email,
-      phone: e.phone,
-      position: e.position
-    }
-  })
-
   const setEditModeUsers = (value) => {
     setState(prevState => ({
       ...prevState,
@@ -343,47 +412,11 @@ export const DetailPrivillageScreen = observer((initialData) => {
       {
         isEdit: value._id,
         users: true,
-        name: value.name,
+        name: value.UserName,
         email: value.email,
         phone: value.phone,
         position: value.position
       })
-  }
-
-  const deleteClick = (id) => {
-    confirm(id);
-  }
-
-  function confirm(id) {
-    store.user.deletedPrivillage(id).then((res) => {
-      message.success('Success delete Users Departemen')
-      history.push('/app/privillage-detail');
-      fetchData();
-    }).catch(err => {
-      message.error(err.response.body.message)
-    })
-    console.log(id)
-  }
-
-  const setEditModePrivillage = async (value) => {
-    store.user.queryDetail.userId = value._id
-    const dataOption = await store.user.getPrivillage();
-    const objOPtion = dataOption[0]
-    setInsert(objOPtion.insert)
-    setUpdated(objOPtion.update)
-    setDeleted(objOPtion.deleted)
-    setRead(objOPtion.read)
-    setState(prevState => ({
-      ...prevState,
-      privillage: true
-    }))
-    form.setFieldsValue({
-      privillage: true,
-      insert: objOPtion.insert,
-      deleted: objOPtion.deleted,
-      read: objOPtion.read,
-      update: objOPtion.update
-    })
   }
 
   const columns = [
@@ -415,17 +448,15 @@ export const DetailPrivillageScreen = observer((initialData) => {
     },
     {
       title: 'Action',
-      render: (record) => <span>
-        {/* <p>Update Privillage</p>
-        <p>Update Users</p>
-        <p>Delete Users</p> */}
+      render: (record, index) => <span>
         <div>
           <EditOutlined onClick={() => {
             setEditModePrivillage(record)
           }} />
           <FormOutlined style={{ marginLeft: 8 }} onClick={() => {
-            // console.log(record._id)
+            // console.log(record)
             setEditModeUsers(record)
+            console.log(record._id)
           }} />
           {/* <a>Delete Users</a> */}
           <Popconfirm
@@ -475,9 +506,9 @@ export const DetailPrivillageScreen = observer((initialData) => {
           </Button>,
         ]}
       />
-      {modalUpdateUsers()}
       {modalFilterDetail()}
-      {modalFilter()}
+      {modalUpdateUsers()}
+      {modalFilterNew()}
       <Table
         dataSource={userMapping}
         columns={columns}

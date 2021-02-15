@@ -416,7 +416,7 @@ export const PurchaseOrderScreen = observer((initialData) => {
         return <Modal visible={state.success}
             closable={false}
             confirmLoading={false}
-            destroyOnClose={true} title="Update Purchase Order"
+            destroyOnClose={true} title="Update Product In"
             okText="Save"
             cancelText="Cancel"
             bodyStyle={{ background: '#f7fafc' }}
