@@ -72,6 +72,10 @@ export const PurchaseOrderScreen = observer((initialData) => {
     //     return data;
     // })
 
+    function paramsId(value) {
+        history.push("/app/detail-product-in/" + value)
+      }
+
     const setEditMode = (value) => {
         setState(prevState => ({
             ...prevState,
@@ -262,7 +266,9 @@ export const PurchaseOrderScreen = observer((initialData) => {
                 key: 'invoiceNo',
                 render: (text, record) => {
                     return (<div onClick={() => {
-                    }} style={{ color: '#132743' }}>
+                        console.log(record._id)
+                        paramsId(record._id)
+                    }} style={{ color: '#132743' }} >
                         {text}
                     </div>)
                 },

@@ -24,6 +24,7 @@ import {DataPrivillageScreen} from "../pages/Users/Privillage";
 import {AddPrivillageScreen} from "../pages/Users/Privillage/AddPrivillage";
 import { DetailPrivillageScreen } from "../pages/Users/DetailPrivillage";
 import {AddDetailPrivillage} from "../pages/Users/DetailPrivillage/addDetailPrivillage";
+import { DetailProductInScreen } from "../pages/Payment/PurchaseOrder/DetailProductIn";
 
 export const AppRoutes = () => {
   return <Switch>
@@ -89,7 +90,6 @@ export const AppRoutes = () => {
       <DataUserScreen />
     </Route>
     <Route path="/app/input-user-privillage" exact>
-      {/* <DataUserScreen /> */}
       <DataInputUserScreen />
     </Route>
     <Route path="/app/privillage" exact>
@@ -103,6 +103,9 @@ export const AppRoutes = () => {
     </Route>
     <Route path="/app/input-detail-add" exact>
       <AddDetailPrivillage />
+    </Route>
+    <Route path="/app/detail-product-in/:id" exact>
+      <DetailProductInScreen />
     </Route>
   </Switch>
 };
