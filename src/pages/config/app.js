@@ -1,4 +1,4 @@
 export const appConfig = {
-    apiUrl: 'http://192.168.0.112:3000',
+    apiUrl: 'https://gudang-galuh.herokuapp.com',
     apiImage: 'https://res.cloudinary.com/galonku/image/upload'
  };

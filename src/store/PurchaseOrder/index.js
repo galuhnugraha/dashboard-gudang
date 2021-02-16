@@ -16,7 +16,7 @@ export class PurchaseOrder {
     @observable currentPage = 1;
     @observable pageSize = 10;
     @observable maxLength = 0;
-    @observable dataRef = [];
+    @observable dataDetail = [];
     @observable filterObject = {};
     @observable query = {
         pg: 1,
@@ -42,9 +42,6 @@ export class PurchaseOrder {
 
     @action
     async getPurchaseOrderList() {
-        // if (filter != null) {
-        //     this.query.filter = filter;
-        // }
         this.isLoading = true;
         const token = cookie.get("Token")
         const data = await http.get('/purchaseOrder').set({ 'authorization': `Bearer ${token}` });

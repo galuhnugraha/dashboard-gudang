@@ -413,7 +413,6 @@ export const DataProdukScreen = observer((initialData) => {
   const selectedDataProduct = dataMap.filter(FilterProduct);
 
   const selectedDataSupliers = dataMap.filter(FilterSupliers);
-  console.log(selectedDataSupliers);
 
   const selectedDataWarehouse = dataMap.filter(FilterWarehouse);
   // console.log(selectedDataWarehouse)
