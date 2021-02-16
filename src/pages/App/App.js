@@ -10,6 +10,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useStore } from "../../utils/useStores";
 import "antd/dist/antd.css";
 import "./index.css";
+import Cookies from 'universal-cookie';
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -40,9 +41,8 @@ export const App = () => {
       history.push("/login");
     });
   }
-
-
   const [collapsed, setCollapsed] = useState(false);
+  const cookie = new Cookies();
   const menu = (
     <Menu>
       {/* <Menu.Item defaultSelectedKeys={['profile']} key="0">
@@ -174,7 +174,7 @@ export const App = () => {
                 <Dropdown overlay={menu} trigger={['click']}>
                   <Avatar icon={<UserOutlined />} style={{ marginRight: 15, marginTop: 15 }} />
                 </Dropdown>
-                <p style={{ marginRight: 25 }}>Halo {localStorage.getItem("name")}</p>
+                <p style={{ marginRight: 25 }}>Halo {cookie.get("name")}</p>
               </div>
             </Col>
           </Row>

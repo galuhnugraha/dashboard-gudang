@@ -12,26 +12,26 @@ export const DataInputUserScreen = observer(() => {
     let history = useHistory();
     const store = useStore();
     const [loading, setLoading] = useState(false);
-  
+
     const onFinish = values => {
-      enterLoading(values);
+        enterLoading(values);
     };
-  
+
     const enterLoading = (e) => {
-      setLoading(true);
-      const data = {
-        option: e.option,
-        subOption: e.subOption,
-        url: '/app/input-user-privillage'
-      }
-      store.user.addMenus(data).then(res => {
-        message.success('Berhasil Add Departement');
-        setLoading(false);
-        history.push("/app/user-privillage");
-      }).catch(err => {
-        message.error(err.message);
-        setLoading(false);
-      });
+        setLoading(true);
+        const data = {
+            option: e.option,
+            subOption: e.subOption,
+            url: '/app/input-user-privillage'
+        }
+        store.user.addMenus(data).then(res => {
+            message.success('Berhasil Add Departement');
+            setLoading(false);
+            history.push("/app/user-privillage");
+        }).catch(err => {
+            message.error(err.message);
+            setLoading(false);
+        });
     }
 
     return <div>
@@ -77,7 +77,7 @@ export const DataInputUserScreen = observer(() => {
                         block
                         htmlType="submit"
                         size={'large'}
-                    loading={loading}
+                        loading={loading}
                     >
                         Submit
 					</Button>

@@ -1,9 +1,12 @@
 import React from 'react';
 import {Store} from "../store";
 import {useLocalStore} from "mobx-react-lite";
+import Cookies from 'universal-cookie';
+
+var cookie = new Cookies();
 
 const storeContext = React.createContext(null);
-export const store = new Store(localStorage.getItem('id_token'));
+export const store = new Store(cookie.get('Token'));
 
 export const StoreProvider = ({ children }) => {
   const localStore = useLocalStore(() => {

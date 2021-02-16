@@ -25,6 +25,7 @@ export const DataUserScreen = observer((initialData) => {
     position: ''
   });
   const [filterQuery, setFilterQuery] = useState({});
+  const [check,setCheck] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -65,6 +66,7 @@ export const DataUserScreen = observer((initialData) => {
       ...prevState,
       success: true
     }))
+    setCheck(value.isActive)
     form.setFieldsValue({
       isEdit: value._id,
       isActive: value.isActive,
@@ -73,6 +75,10 @@ export const DataUserScreen = observer((initialData) => {
       subOption: value.subOption,
       url: value.url
     })
+  }
+
+  const unchecked = (checked) => {
+    setCheck(checked)
   }
 
   async function editData(e) {
@@ -201,18 +207,6 @@ export const DataUserScreen = observer((initialData) => {
         hasEmpty
         style={{ marginLeft: '12px' }}
         rowKey={(record) => record._id}
-        
-      //   onRow={(record, rowIndex) => {
-      //   return {
-      //     onClick: event => {
-      //       onDetailProduct(record.option)
-      //       onDetailProductReview(record.subOption)
-      //     }, // click row
-      //     onChange: page => setState({
-      //       dapartment: page
-      //     })
-      //   }
-      // }}
       />
     </Card>
   </div>
@@ -267,7 +261,7 @@ export const DataUserScreen = observer((initialData) => {
           size={'large'}
           rules={[{ required: true, message: 'Please input your Product Type!' }]}
         >
-          <Switch defaultChecked />
+          <Switch checked={check} onChange={unchecked}/>
         </Form.Item>
         <Form.Item
           label="Url"

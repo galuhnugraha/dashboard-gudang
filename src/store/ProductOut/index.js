@@ -1,5 +1,8 @@
 import { action, observable } from 'mobx';
 import { http } from "../../utils/http";
+import Cookies from 'universal-cookie';
+
+var cookie = new Cookies();
 
 
 
@@ -16,7 +19,7 @@ export class ProductOutScreen {
         //   this.query.filter = filter;
         // }
         this.isLoading = true;
-        const token = localStorage.getItem("token")
+        const token = cookie.get("Token")
         const data = await http.get("/formOut").set({ 'authorization': `Bearer ${token}` });
         this.data = data.body.data;
         this.maxLength = data.body.totalData;
@@ -26,7 +29,7 @@ export class ProductOutScreen {
     @action
     addProductOut = async (data) => {
         this.isLoading = true;
-        const token = localStorage.getItem("token")
+        const token = cookie.get("Token")
         return http.post(`/formOut/createPo`).set({ 'authorization': `Bearer ${token}` }).send(data)
             .then((res) => {
                 this.isLoading = false;

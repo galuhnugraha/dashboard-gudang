@@ -1,6 +1,9 @@
 import { action, observable } from 'mobx';
 import { http } from "../../utils/http";
 import debounce from "lodash.debounce";
+import Cookies from 'universal-cookie';
+
+var cookie = new Cookies();
 
 
 export class TransactionStore {
@@ -27,7 +30,7 @@ export class TransactionStore {
         //   this.query.filter = filter;
         // }
         this.isLoading = true;
-        const token = localStorage.getItem("token")
+        const token = cookie.get("Token")
         const data = await http.get("/warehouseTransaction").set({ 'authorization': `Bearer ${token}` });
         this.data = data.body.data;
         this.maxLength = data.body.totalData;
@@ -37,7 +40,7 @@ export class TransactionStore {
     @action
     async search() {
         let filterValue = this.selectedFilterValue;
-        const token = localStorage.getItem("token");
+        const token = cookie.get("Token");
         if (!filterValue) {
             this.getTransaction();
         }

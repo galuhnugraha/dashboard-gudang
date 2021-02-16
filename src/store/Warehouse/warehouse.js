@@ -2,6 +2,9 @@ import { action, observable } from 'mobx';
 import { http } from "../../utils/http";
 import * as qs from "querystring";
 import debounce from "lodash.debounce";
+import Cookies from 'universal-cookie';
+
+const cookie = new Cookies();
 
 export class WarehouseDataStore {
   baseUrl = "/dataWarehouse";
@@ -47,7 +50,7 @@ export class WarehouseDataStore {
     //   this.query.filter = filter;
     // }
     this.isLoading = true;
-    const token = localStorage.getItem("token")
+    const token = cookie.get("Token")
     const data = await http.get(this.warehouse).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
     this.maxLength = data.body.totalData;
@@ -57,7 +60,7 @@ export class WarehouseDataStore {
   @action
   updateWarehouseData = async (_id, data) => {
     this.isLoading = true;
-    const token = localStorage.getItem("token")
+    const token = cookie.get("Token")
     return http.put(`/warehouse/updateWarehouse/${_id}`).set({ 'authorization': `Bearer ${token}` }).send(data)
       .then((res) => {
         this.isLoading = false;
@@ -72,7 +75,7 @@ export class WarehouseDataStore {
   @action
   deleteWarehouseData = async (_id) => {
     this.isLoading = true;
-    const token = localStorage.getItem("token")
+    const token = cookie.get("Token")
     return http.del(`/warehouse/deleteWarehouse/${_id}`).set({ 'authorization': `Bearer ${token}` }).then(res => {
       this.delete = res.body.data;
       this.isLoading = false;
@@ -89,7 +92,7 @@ export class WarehouseDataStore {
       this.query.filter = filter;
     }
     this.isLoading = true;
-    const token = localStorage.getItem("token")
+    const token = cookie.get("Token")
     const data = await http.get(this.baseUrl + '?' + qs.stringify(this.query)).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
     this.maxLength = data.body.totalData;
@@ -99,7 +102,7 @@ export class WarehouseDataStore {
   @action
   async searchData() {
     let filterValue = this.selectedFilterValue;
-    const token = localStorage.getItem("token");
+    const token = cookie.get("Token");
     if (!filterValue) {
       this.getWarehouseData();
     }
@@ -111,7 +114,7 @@ export class WarehouseDataStore {
   @action
   async getHistoryBarang() {
     this.isLoading = true;
-    const token = localStorage.getItem("token")
+    const token = cookie.get("Token")
     const data = await http.get('/warehouseTransaction' + '?' + qs.stringify(this.queryDetail)).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
     console.log(data.body.data,'testtt')

@@ -2,6 +2,9 @@ import { action, observable } from 'mobx';
 import { http } from "../../utils/http";
 // import debounce from "lodash.debounce";
 import * as qs from "querystring";
+import Cookies from 'universal-cookie';
+
+const cookie = new Cookies();
 
 export class SupplierReviewStore {
     baseUrl = '/supliers'
@@ -17,7 +20,7 @@ export class SupplierReviewStore {
     @action
     async getSupplier() {
         this.isLoading = true;
-        const token = localStorage.getItem("token")
+        const token = cookie.get("Token")
         const data = await http.get(this.baseUrl).set({ 'authorization': `Bearer ${token}` });
         this.data = data.body.data;
         this.maxLength = data.body.totalData;
@@ -27,7 +30,7 @@ export class SupplierReviewStore {
     @action
     async getSupplierProductReview() {
         this.isLoading = true;
-        const token = localStorage.getItem("token")
+        const token = cookie.get("Token")
         const data = await http.get(this.suplier + '?' + qs.stringify(this.detailSuplierQuery)).set({ 'authorization': `Bearer ${token}` });
         this.data = data.body.data;
         this.maxLength = data.body.totalData;

@@ -2,6 +2,9 @@ import { action, observable } from 'mobx';
 import { http } from "../utils/http";
 import debounce from "lodash.debounce";
 import * as qs from "querystring";
+import Cookies from 'universal-cookie';
+
+var cookie  = new Cookies();
 
 
 export class SupplierStore {
@@ -63,7 +66,7 @@ export class SupplierStore {
   @action
   async getSupplier() {
     this.isLoading = true;
-    const token = localStorage.getItem("token")
+    const token = cookie.get("Token")
     const data = await http.get(this.baseUrl).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
     this.maxLength = data.body.totalData;
@@ -73,7 +76,7 @@ export class SupplierStore {
   @action
   AddSupplier = async (data) => {
     this.isLoading = true;
-    const token = localStorage.getItem("token")
+    const token = cookie.get("Token")
     return http.post(`/supliers/addSupliers`).set({ 'authorization': `Bearer ${token}` }).send(data)
       .then((res) => {
         this.isLoading = false;
@@ -88,7 +91,7 @@ export class SupplierStore {
   @action
   updateSupplier = async (id, data) => {
     this.isLoading = true;
-    const token = localStorage.getItem("token")
+    const token = cookie.get("Token")
     return http.put(`/supliers/updateSuplier/${id}`).set({ 'authorization': `Bearer ${token}` }).send(data)
       .then((res) => {
         this.isLoading = false;
@@ -103,7 +106,7 @@ export class SupplierStore {
   @action
   deleteSupplier = async (_id) => {
     this.isLoading = true;
-    const token = localStorage.getItem("token")
+    const token = cookie.get("Token")
     return http.del(`/supliers/deleteSuplier/${_id}`).set({ 'authorization': `Bearer ${token}` }).then(res => {
       this.delete = res.body.data;
       this.isLoading = false;
@@ -117,7 +120,7 @@ export class SupplierStore {
   @action
   async search() {
     let filterValue = this.selectedFilterValue;
-    const token = localStorage.getItem("token");
+    const token = cookie.get("Token");
     if (!filterValue) {
       this.getSupplier();
     }
@@ -129,7 +132,7 @@ export class SupplierStore {
   @action
   AddSuplierOut = async (id, data) => {
     this.isLoading = true;
-    const token = localStorage.getItem("token")
+    const token = cookie.get("Token")
     return http.post(`/supliers/addSuplierProduct/${id}`).set({ 'authorization': `Bearer ${token}` }).send(data)
       .then((res) => {
         this.isLoading = false;
@@ -144,7 +147,7 @@ export class SupplierStore {
   @action
   async getSupplierProduct() {
     this.isLoading = true;
-    const token = localStorage.getItem("token")
+    const token = cookie.get("Token")
     const data = await http.get(this.suplier + '?' + qs.stringify(this.detailSuplierQuery)).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
     this.maxLength = data.body.totalData;
@@ -154,7 +157,7 @@ export class SupplierStore {
   @action
   async getSupplierProductReview() {
     this.isLoading = true;
-    const token = localStorage.getItem("token")
+    const token = cookie.get("Token")
     const data = await http.get(this.supliers + '?' + qs.stringify(this.detailSuplierQueryItem)).set({ 'authorization': `Bearer ${token}` });
     this.detailData = data.body.data;
     this.maxLength = data.body.totalData;
@@ -164,7 +167,7 @@ export class SupplierStore {
   @action
   async searchDetail() {
     let filterValue = this.selectedFilterValueDetail;
-    const token = localStorage.getItem("token");
+    const token = cookie.get("Token");
     if (!filterValue) {
       this.getSupplier();
     }

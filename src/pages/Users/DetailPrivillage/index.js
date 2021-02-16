@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Breadcrumb, Popconfirm, Col, Dropdown, Menu, Checkbox, PageHeader, Card, Button, message, Table, Modal } from 'antd';
+import { Form, Input, Breadcrumb, Popconfirm, Switch, Checkbox, PageHeader, Card, Button, message, Table, Modal } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
 import {
@@ -18,7 +18,6 @@ export const DetailPrivillageScreen = observer((initialData, initialValue) => {
   let history = useHistory();
   const [form] = Form.useForm();
   const store = useStore();
-  const [filterModal, setFilterModal] = useState(false);
   const [state, setState] = useState({
     success: false,
     privillage: false,
@@ -44,6 +43,7 @@ export const DetailPrivillageScreen = observer((initialData, initialValue) => {
 
   function fetchData() {
     store.user.getUsersPrivillage();
+    store.user.getPrivillage();
   }
 
   const toggleSuccess = (() => {
@@ -64,65 +64,39 @@ export const DetailPrivillageScreen = observer((initialData, initialValue) => {
     });
   })
 
-  const onChangeInsert = (e) => {
-    setCheck({
-      insert: e.target.checked
-    })
+  const insertCheck = (checked) => {
+    setInsert(checked)
   }
 
-  const onChangeUpdate = (e) => {
-    setCheck({
-      update: e.target.checked,
-    })
-  }
-  const onChangeRead = (e) => {
-    setCheck({
-      read: e.target.checked,
-    })
-  }
-  const onChangeDelete = (e) => {
-    setCheck({
-      deleted: e.target.checked
-    })
+  const updateCheck = (values) => {
+    setUpdated(values)
   }
 
-  const insertCheck = (e) => {
-    setInsert(e.target.checked)
+  const deletedCheck = (yes) => {
+    setDeleted(yes)
   }
 
-  const updateCheck = (e) => {
-    setUpdated(e.target.checked)
-  }
-
-  const deletedCheck = (e) => {
-    setDeleted(e.target.checked)
-  }
-
-  const readCheck = (e) => {
-    setRead(e.target.checked)
+  const readCheck = (no) => {
+    setRead(no)
   }
 
   const setEditMode = async (value) => {
     store.user.queryDetail.userId = value._id
     const dataOption = await store.user.getPrivillage();
-    const objOPtion = dataOption[0]
-    setCheck({
-      insert: objOPtion.insert,
-      deleted: objOPtion.deleted,
-      read: objOPtion.read,
-      update: objOPtion.update
-    })
+    setInsert(dataOption[0].insert);
+    setUpdated(dataOption[0].update);
+    setRead(dataOption[0].read);
+    setDeleted(dataOption[0].deleted);
     setState(prevState => ({
       ...prevState,
       success: true
     }))
     form.setFieldsValue({
       success: true,
-      userName: objOPtion.userName,
-      insert: objOPtion.insert,
-      deleted: objOPtion.deleted,
-      read: objOPtion.read,
-      update: objOPtion.update
+      insert: dataOption[0].insert,
+      deleted: dataOption[0].deleted,
+      read: dataOption[0].read,
+      update: dataOption[0].update
     })
   }
 
@@ -157,16 +131,19 @@ export const DetailPrivillageScreen = observer((initialData, initialValue) => {
   }
 
   async function editDataDetail(value) {
-    store.user.queryDetail.userId = value._id
-    const dataOption = await store.user.getPrivillage();
-    const objOPtion = dataOption[0]
+    // store.user.queryDetail.userId = value._id
+    // const dataOption = await store.user.getPrivillage();
+    // setInsert(insert);
+    // setUpdated(updated);
+    // setRead(read);
+    // setDeleted(deleted);
     const data = {
-      insert: objOPtion.insert,
-      deleted: objOPtion.deleted,
-      read: objOPtion.read,
-      update: objOPtion.update
+      insert: insert,
+      deleted: deleted,
+      read: read,
+      update: updated
     }
-
+    console.log(data, 'oke')
     if (value.isEdit) {
       store.user.updatedPrivillageDetail(value.isEdit, data)
         .then(res => {
@@ -175,7 +152,7 @@ export const DetailPrivillageScreen = observer((initialData, initialValue) => {
           fetchData();
         })
         .catch(err => {
-          message.error(`Error on Updating Member, ${err.message}`);
+          message.error(`Error on Updating Privillage, ${err.message}`);
           message.error(err.message);
         });
     }
@@ -203,17 +180,16 @@ export const DetailPrivillageScreen = observer((initialData, initialValue) => {
     }).catch(err => {
       message.error(err.response.body.message)
     })
-    console.log(id)
   }
+
 
   const setEditModePrivillage = async (value) => {
     store.user.queryDetail.userId = value._id
     const dataOption = await store.user.getPrivillage();
-    const objOPtion = dataOption[0]
-    setInsert(objOPtion.insert)
-    setUpdated(objOPtion.update)
-    setDeleted(objOPtion.deleted)
-    setRead(objOPtion.read)
+    setInsert(dataOption[0].insert);
+    setUpdated(dataOption[0].update);
+    setRead(dataOption[0].read);
+    setDeleted(dataOption[0].deleted);
     setState(prevState => ({
       ...prevState,
       privillage: true
@@ -221,10 +197,10 @@ export const DetailPrivillageScreen = observer((initialData, initialValue) => {
     form.setFieldsValue({
       privillage: true,
       isEdit: value._id,
-      insert: objOPtion.insert,
-      deleted: objOPtion.deleted,
-      read: objOPtion.read,
-      update: objOPtion.update
+      insert: insert,
+      deleted: deleted,
+      read: read,
+      update: updated
     })
   }
 
@@ -251,37 +227,28 @@ export const DetailPrivillageScreen = observer((initialData, initialValue) => {
           label="Insert"
           name="insert"
         >
-          <Checkbox
+          {/* <Checkbox
             checked={check.insert}
-            onChange={onChangeInsert}
-          >Insert</Checkbox>
+          >Insert</Checkbox> */}
+          <Switch checked={insert} />
         </Form.Item>
         <Form.Item
           label="Update"
           name="update"
         >
-          <Checkbox
-            checked={check.update}
-            onChange={onChangeUpdate}
-          >Update</Checkbox>
+          <Switch checked={updated} />
         </Form.Item>
         <Form.Item
           label="Read"
           name="read"
         >
-          <Checkbox
-            checked={check.read}
-            onChange={onChangeRead}
-          >Read</Checkbox>
+          <Switch checked={read} />
         </Form.Item>
         <Form.Item
           label="Delete"
           name="deleted"
         >
-          <Checkbox
-            checked={check.deleted}
-            onChange={onChangeDelete}
-          >Delete</Checkbox>
+          <Switch checked={deleted} />
         </Form.Item>
       </Form>
       {/* <Table dataSource={store.user.dataQuery.slice()} columns={columnsDetailReview} /> */}
@@ -321,27 +288,31 @@ export const DetailPrivillageScreen = observer((initialData, initialValue) => {
           label="Insert"
           name="insert"
         >
-          <Checkbox checked={insert} onChange={insertCheck}>Insert</Checkbox>
+          {/* <Checkbox checked={insert} onChange={insertCheck}>Insert</Checkbox> */}
+          <Switch checked={insert} onChange={insertCheck} />
         </Form.Item>
         <Form.Item
           label="Update"
           name="update"
         >
-          <Checkbox checked={updated} onChange={updateCheck}>Update</Checkbox>
+          {/* <Checkbox checked={updated} onChange={updateCheck}>Update</Checkbox> */}
+          <Switch checked={updated} onChange={updateCheck} />
         </Form.Item>
         <Form.Item
           label="Read"
           name="read"
         >
-          <Checkbox checked={read} onChange={readCheck}
-          >Read</Checkbox>
+          {/* <Checkbox checked={read} onChange={readCheck}
+          >Read</Checkbox> */}
+          <Switch checked={read} onChange={readCheck} />
         </Form.Item>
         <Form.Item
           label="Delete"
           name="deleted"
         >
-          <Checkbox checked={deleted} onChange={deletedCheck}
-          >Delete</Checkbox>
+          {/* <Checkbox checked={deleted} onChange={deletedCheck}
+          >Delete</Checkbox> */}
+          <Switch checked={deleted} onChange={deletedCheck} />
         </Form.Item>
       </Form>
       {/* <Table dataSource={store.user.dataQuery.slice()} columns={columnsDetailReview} /> */}
@@ -456,7 +427,6 @@ export const DetailPrivillageScreen = observer((initialData, initialValue) => {
           <FormOutlined style={{ marginLeft: 8 }} onClick={() => {
             // console.log(record)
             setEditModeUsers(record)
-            console.log(record._id)
           }} />
           {/* <a>Delete Users</a> */}
           <Popconfirm

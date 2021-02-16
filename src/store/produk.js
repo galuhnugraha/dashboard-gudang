@@ -2,6 +2,9 @@ import { action, observable } from 'mobx';
 import { http } from "../utils/http";
 import debounce from "lodash.debounce";
 import * as qs from "querystring";
+import Cookies from 'universal-cookie';
+
+var cookie = new Cookies();
 
 export class ProdukStore {
   baseUrl = "/products";
@@ -37,8 +40,10 @@ export class ProdukStore {
     if (filter != null) {
       this.query.filter = filter;
     }
+    var cookie = new Cookies();
     this.isLoading = true;
-    const token = localStorage.getItem("token")
+    const token = cookie.get("Token")
+    console.log(token)
     const data = await http.get(this.baseUrl + '?' + qs.stringify(this.query)).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
     this.maxLength = data.body.totalData;
@@ -48,7 +53,7 @@ export class ProdukStore {
   @action
   AddProduct = async (data) => {
     this.isLoading = true;
-    const token = localStorage.getItem("token")
+    const token = cookie.get("Token")
     return http.post(`/products/addProduct`).set({ 'authorization': `Bearer ${token}` }).send(data)
       .then((res) => {
         this.isLoading = false;
@@ -63,7 +68,7 @@ export class ProdukStore {
   @action
   updateProduct = async (_id, data) => {
     this.isLoading = true;
-    const token = localStorage.getItem("token")
+    const token = cookie.get("Token")
     return http.put(`/products/updateProduct/${_id}`).set({ 'authorization': `Bearer ${token}` }).send(data)
       .then((res) => {
         this.isLoading = false;
@@ -78,7 +83,7 @@ export class ProdukStore {
   @action
   deleteProduct = async (_id) => {
     this.isLoading = true;
-    const token = localStorage.getItem("token")
+    const token = cookie.get("Token")
     return http.del(`/products/deleteProduct/${_id}`).set({ 'authorization': `Bearer ${token}` }).then(res => {
       this.delete = res.body.data;
       this.isLoading = false;
@@ -92,7 +97,7 @@ export class ProdukStore {
   @action
   async search() {
     let filterValue = this.selectedFilterValue;
-    const token = localStorage.getItem("token");
+    const token = cookie.get("Token");
     if (!filterValue) {
       this.getAll();
     }
@@ -104,7 +109,7 @@ export class ProdukStore {
   @action
   AddProductOut = async (id, data) => {
     this.isLoading = true;
-    const token = localStorage.getItem("token")
+    const token = cookie.get("Token")
     return http.post(`/dataWarehouse/createProductOut/${id}`).set({ 'authorization': `Bearer ${token}` }).send(data)
       .then((res) => {
         this.isLoading = false;

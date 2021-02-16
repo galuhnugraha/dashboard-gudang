@@ -13,6 +13,7 @@ import { useStore } from "../../../../utils/useStores";
 import { observer } from "mobx-react-lite";
 import { PlusOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import Cookies from 'universal-cookie';
 
 
 const renderContent = (value, row, index) => {
@@ -44,7 +45,7 @@ export const AddPurchaseOrder = observer((initialData) => {
     const [location, setLocation] = useState('');
     const [filterProductSupliers, setFilterProductSupliers] = useState('');
     let x = '';
-
+    const cookie = new Cookies();
     useEffect(() => {
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -467,7 +468,7 @@ export const AddPurchaseOrder = observer((initialData) => {
             title: 'Di input oleh ',
             dataIndex: 'pic',
             render: (record) => <span>
-                <h3>{localStorage.getItem("name")}</h3>
+                <h3>{cookie.get("name")}</h3>
                 <p>{moment().format('MMMM Do YYYY, h:mm:ss a')}</p>
             </span>
         },
@@ -527,7 +528,7 @@ export const AddPurchaseOrder = observer((initialData) => {
             return obj;
         })
         const data = {
-            pic: localStorage.getItem("name"),
+            pic: cookie.get("name"),
             sender: e.sender,
             noref: x,
             senderPhone: e.senderPhone,
@@ -650,7 +651,7 @@ export const AddPurchaseOrder = observer((initialData) => {
                     </Col>
                     <Col style={{ marginRight: 45, marginTop: 10 }}>
                         {/* <p>Di Input Oleh : </p>
-                        <h3>{localStorage.getItem("name")}</h3>
+                        <h3>{cookie.get("name")}</h3>
                         <p>{moment().format('MMMM Do YYYY, h:mm:ss a')}</p> */}
                         <Table columns={columnsReview} dataSource={data} bordered pagination={false} />
                     </Col>

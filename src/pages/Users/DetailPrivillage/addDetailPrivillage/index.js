@@ -12,15 +12,27 @@ export const AddDetailPrivillage = observer(() => {
     const history = useHistory();
     const store = useStore();
     const [loading, setLoading] = useState(false);
+    const [check, setCheck] = useState(false);
+    const [read,setRead] = useState(false);
 
     const onFinish = values => {
         enterLoading(values);
     };
 
+    const unChecked = (e) => {
+        setCheck(e)
+    }
+
+    const unCheckedRead = (e) => {
+        setRead(e)
+    }
+
     const enterLoading = (e) => {
         setLoading(true);
         const dapartment = store.user.query.dapartment;
         // console.log(detail,'data cuy');
+        setCheck(e.insert)
+        setRead(e.read)
         const postion = store.user.query.position
         const data = {
             email: e.email,
@@ -115,7 +127,7 @@ export const AddDetailPrivillage = observer(() => {
                 </Form.Item>
                 <p>Allow Permission</p>
                 <Form.Item label="Insert" name="insert">
-                    <Switch />
+                    <Switch checked={check} onChange={unChecked} />
                 </Form.Item>
                 <Form.Item label="Update" name="update">
                     <Switch />
@@ -124,7 +136,7 @@ export const AddDetailPrivillage = observer(() => {
                     <Switch />
                 </Form.Item>
                 <Form.Item label="Read" name="read">
-                    <Switch />
+                    <Switch checked={read} onChange={unCheckedRead}/>
                 </Form.Item>
                 <Form.Item
                     style={{
@@ -135,7 +147,7 @@ export const AddDetailPrivillage = observer(() => {
                         block
                         htmlType="submit"
                         size={'large'}
-                        loading={loading}
+                        // loading={loading}
                     >
                         Submit
 					</Button>

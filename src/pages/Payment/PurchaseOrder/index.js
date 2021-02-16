@@ -190,7 +190,7 @@ export const PurchaseOrderScreen = observer((initialData) => {
             invoiceNo: e.invoiceNo,
             suplierName: e.suplierName,
             senderPhone: e.senderPhone,
-            pic: e.pic,
+            pic: e.pic?.UserName,
             totalPurchaseItem: e.totalPurchaseItem,
             status: e.status
         }
@@ -252,49 +252,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
             </Form>
         </Modal>
     }
-
-    // function ModalItemWarehouse() {
-    //     return <Modal
-    //         title={"Pilih Warehouse"}
-    //         visible={state.new}
-    //         onOk={() => {
-    //             form
-    //                 .validateFields()
-    //                 .then(values => {
-    //                     // editDetailPurchase(values);
-    //                     // onFinish(values)
-    //                     // deleteData(values)
-    //                 })
-    //                 .catch(info => {
-    //                 });
-    //         }}
-    //         onCancel={handleCancelReviewItem}
-    //         footer={[
-    //             <Button key="2" onClick={() => setFilterModal(false)}>
-    //                 Cancel
-    //           </Button>,
-    //             <Button key="1" style={{ backgroundColor: '#132743', color: 'white' }} onClick={onOkFilter}>
-    //                 Ok
-    //           </Button>,
-    //         ]}
-    //     >
-    //         <Form layout="vertical" form={form} className={'custom-form'} name="form_in_modal">
-    //             <Form.Item
-    //                 label="Warehouse"
-    //                 name="_id"
-    //                 size={'large'}
-    //             // rules={[{ required: true, message: 'Please input your Atasan' }]}
-    //             >
-    //                 <Select placeholder="Select Warehouse" style={{ width: '97%' }} onChange={(value) => {
-    //                     setState({ warehouseId: value });
-    //                     console.log(value)
-    //                 }}>
-    //                     {store.barang.data.map(d => <Select.Option value={d._id} key={d._id}>{d.warehouseName}</Select.Option>)}
-    //                 </Select>
-    //             </Form.Item>
-    //         </Form>
-    //     </Modal>
-    // }
 
     {
 

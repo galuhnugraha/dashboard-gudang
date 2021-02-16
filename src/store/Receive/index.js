@@ -1,5 +1,8 @@
 import { action, observable } from 'mobx';
 import { http } from "../../utils/http";
+import Cookies from 'universal-cookie';
+
+var cookie = new Cookies();
 
 export class ReceiveStore {
     @observable isLoading = false;
@@ -12,7 +15,7 @@ export class ReceiveStore {
         //   this.query.filter = filter;
         // }
         this.isLoading = true;
-        const token = localStorage.getItem("token")
+        const token = cookie.get("Token")
         const data = await http.get('/receiveOrder').set({ 'authorization': `Bearer ${token}` });
         this.data = data.body.data;
         this.maxLength = data.body.totalData;
@@ -22,7 +25,7 @@ export class ReceiveStore {
     @action
     AddReceive = async (data) => {
         this.isLoading = true;
-        const token = localStorage.getItem("token")
+        const token = cookie.get("Token")
         return http.post(`/receiveOrder/createReceiveOrder`).set({ 'authorization': `Bearer ${token}` }).send(data)
             .then((res) => {
                 this.isLoading = false;
@@ -37,7 +40,7 @@ export class ReceiveStore {
     @action
     deleteReceiveOrder = async (_id) => {
         this.isLoading = true;
-        const token = localStorage.getItem("token")
+        const token = cookie.get("Token")
         return http.del(`/receiveOrder/deletedReceiveOrder/${_id}`).set({ 'authorization': `Bearer ${token}` }).then(res => {
             // this.data = res.body.data;
             this.isLoading = false;
@@ -51,7 +54,7 @@ export class ReceiveStore {
     @action
     updateReceive = async (_id, data) => {
         this.isLoading = true;
-        const token = localStorage.getItem("token")
+        const token = cookie.get("Token")
         return http.put(`/receiveOrder/updatedReceiveOrder/${_id}`).set({ 'authorization': `Bearer ${token}` }).send(data)
             .then((res) => {
                 this.isLoading = false;
@@ -66,7 +69,7 @@ export class ReceiveStore {
     @action
     approveList = async () => {
         this.isLoading = true;
-        const token = localStorage.getItem("token")
+        const token = cookie.get("Token")
         // return http.get(`/purchaseOrder/needAprovalList`).set({ 'authorization': `Bearer ${token}` })
         //     .then((res) => {
         //         this.isLoading = false;

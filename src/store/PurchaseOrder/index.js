@@ -1,7 +1,10 @@
 import { action, observable } from 'mobx';
 import { http } from "../../utils/http";
 import * as qs from "querystring";
+import Cookies from 'universal-cookie';
 
+
+var cookie = new Cookies();
 const defaultStatus = {
     "status": ""
 };
@@ -30,7 +33,7 @@ export class PurchaseOrder {
         //   this.query.filter = filter;
         // }
         this.isLoading = true;
-        const token = localStorage.getItem("token")
+        const token = cookie.get("Token")
         const data = await http.get("/purchaseOrder/receiveList").set({ 'authorization': `Bearer ${token}` });
         this.data = data.body.data;
         this.maxLength = data.body.totalData;
@@ -43,7 +46,7 @@ export class PurchaseOrder {
         //     this.query.filter = filter;
         // }
         this.isLoading = true;
-        const token = localStorage.getItem("token")
+        const token = cookie.get("Token")
         const data = await http.get('/purchaseOrder').set({ 'authorization': `Bearer ${token}` });
         this.data = data.body.data;
         this.maxLength = data.body.totalData;
@@ -54,7 +57,7 @@ export class PurchaseOrder {
     AddPurchaseOrder = async (data) => {
         let obj = {...data,warehouseId: this.coy}
         this.isLoading = true;
-        const token = localStorage.getItem("token")
+        const token = cookie.get("Token")
         return http.post(`/purchaseOrder/createPo`).set({ 'authorization': `Bearer ${token}` }).send(obj)
             .then((res) => {
                 this.isLoading = false;
@@ -69,7 +72,7 @@ export class PurchaseOrder {
     @action
     deletePurchaseOrder = async (id) => {
         this.isLoading = true;
-        const token = localStorage.getItem("token")
+        const token = cookie.get("Token")
         return http.del(`/purchaseOrder/deletePo/${id}`).set({ 'authorization': `Bearer ${token}` }).then(res => {
             // this.data = res.body.data;
             this.isLoading = false;
@@ -83,7 +86,7 @@ export class PurchaseOrder {
     @action
     updatePurchase = async (_id, data) => {
         this.isLoading = true;
-        const token = localStorage.getItem("token")
+        const token = cookie.get("Token")
         return http.put(`/purchaseOrder/updatePo/${_id}`).set({ 'authorization': `Bearer ${token}` }).send(data)
             .then((res) => {
                 this.isLoading = false;
@@ -99,7 +102,7 @@ export class PurchaseOrder {
     @action
     approve = async (data) => {
         this.isLoading = true;
-        const token = localStorage.getItem("token")
+        const token = cookie.get("Token")
         return http.put(`/purchaseOrder/assignmentPo`).set({ 'authorization': `Bearer ${token}` }).send(data)
             .then((res) => {
                 this.isLoading = false;
@@ -115,7 +118,7 @@ export class PurchaseOrder {
     @action
     approve2 = async (data) => {
         this.isLoading = true;
-        const token = localStorage.getItem("token")
+        const token = cookie.get("Token")
         return http.put(`/purchaseOrder/assignmentPo2`).set({ 'authorization': `Bearer ${token}` }).send(data)
             .then((res) => {
                 this.isLoading = false;
@@ -130,7 +133,7 @@ export class PurchaseOrder {
     @action
     deleteProductIn = async (data) => {
         this.isLoading = true;
-        const token = localStorage.getItem("token")
+        const token = cookie.get("Token")
         return http.del(`/purchaseOrder/deletePo`).set({ 'authorization': `Bearer ${token}` }).send(data)
             .then((res) => {
                 this.isLoading = false;
