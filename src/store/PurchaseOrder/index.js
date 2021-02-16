@@ -23,6 +23,11 @@ export class PurchaseOrder {
         lm: 10,
         warehouseId: '',
     }
+    @observable queryDetail = {
+        pg: 1,
+        lm: 10,
+        purchaseId: '',
+    }
     @observable coy = ''
 
 
@@ -41,10 +46,13 @@ export class PurchaseOrder {
     }
 
     @action
-    async getPurchaseOrderList() {
+    async getPurchaseOrderList(filter) {
+        if (filter != null) {
+            this.query.filter = filter;
+          }
         this.isLoading = true;
         const token = cookie.get("Token")
-        const data = await http.get('/purchaseOrder').set({ 'authorization': `Bearer ${token}` });
+        const data = await http.get('/purchaseOrder' + '?' + + qs.stringify(this.queryDetail)).set({ 'authorization': `Bearer ${token}` });
         this.data = data.body.data;
         this.maxLength = data.body.totalData;
         this.isLoading = false;
