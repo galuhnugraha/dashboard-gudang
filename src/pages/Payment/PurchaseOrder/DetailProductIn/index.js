@@ -27,8 +27,8 @@ export const DetailProductInScreen = observer(() => {
         let dataPurchase = {
             _id: e._id,
             invoiceNo: e.invoiceNo,
-            suplierName: e.suplierId?.suplierName,
-            suplierAddress: e.suplierId?.suplierAddress.address,
+            suplierName: e.suplierName,
+            suplierAddress: e.suplierId?.suplierAddress,
             sender: e.sender,
             senderPhone: e.senderPhone,
             // pic: cookie.get("name"),

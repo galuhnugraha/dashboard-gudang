@@ -36,6 +36,7 @@ export const PurchaseOrderScreen = observer((initialData) => {
         delete: false,
         new: false,
         warehouseId: '',
+        purchaseId: ''
     });
     const [loading, setLoading] = useState(false);
     const [productId, setProductId] = useState('');
@@ -73,6 +74,11 @@ export const PurchaseOrderScreen = observer((initialData) => {
     // })
 
     function paramsId(value) {
+        store.purchase.queryDetail.purchaseId = value
+        setFilterQuery({
+          ...filterQuery,
+          purchaseId: state.purchaseId,
+        })
         history.push("/app/detail-product-in/" + value)
       }
 
