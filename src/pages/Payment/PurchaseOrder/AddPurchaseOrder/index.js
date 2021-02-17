@@ -31,6 +31,8 @@ export const AddPurchaseOrder = observer((initialData) => {
     })
     const [location, setLocation] = useState('');
     const [filterProductSupliers, setFilterProductSupliers] = useState('');
+    console.log(location);
+    console.log(filterProductSupliers);
     let x = '';
     const cookie = new Cookies();
     useEffect(() => {

@@ -113,6 +113,7 @@ export const DataSupplierScreen = observer((initialData) => {
   const onFinish = values => {
     SuplierOut(values)
     setFilterProduct(false)
+    setSuplierId(values)
   };
 
   function modalSuplier() {

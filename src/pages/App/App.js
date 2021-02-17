@@ -162,7 +162,7 @@ export const App = () => {
             <Col>
               <div className="ant-dropdown-link" href="#" style={{ color: 'grey', display: 'flex', flexDirection: 'row', height: 50 }}>
                 <Dropdown overlay={menu} trigger={['click']}>
-                  <a><Avatar icon={<UserOutlined />} style={{ marginRight: 15}} /></a>
+                  <Avatar icon={<UserOutlined />} style={{ marginRight: 15}} />
                 </Dropdown>
                 <p style={{ marginRight: 25 }}>Halo {cookie.get("name")}</p>
               </div>

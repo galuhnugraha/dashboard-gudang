@@ -7,7 +7,6 @@ import { useStore } from "../../../../utils/useStores";
 import { observer } from "mobx-react-lite";
 import moment from 'moment';
 import Cookies from 'universal-cookie';
-import xlsx from 'xlsx';
 
 export const DetailProductInScreen = observer(() => {
     const store = useStore();
