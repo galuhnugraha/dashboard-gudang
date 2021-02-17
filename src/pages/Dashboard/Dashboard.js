@@ -22,9 +22,9 @@ export const Dashboard = observer(() => {
     
 
   return <div className="card-page-header">
-    <Button onClick={fetchData}>
+    {/* <Button onClick={fetchData}>
       <p>Test</p>
-    </Button>
+    </Button> */}
     {/* <Row gutter={16}>
       <Col span={8}>
         <Card bordered={false}

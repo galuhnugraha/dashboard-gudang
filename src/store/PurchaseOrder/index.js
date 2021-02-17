@@ -17,15 +17,13 @@ export class PurchaseOrder {
     @observable pageSize = 10;
     @observable maxLength = 0;
     @observable dataDetail = [];
-    @observable filterObject = {};
+    @observable dataDetailObject = '';
     @observable query = {
         pg: 1,
         lm: 10,
         warehouseId: '',
     }
     @observable queryDetail = {
-        pg: 1,
-        lm: 10,
         purchaseId: '',
     }
     @observable coy = ''
@@ -45,18 +43,19 @@ export class PurchaseOrder {
         this.isLoading = false;
     }
 
-    @action
-    async getPurchaseOrderList(filter) {
-        if (filter != null) {
-            this.query.filter = filter;
-          }
-        this.isLoading = true;
-        const token = cookie.get("Token")
-        const data = await http.get('/purchaseOrder' + '?' +  qs.stringify(this.queryDetail)).set({ 'authorization': `Bearer ${token}` });
-        this.data = data.body.data;
-        this.maxLength = data.body.totalData;
-        this.isLoading = false;
-    }
+    // @action
+    // async getPurchaseOrderList(filter) {
+    //     if (filter != null) {
+    //         this.query.filter = filter;
+    //       }
+    //     this.isLoading = true;
+    //     const token = cookie.get("Token")
+    //     const data = await http.get('/purchaseOrder' + '?' +  qs.stringify(this.queryDetail)).set({ 'authorization': `Bearer ${token}` });
+    //     console.log(data,'test')
+    //     return data.body.data;
+    //     // this.maxLength = data.body.totalData;
+    //     // this.isLoading = false;
+    // }
 
     @action
     AddPurchaseOrder = async (data) => {
@@ -148,5 +147,19 @@ export class PurchaseOrder {
                 this.isLoading = false;
                 throw err;
             });
+    }
+
+    @action
+    async getPurchaseOrderListDetail(filter) {
+        if (filter != null) {
+            this.query.filter = filter;
+          }
+        this.isLoading = true;
+        const token = cookie.get("Token")
+        const data = await http.get('/purchaseOrder' + '?' +  qs.stringify(this.queryDetail)).set({ 'authorization': `Bearer ${token}` });
+        console.log(this.dataDetailObject,'test')
+        this.dataDetailObject = data.body.data;
+        // this.maxLength = data.body.totalData;
+        // this.isLoading = false;
     }
 }

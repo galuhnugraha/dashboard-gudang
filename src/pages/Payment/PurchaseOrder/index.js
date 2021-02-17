@@ -40,11 +40,15 @@ export const PurchaseOrderScreen = observer((initialData) => {
     });
     const [loading, setLoading] = useState(false);
     const [productId, setProductId] = useState('');
-    const [id, setId] = useState('');
+    // const [id, setId] = useState('');
     const [filterModal, setFilterModal] = useState(false);
     const [filterQuery, setFilterQuery] = useState({});
     const [prOutId, setPrOut] = useState('');
-    const [newModal, setNewModal] = useState(false);
+    // const [newModal, setNewModal] = useState(false);
+    let table = '';
+
+    table = store.purchase.dataDetailObject;
+    console.log(table.formNumber,'yes')
 
     useEffect(() => {
         fetchData();
@@ -52,26 +56,10 @@ export const PurchaseOrderScreen = observer((initialData) => {
     }, [filterQuery])
 
     async function fetchData() {
-        await store.purchase.getPurchaseOrderList();
+        // await store.purchase.getPurchaseOrderList();
+        await store.purchase.getPurchaseOrderListDetail();
         await store.barang.getDropdown();
     }
-
-    // const appRender = () => {
-    //     var workbook = xlsx.utils.book_new();
-    //     var ws = xlsx.utils.json_to_sheet(dataReview);
-    //     xlsx.utils.book_append_sheet(workbook, ws, "Results");
-    //     xlsx.writeFile(workbook, 'out.xlsx', { type: 'file' });
-    // }
-
-    // const barang = store.barang.data.map((e) => {
-    //     // console.log(barang)
-    //     let data = {
-    //         id: e._id,
-    //         warehouseName: e.warehouseName,
-    //         warehosueLocation: e.warehosueLocation
-    //     }
-    //     return data;
-    // })
 
     function paramsId(value) {
         store.purchase.queryDetail.purchaseId = value
@@ -113,16 +101,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
             purchase: !state.purchase,
         });
     })
-
-    // const setEditModeReviewPassword = (value) => {
-    //     setState(prevState => ({
-    //         ...prevState,
-    //         delete: true
-    //     }))
-    //     form.setFieldsValue({
-    //         delete: true,
-    //     })
-    // }
 
     const setEditModeReviewNew = (value) => {
         setState(prevState => ({
@@ -194,18 +172,18 @@ export const PurchaseOrderScreen = observer((initialData) => {
         });
     }
 
-    const dataReview = store.purchase.data.map((e) => {
-        let dataPurchase = {
-            _id: e._id,
-            invoiceNo: e.invoiceNo,
-            suplierName: e.suplierName,
-            senderPhone: e.senderPhone,
-            pic: e.pic?.UserName,
-            totalPurchaseItem: e.totalPurchaseItem,
-            status: e.status
-        }
-        return dataPurchase
-    })
+    // const dataReview = store.purchase.data.map((e) => {
+    //     let dataPurchase = {
+    //         _id: e._id,
+    //         invoiceNo: e.invoiceNo,
+    //         suplierName: e.suplierName,
+    //         senderPhone: e.senderPhone,
+    //         pic: e.pic?.UserName,
+    //         totalPurchaseItem: e.totalPurchaseItem,
+    //         status: e.status
+    //     }
+    //     return dataPurchase
+    // })
 
     function onOkFilter() {
         store.noRef.warehouseId = state.warehouseId
@@ -263,6 +241,7 @@ export const PurchaseOrderScreen = observer((initialData) => {
         </Modal>
     }
 
+
     {
 
         const columns = [
@@ -293,6 +272,9 @@ export const PurchaseOrderScreen = observer((initialData) => {
                 title: 'PIC',
                 dataIndex: 'pic',
                 key: 'pic',
+                render: (record) => <span>
+                    {record.UserName}
+                </span>
             },
             {
                 title: 'Total Purchase',
@@ -358,13 +340,7 @@ export const PurchaseOrderScreen = observer((initialData) => {
                             }}
                         >
                             <PlusOutlined /> New
-                        </Button>,
-                    //     <Button
-                    //         key={"2"}
-                    //         // onClick={() => setFilterModal(true)}
-                    //     >
-                    //         <FilterOutlined /> Filter
-                    // </Button>,
+                        </Button>
                     ]}
                 />
                 {/* {ModalItemWarehouse()} */}
@@ -372,9 +348,9 @@ export const PurchaseOrderScreen = observer((initialData) => {
                 {renderModal()}
                 <Table
                     columns={columns}
-                    rowKey={record => record.id}
-                    dataSource={dataReview}
-                    loading={store.purchase.isLoading}
+                    rowKey={record => record._id}
+                    dataSource={store.purchase.dataDetailObject}
+                    // loading={store.purchase.isLoading}
                     style={{ paddingLeft: '12px' }}
                     size="small"
                 />
