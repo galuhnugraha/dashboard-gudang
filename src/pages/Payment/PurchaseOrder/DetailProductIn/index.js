@@ -29,41 +29,6 @@ export const DetailProductInScreen = observer(() => {
     table = store.purchase.dataDetailObject;
     console.log(table,'oke ')
 
-    // const dataReview = store.purchase.data.map((e) => {
-    //     let dataPurchase = {
-    //         _id: e._id,
-    //         invoiceNo: e.invoiceNo,
-    //         suplierName: e.suplierName,
-    //         suplierAddress: e.suplierId?.suplierAddress.address,
-    //         sender: e.sender,
-    //         senderPhone: e.senderPhone,
-    //         // pic: cookie.get("name"),
-    //         upperPic1: e.upperPic1?.UserName,
-    //         upperPic2: e.upperPic2?.UserName,
-    //         noref: e.noref,
-    //         item: e.item.map((e) => {
-    //             return {
-    //                 sku: e.sku,
-    //                 description: e.description,
-    //                 productName: e.productName,
-    //                 quantity: e.quantity,
-    //                 status: e.status
-    //             }
-    //         }),
-    //         totalPurchaseItem: e.totalPurchaseItem,
-    //         status: e.status
-    //     }
-    //     return dataPurchase
-    // })
-    // console.log(dataReview)
-
-    function FilterProduct(value) {
-        // console.log(value.UserName)
-        return value._id
-    }
-    // const selectedDataProduct = dataReview.filter(FilterProduct);
-    // console.log(selectedDataProduct[0]?.UserName);
-
     const dataSource = [
         {
             key: '1',

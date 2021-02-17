@@ -43,7 +43,6 @@ export class ProdukStore {
     var cookie = new Cookies();
     this.isLoading = true;
     const token = cookie.get("Token")
-    console.log(token)
     const data = await http.get(this.baseUrl + '?' + qs.stringify(this.query)).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
     this.maxLength = data.body.totalData;

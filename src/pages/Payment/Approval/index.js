@@ -186,7 +186,7 @@ export const ApprovalScreen = observer(() => {
                 ]}
             />
             {ModalItemPurchase()}
-            <Table dataSource={store.receive.data.slice()} columns={columns} />
+            <Table dataSource={store.receive.data.slice()} columns={columns} size="small" style={{paddingLeft:'12px'}}/>
         </Card>
     </div>
 })

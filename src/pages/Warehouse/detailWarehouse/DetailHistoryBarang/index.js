@@ -29,7 +29,7 @@ export const DetailWarehouseHistoryBarangScreen = observer(() => {
     return {
       pic: e.pic?.UserName,
       status: e.transaction?.status,
-      suplierName: e.transaction?.suplierName,
+      suplierName: e.suplier?.suplierName,
       sender: e.transaction?.sender,
       approval1: e.approval1?.UserName,
       approval2: e.approval2?.UserName,

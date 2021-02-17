@@ -38,7 +38,7 @@ export const Dashboard = observer(() => {
           <PageHeader
             className="card-page-header"
             subTitle=""
-            title={"Supplier"}
+            // title={"Supplier"}
           />
         </Card>
       </Col>
@@ -54,7 +54,7 @@ export const Dashboard = observer(() => {
           <PageHeader
             className="card-page-header"
             subTitle=""
-            title={"List Gudang"}
+            // title={"List Gudang"}
           />
         </Card>
       </Col>
@@ -70,7 +70,7 @@ export const Dashboard = observer(() => {
           <PageHeader
             className="card-page-header"
             subTitle=""
-            title={"Produk"}
+            // title={"Produk"}
           />
         </Card>
       </Col>

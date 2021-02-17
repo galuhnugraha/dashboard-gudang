@@ -52,6 +52,7 @@ export const PurchaseOrderScreen = observer((initialData) => {
         // await store.purchase.getPurchaseOrderList();
         await store.purchase.getPurchaseOrderListDetail();
         await store.barang.getDropdown();
+        await store.purchase.getPurchaseOrderList();
     }
 
     function paramsId(value) {
@@ -76,6 +77,21 @@ export const PurchaseOrderScreen = observer((initialData) => {
             pic: value.pic,
         })
     }
+
+    // const x = store.purchase.dataDetailObject
+    // console.log(x._id)
+    const tableCoy = store.purchase.data.map((e) => {
+        let data = {
+            _id: e._id,
+            invoiceNo: e.invoiceNo,
+            suplierName: e.suplierName,
+            senderPhone: e.senderPhone,
+            pic: e.pic?.UserName,
+            totalPurchaseItem: e.totalPurchaseItem,
+            status: e.status
+        }
+        return data
+    })
 
     const setModeDelete = (value) => {
         setState(prevState => ({
@@ -250,7 +266,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
     }
 
     {
-
         const columns = [
             {
                 title: 'No Invoice',
@@ -279,9 +294,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
                 title: 'PIC',
                 dataIndex: 'pic',
                 key: 'pic',
-                render: (record) => <span>
-                    {record.UserName}
-                </span>
             },
             {
                 title: 'Total Purchase',
@@ -351,9 +363,10 @@ export const PurchaseOrderScreen = observer((initialData) => {
                 {ModalItemWarehouse()}
                 {renderModal()}
                 <Table
-                    columns={columns}
+                    // columns={columns}
                     rowKey={record => record._id}
-                    dataSource={store.purchase.dataDetailObject}
+                    columns={columns}
+                    dataSource={tableCoy}
                     // loading={store.purchase.isLoading}
                     style={{ paddingLeft: '12px' }}
                     size="small"

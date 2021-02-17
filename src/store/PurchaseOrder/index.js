@@ -18,7 +18,6 @@ export class PurchaseOrder {
     @observable maxLength = 0;
     @observable dataDetail = [];
     @observable dataDetailObject = '';
-    @observable dataDetailObject1 = '';
     @observable query = {
         pg: 1,
         lm: 10,
@@ -151,6 +150,18 @@ export class PurchaseOrder {
     }
 
     @action
+    async getPurchaseOrderList(filter) {
+        if (filter != null) {
+            this.query.filter = filter;
+          }
+        this.isLoading = true;
+        const token = cookie.get("Token")
+        const data = await http.get('/purchaseOrder').set({ 'authorization': `Bearer ${token}` });
+        console.log(data,'test')
+        this.data = data.body.data;
+    }
+
+    @action
     async getPurchaseOrderListDetail(filter) {
         if (filter != null) {
             this.query.filter = filter;
@@ -158,9 +169,7 @@ export class PurchaseOrder {
         this.isLoading = true;
         const token = cookie.get("Token")
         const data = await http.get('/purchaseOrder' + '?' +  qs.stringify(this.queryDetail)).set({ 'authorization': `Bearer ${token}` });
-        console.log(this.dataDetailObject,'test')
+        console.log(data,'test')
         this.dataDetailObject = data.body.data;
-        // this.maxLength = data.body.totalData;
-        // this.isLoading = false;
     }
 }
