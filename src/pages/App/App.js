@@ -55,7 +55,7 @@ export const App = () => {
           }}
         >Edit Profile</button>
       </Menu.Item> */}
-      <Menu.Item key="1" >
+      <Menu.Item key="1">
         <button onClick={logout}
           style={{
             backgroundColor: "white",
@@ -120,11 +120,6 @@ export const App = () => {
                 <span>Data Produk</span>
               </Link>
             </Menu.Item>
-            {/* <Menu.Item key="6">
-              <Link to="/app/data-transaction">
-                <span>Transaction</span>
-              </Link>
-            </Menu.Item> */}
           </SubMenu>
           <SubMenu key="sub2" title="Barang Masuk / Keluar">
             <Menu.Item key="7">
@@ -149,11 +144,6 @@ export const App = () => {
                 <span>Data Departemen</span>
               </Link>
             </Menu.Item>
-            {/* <Menu.Item key="10">
-              <Link to="/app/user">
-                <span>User</span>
-              </Link>
-            </Menu.Item> */}
           </SubMenu>
         </Menu>
       </Sider>
@@ -172,7 +162,7 @@ export const App = () => {
             <Col>
               <div className="ant-dropdown-link" href="#" style={{ color: 'grey', display: 'flex', flexDirection: 'row', height: 50 }}>
                 <Dropdown overlay={menu} trigger={['click']}>
-                  <Avatar icon={<UserOutlined />} style={{ marginRight: 15, marginTop: 15 }} />
+                  <a><Avatar icon={<UserOutlined />} style={{ marginRight: 15}} /></a>
                 </Dropdown>
                 <p style={{ marginRight: 25 }}>Halo {cookie.get("name")}</p>
               </div>

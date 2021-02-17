@@ -15,6 +15,7 @@ import {
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
 import { observer } from "mobx-react-lite";
+import xlsx from 'xlsx';
 
 export const PurchaseOrderScreen = observer((initialData) => {
     const store = useStore();
@@ -40,7 +41,7 @@ export const PurchaseOrderScreen = observer((initialData) => {
 
     async function fetchData() {
         // await store.purchase.getPurchaseOrderList();
-        await store.purchase.getPurchaseOrderListDetail();
+        // await store.purchase.getPurchaseOrderListDetail();
         await store.barang.getDropdown();
         await store.purchase.getPurchaseOrderList();
     }
@@ -345,7 +346,7 @@ export const PurchaseOrderScreen = observer((initialData) => {
                             }}
                         >
                             <PlusOutlined /> New
-                        </Button>
+                        </Button>,
                     ]}
                 />
                 {ModalDeletedPO()}
@@ -356,7 +357,7 @@ export const PurchaseOrderScreen = observer((initialData) => {
                     rowKey={record => record._id}
                     columns={columns}
                     dataSource={tableCoy}
-                    // loading={store.purchase.isLoading}
+                    loading={store.purchase.isLoading}
                     style={{ paddingLeft: '12px' }}
                     size="small"
                 />
