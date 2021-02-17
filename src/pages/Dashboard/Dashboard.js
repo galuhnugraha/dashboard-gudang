@@ -25,7 +25,7 @@ export const Dashboard = observer(() => {
     {/* <Button onClick={fetchData}>
       <p>Test</p>
     </Button> */}
-    {/* <Row gutter={16}>
+    <Row gutter={16}>
       <Col span={8}>
         <Card bordered={false}
           className={"shadow"}
@@ -38,7 +38,7 @@ export const Dashboard = observer(() => {
           <PageHeader
             className="card-page-header"
             subTitle=""
-            title={"Card 1"}
+            title={"Supplier"}
           />
         </Card>
       </Col>
@@ -54,7 +54,7 @@ export const Dashboard = observer(() => {
           <PageHeader
             className="card-page-header"
             subTitle=""
-            title={"Card 2"}
+            title={"List Gudang"}
           />
         </Card>
       </Col>
@@ -70,10 +70,10 @@ export const Dashboard = observer(() => {
           <PageHeader
             className="card-page-header"
             subTitle=""
-            title={"Card 3"}
+            title={"Produk"}
           />
         </Card>
       </Col>
-    </Row> */}
+    </Row>
   </div>
 });

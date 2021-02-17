@@ -18,6 +18,7 @@ export class PurchaseOrder {
     @observable maxLength = 0;
     @observable dataDetail = [];
     @observable dataDetailObject = '';
+    @observable dataDetailObject1 = '';
     @observable query = {
         pg: 1,
         lm: 10,

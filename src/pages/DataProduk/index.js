@@ -673,11 +673,6 @@ export const DataProdukScreen = observer((initialData) => {
             fetchData()
           }}
           current={store.products.query.page}
-
-        // onChange={(page) => {
-        //   store.products.setPage(page.current);
-        // }}
-        // current={store.products.currentPage}
         />
       </Card>
     </div>

@@ -117,7 +117,6 @@ export class WarehouseDataStore {
     const token = cookie.get("Token")
     const data = await http.get('/warehouseTransaction' + '?' + qs.stringify(this.queryDetail)).set({ 'authorization': `Bearer ${token}` });
     this.data = data.body.data;
-    console.log(data.body.data,'testtt')
     this.isLoading = false;
     // this.isLoading = false;
   }

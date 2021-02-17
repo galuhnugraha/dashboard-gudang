@@ -39,16 +39,9 @@ export const PurchaseOrderScreen = observer((initialData) => {
         purchaseId: ''
     });
     const [loading, setLoading] = useState(false);
-    const [productId, setProductId] = useState('');
-    // const [id, setId] = useState('');
+    const [prOutId, setPrOut] = useState('')
     const [filterModal, setFilterModal] = useState(false);
     const [filterQuery, setFilterQuery] = useState({});
-    const [prOutId, setPrOut] = useState('');
-    // const [newModal, setNewModal] = useState(false);
-    let table = '';
-
-    table = store.purchase.dataDetailObject;
-    console.log(table.formNumber,'yes')
 
     useEffect(() => {
         fetchData();
@@ -64,11 +57,11 @@ export const PurchaseOrderScreen = observer((initialData) => {
     function paramsId(value) {
         store.purchase.queryDetail.purchaseId = value
         setFilterQuery({
-          ...filterQuery,
-          purchaseId: state.purchaseId,
+            ...filterQuery,
+            purchaseId: state.purchaseId,
         })
         history.push("/app/detail-product-in/" + value)
-      }
+    }
 
     const setEditMode = (value) => {
         setState(prevState => ({
@@ -84,6 +77,17 @@ export const PurchaseOrderScreen = observer((initialData) => {
         })
     }
 
+    const setModeDelete = (value) => {
+        setState(prevState => ({
+            ...prevState,
+            delete: true
+        }))
+        form.setFieldsValue({
+            delete: true,
+            // podId: value._id
+        })
+    }
+
     const toggleSuccess = (() => {
         setState({
             success: !state.success,
@@ -96,21 +100,11 @@ export const PurchaseOrderScreen = observer((initialData) => {
         });
     })
 
-    const toggleSuccessReview = (() => {
+    const toggleSuccessDeleted = (() => {
         setState({
-            purchase: !state.purchase,
+            delete: !state.delete,
         });
     })
-
-    const setEditModeReviewNew = (value) => {
-        setState(prevState => ({
-            ...prevState,
-            new: true
-        }))
-        form.setFieldsValue({
-            new: true,
-        })
-    }
 
     async function editData(e) {
         const data = {
@@ -133,14 +127,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
         }
     }
 
-    const handleCancel = () => {
-        // setIsModalVisible(false);
-        form.validateFields().then(values => {
-            form.resetFields();
-        });
-        toggleSuccessReview();
-    };
-
     const handleCancelReviewItem = () => {
         // setIsModalVisible(false);
         form.validateFields().then(values => {
@@ -149,41 +135,33 @@ export const PurchaseOrderScreen = observer((initialData) => {
         toggleSuccessNew();
     };
 
-    const onFinish = values => {
-        dataPost(values);
+    const handleCancelReviewDelete = () => {
+        // setIsModalVisible(false);
+        form.validateFields().then(values => {
+            form.resetFields();
+        });
+        toggleSuccessDeleted();
     };
 
-    const dataPost = (e) => {
-        setLoading(true);
+    // const onFinish = values => {
+    //     dataPost(values);
+    // };
+
+    const deleteData = (e) => {
         const data = {
-            purchaseId: productId,
-            upperPic: e.upperPic,
+            PoId: prOutId,
             password: e.password,
-
         }
-        store.purchase.approve(data).then(res => {
-            setLoading(false);
-            message.success('Berhasil Approve');
-            history.push("/app/product-in");
-            fetchData()
+        // console.log(data)
+        store.purchase.deleteProductIn(data).then((res) => {
+            message.success('Success delete Purchase Order')
+            history.push('/app/product-in');
+            toggleSuccessDeleted()
+            fetchData();
         }).catch(err => {
-            setLoading(false);
-            message.error(err.message);
-        });
+            message.error(err)
+        })
     }
-
-    // const dataReview = store.purchase.data.map((e) => {
-    //     let dataPurchase = {
-    //         _id: e._id,
-    //         invoiceNo: e.invoiceNo,
-    //         suplierName: e.suplierName,
-    //         senderPhone: e.senderPhone,
-    //         pic: e.pic?.UserName,
-    //         totalPurchaseItem: e.totalPurchaseItem,
-    //         status: e.status
-    //     }
-    //     return dataPurchase
-    // })
 
     function onOkFilter() {
         store.noRef.warehouseId = state.warehouseId
@@ -191,6 +169,36 @@ export const PurchaseOrderScreen = observer((initialData) => {
         store.noRef.getNoRef()
         history.push("/app/input-product-in")
         setFilterModal(false);
+    }
+
+    function ModalDeletedPO() {
+        return <Modal
+            maskClosable={false}
+            closable={false}
+            title={"Delete Product In"}
+            visible={state.delete}
+            onOk={() => {
+                form
+                    .validateFields()
+                    .then(values => {
+                        deleteData(values)
+                    })
+                    .catch(info => {
+                    });
+            }}
+            onCancel={handleCancelReviewDelete}
+        >
+            <Form layout="vertical" form={form} className={'custom-form'} name="form_in_modal">
+                <Form.Item
+                    label="Password"
+                    name="password"
+                    size={'large'}
+                // rules={[{ required: true, message: 'Please input your Product Type!' }]}
+                >
+                    <Input.Password style={{ width: '98%' }} />
+                </Form.Item>
+            </Form>
+        </Modal>
     }
 
     function ModalItemWarehouse() {
@@ -240,7 +248,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
             </Form>
         </Modal>
     }
-
 
     {
 
@@ -299,11 +306,8 @@ export const PurchaseOrderScreen = observer((initialData) => {
                             </div>
                             <div style={{ marginLeft: 8 }}>
                                 <DeleteOutlined onClick={() => {
-                                    // setStatus(record.id)
-                                    setPrOut(record.id)
-                                    // console.log(record.id)
-                                    // setEditModeReviewPassword(true)
-                                    // console.log(record.id)
+                                  setPrOut(record._id)
+                                  setModeDelete(true)
                                 }} />
                             </div>
                         </div>
@@ -343,7 +347,7 @@ export const PurchaseOrderScreen = observer((initialData) => {
                         </Button>
                     ]}
                 />
-                {/* {ModalItemWarehouse()} */}
+                {ModalDeletedPO()}
                 {ModalItemWarehouse()}
                 {renderModal()}
                 <Table
