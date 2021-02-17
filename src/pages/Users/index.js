@@ -65,6 +65,8 @@ export const DataUserScreen = observer((initialData) => {
       ...prevState,
       success: true
     }))
+    store.user.getAll();
+    console.log(value,'oke')
     setCheck(value.isActive)
     form.setFieldsValue({
       isEdit: value._id,
@@ -84,7 +86,9 @@ export const DataUserScreen = observer((initialData) => {
     let dataMapping = {
       _id: e._id,
       option: e.option,
-      subOption: e.subOption
+      subOption: e.subOption,
+      url: e.url,
+      isActive:e.isActive
     }
     return dataMapping
   })
@@ -93,7 +97,7 @@ export const DataUserScreen = observer((initialData) => {
     setLoading(true);
     const data = {
       option: e.option,
-      isActive: e.isActive,
+      isActive: check,
       subOption: e.subOption,
       url: e.url
     }
@@ -155,6 +159,7 @@ export const DataUserScreen = observer((initialData) => {
             <div>
               <EditOutlined onClick={() => {
                 setEditMode(record)
+                console.log(record._id)
               }} />
             </div>
             <div style={{ marginLeft: 8 }}>
