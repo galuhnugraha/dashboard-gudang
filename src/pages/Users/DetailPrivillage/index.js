@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Breadcrumb, Popconfirm, Switch, Checkbox, PageHeader, Card, Button, message, Table, Modal } from 'antd';
+import { Form, Input, Breadcrumb, Popconfirm, Switch, PageHeader, Card, Button, message, Table, Modal } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
 import {
@@ -25,12 +25,12 @@ export const DetailPrivillageScreen = observer((initialData, initialValue) => {
     userId: ''
   });
   const [filterQuery, setFilterQuery] = useState({});
-  const [check, setCheck] = useState({
-    insert: false,
-    update: false,
-    read: false,
-    deleted: false
-  })
+  // const [check, setCheck] = useState({
+  //   insert: false,
+  //   update: false,
+  //   read: false,
+  //   deleted: false
+  // })
   const [insert, setInsert] = useState(false);
   const [updated, setUpdated] = useState(false);
   const [deleted, setDeleted] = useState(false);
@@ -106,7 +106,6 @@ export const DetailPrivillageScreen = observer((initialData, initialValue) => {
       ...filterQuery,
       userId: value,
     })
-    console.log(value)
   }
 
   async function editData(e) {
@@ -143,7 +142,6 @@ export const DetailPrivillageScreen = observer((initialData, initialValue) => {
       read: read,
       update: updated
     }
-    console.log(data, 'oke')
     if (value.isEdit) {
       store.user.updatedPrivillageDetail(value.isEdit, data)
         .then(res => {
@@ -485,6 +483,7 @@ export const DetailPrivillageScreen = observer((initialData, initialValue) => {
         size="small"
         hasEmpty
         style={{ marginLeft: '12px' }}
+        rowKey={row => row._id}
       // onClick={(record) => {
       //   clickBait(record)
       // }}

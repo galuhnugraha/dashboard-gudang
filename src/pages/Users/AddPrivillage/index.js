@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-import { Form, Input, Breadcrumb, message, PageHeader, Select, Card, Button, Table } from 'antd';
-import { Link, useHistory } from 'react-router-dom';
+import { Form, Input,message, PageHeader,Card, Button} from 'antd';
+import {useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
-import {
-    PlusOutlined,
-} from '@ant-design/icons';
 import { observer } from "mobx-react-lite";
 
 export const DataInputUserScreen = observer(() => {

@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
     Table,
-    Space,
-    Popconfirm, Input,
+    Space,Input,
     Form, Modal,
     message, Breadcrumb,
-    PageHeader, Card, Button,
+    PageHeader, Card
 } from 'antd';
-import {
-    CheckOutlined
-    // DownloadOutlined
-} from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
 import { observer } from "mobx-react-lite";
@@ -150,13 +145,13 @@ export const ApprovalScreen = observer(() => {
             key: 'action',
             render: (text, record) => (
                 <Space size="middle">
-                    <a onClick={() => {
+                    <span onClick={() => {
                         console.log(record._id)
                         setPurchaseId(record._id)
                         setEditModeReviewPurchase(true)
                     }}>
                         Approval
-                    </a>
+                    </span>
                 </Space>
             ),
         }

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
     Row, Col, Card, Table
 } from 'antd';
-import { Link, useHistory } from 'react-router-dom';
+// import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../../utils/useStores";
 import { observer } from "mobx-react-lite";
 import moment from 'moment';
@@ -10,7 +10,7 @@ import Cookies from 'universal-cookie';
 
 export const DetailProductInScreen = observer(() => {
     const store = useStore();
-    const history = useHistory();
+    // const history = useHistory();
     const cookie = new Cookies();
 
     useEffect(() => {
@@ -165,7 +165,7 @@ export const DetailProductInScreen = observer(() => {
                 </Row>
             </div>
             <Table dataSource={table.item} columns={columns} style={{ paddingLeft: '12px', marginTop: '10px' }}
-                size="small" />
+                size="small"  rowKey={row => row._id}/>
             <Row type="flex" justify="space-between">
                 <Col>
                     <div style={{ marginTop: 4, marginLeft: 23 }}>

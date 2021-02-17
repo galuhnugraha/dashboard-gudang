@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
     Input,
     Form,
-    message, Breadcrumb, Popconfirm, Divider, Modal,
-    PageHeader, Card, Button, Select, Table, Row, Col
+    message, Breadcrumb, Popconfirm, Divider, Modal,Card, Button, Select, Table, Row, Col
 } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import {
@@ -15,20 +14,8 @@ import { PlusOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import Cookies from 'universal-cookie';
 
-
-const renderContent = (value, row, index) => {
-    const obj = {
-        children: value,
-        props: {},
-    };
-    if (index === 4) {
-        obj.props.colSpan = 0;
-    }
-    return obj;
-};
-
 export const AddPurchaseOrder = observer((initialData) => {
-    var myItem = new Array()
+    // var myItem = new Array()
     var newID = ""
     const store = useStore();
     const history = useHistory();
@@ -400,11 +387,11 @@ export const AddPurchaseOrder = observer((initialData) => {
             key: 'productName',
             render: (text, record) => {
                 return (<div>
-                    <a style={{ color: '#132743' }} onClick={() => {
+                    <span style={{ color: '#132743' }} onClick={() => {
                         console.log(record)
                         setFilterProductSupliers(record)
                         setEditModeReview(record)
-                    }}>{text}</a>
+                    }}>{text}</span>
                 </div>)
             },
         },
@@ -449,12 +436,12 @@ export const AddPurchaseOrder = observer((initialData) => {
             dataIndex: 'action',
             render: (_, record) => (
                 <div>
-                    <a style={{ marginRight: 10 }} onClick={() => {
+                    <span style={{ marginRight: 10 }} onClick={() => {
                         setEditModeReviewDetail(record)
-                    }}>Detail</a>
-                    <a style={{ marginRight: 10 }} onClick={() => {
+                    }}>Detail</span>
+                    <span style={{ marginRight: 10 }} onClick={() => {
                         setDetailEditMode(record)
-                    }}>Edit</a>
+                    }}>Edit</span>
                     <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
                         <DeleteOutlined />
                     </Popconfirm>
@@ -599,7 +586,7 @@ export const AddPurchaseOrder = observer((initialData) => {
                                         {menu}
                                         <Divider style={{ margin: '4px 0' }} />
                                         <div style={{ display: 'flex', flexWrap: 'nowrap', padding: 8 }}>
-                                            <a
+                                            <span
                                                 style={{ flex: 'none', padding: '8px', display: 'block', cursor: 'pointer' }}
                                                 //   onClick={this.addItem}
                                                 onClick={() => {
@@ -607,7 +594,7 @@ export const AddPurchaseOrder = observer((initialData) => {
                                                 }}
                                             >
                                                 <PlusOutlined /> Add item
-                                        </a>
+                                        </span>
                                         </div>
                                     </div>
                                 )}

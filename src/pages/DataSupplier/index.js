@@ -18,7 +18,6 @@ import {
   PlusOutlined,
   EditOutlined,
   DeleteOutlined,
-  MinusOutlined
 } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../utils/useStores";

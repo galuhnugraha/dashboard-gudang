@@ -18,10 +18,10 @@ export const Login = observer(() => {
   // const enterLoading = () => {
   //   history.push("/app/dashboard");
   // }
-  const [state, setState] = useState({
-    human: false,
-    disabled: true,
-  })
+  // const [state, setState] = useState({
+  //   human: false,
+  //   disabled: true,
+  // })
 
   const onFinish = values => {
     enterLoading(values);

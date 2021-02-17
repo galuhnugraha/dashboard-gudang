@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import {
-  message, Tabs, Breadcrumb, Card, PageHeader, Input, Button
+import React, { useEffect } from "react";
+import {Tabs, Breadcrumb, Card, PageHeader
 } from 'antd';
 // import {
 //   DeleteOutlined,
 // } from '@ant-design/icons';
-import { Link, useHistory } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
 import { observer } from "mobx-react-lite";
 import { DetailWarehouseBarangScreen } from "./DetailBarang";
@@ -14,19 +13,15 @@ import { DetailWarehouseHistoryBarangScreen } from "./DetailHistoryBarang";
 // import moment from "moment";
 
 
-function cancel(e) {
-  message.error('Anda Tidak Jadi Hapus Data Ini!');
-}
-
 export const DetailWarehouseScreen = observer((initialData) => {
   const store = useStore();
-  const history = useHistory();
+  // const history = useHistory();
   const { TabPane } = Tabs;
-  const { Search } = Input;
-  const [filterQuery, setFilterQuery] = useState({});
-  const [state, setState] = useState({
-    warehouseId: '',
-  });
+  // const { Search } = Input;
+  // const [filterQuery, setFilterQuery] = useState({});
+  // const [state, setState] = useState({
+  //   warehouseId: '',
+  // });
 
   useEffect(() => {
     fetchData();
@@ -35,7 +30,7 @@ export const DetailWarehouseScreen = observer((initialData) => {
       // store.warehouse.query.lm = 10;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterQuery]);
+  }, []);
 
   async function fetchData() {
     await store.warehouse.getWarehouse();

@@ -1,4 +1,4 @@
-import { action, observable, computed } from 'mobx';
+import { action, observable} from 'mobx';
 import { http } from "../utils/http";
 import * as qs from "querystring";
 import Cookies from 'universal-cookie';
@@ -183,15 +183,6 @@ export class UserStore {
       })
   }
 
-  @action
-  async getTest() {
-    this.isLoading = true;
-    const token = cookie.get("Token")
-    const data = await http.get('/test').withCredentials();
-
-    return data.body.data;
-    // this.isLoading = false;
-  }
 
   @action
   updatedPrivillageDetail = async (_id, data) => {

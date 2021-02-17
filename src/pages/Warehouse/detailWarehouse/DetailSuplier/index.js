@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import {
-  message, Tabs,Table, Breadcrumb, Card, PageHeader, Input, Button
+import React, { useEffect } from "react";
+import {Table
 } from 'antd';
 // import {
 //   DeleteOutlined,
 // } from '@ant-design/icons';
-import { Link, useHistory } from 'react-router-dom';
+// import {useHistory } from 'react-router-dom';
 import { useStore } from "../../../../utils/useStores";
 import { observer } from "mobx-react-lite";
 // import moment from "moment";
@@ -13,7 +12,7 @@ import { observer } from "mobx-react-lite";
 
 export const DetailWarehouseSuplierScreen = observer(() => {
   const store = useStore();
-  const history = useHistory();
+  // const history = useHistory();
 
 
   useEffect(() => {
@@ -34,7 +33,6 @@ export const DetailWarehouseSuplierScreen = observer(() => {
       // warehouseName: e.warehouse?.warehouseName
     }
   })
-  console.log(data,'test')
 
   const columns = [
     {
@@ -56,6 +54,6 @@ export const DetailWarehouseSuplierScreen = observer(() => {
 
 
   return <div>
-    <Table dataSource={data} columns={columns} hasEmpty/>
+    <Table dataSource={data} columns={columns} hasEmpty rowKey={row => row._id}/>
   </div>
 })

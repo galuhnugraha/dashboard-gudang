@@ -5,9 +5,6 @@ import Cookies from 'universal-cookie';
 
 
 var cookie = new Cookies();
-const defaultStatus = {
-    "status": ""
-};
 
 export class PurchaseOrder {
     baseUrl: '/purchaseOrder';
@@ -157,7 +154,7 @@ export class PurchaseOrder {
         this.isLoading = true;
         const token = cookie.get("Token")
         const data = await http.get('/purchaseOrder').set({ 'authorization': `Bearer ${token}` });
-        console.log(data,'test')
+        // console.log(data,'test')
         this.data = data.body.data;
     }
 
@@ -169,7 +166,7 @@ export class PurchaseOrder {
         this.isLoading = true;
         const token = cookie.get("Token")
         const data = await http.get('/purchaseOrder' + '?' +  qs.stringify(this.queryDetail)).set({ 'authorization': `Bearer ${token}` });
-        console.log(data,'test')
+        // console.log(data,'test')
         this.dataDetailObject = data.body.data;
     }
 }

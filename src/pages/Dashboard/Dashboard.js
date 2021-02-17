@@ -1,24 +1,18 @@
 import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { useStore } from "../../utils/useStores";
-import {useCookies} from 'react-cookie'
+// import { useStore } from "../../utils/useStores";
+// import {useCookies} from 'react-cookie'
 import {
-  Row, Col, Card,PageHeader,Button
+  Row, Col, Card,PageHeader
 } from 'antd';
-import Cookies from 'universal-cookie';
+
 export const Dashboard = observer(() => {
-  const store = useStore();
-  const [cookies, setCookie] = useCookies(['name']);
+  // const store = useStore();
 
   useEffect(() => {
     // store.products.getAll();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  function fetchData() {
-    store.user.getTest()
-    // setCookie('Token', "rahasia rahasia", { path: '/' });
-  }
     
 
   return <div className="card-page-header">

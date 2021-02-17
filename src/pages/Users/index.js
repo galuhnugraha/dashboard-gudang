@@ -3,7 +3,6 @@ import { Form, Input, Breadcrumb, Switch, Space, Popconfirm, PageHeader, Card, B
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../utils/useStores";
 import {
-  PlusOutlined,
   EditOutlined,
   DeleteOutlined
 } from '@ant-design/icons';
@@ -25,7 +24,7 @@ export const DataUserScreen = observer((initialData) => {
     position: ''
   });
   const [filterQuery, setFilterQuery] = useState({});
-  const [check,setCheck] = useState(false);
+  const [check, setCheck] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -80,6 +79,15 @@ export const DataUserScreen = observer((initialData) => {
   const unchecked = (checked) => {
     setCheck(checked)
   }
+
+  const mapping = store.user.data.map((e) => {
+    let dataMapping = {
+      _id: e._id,
+      option: e.option,
+      subOption: e.subOption
+    }
+    return dataMapping
+  })
 
   async function editData(e) {
     setLoading(true);
@@ -189,7 +197,7 @@ export const DataUserScreen = observer((initialData) => {
           <Search
             placeholder="Search...."
             style={{ width: 200 }}
-          // key={row => row._id}
+            key={"2"}
           />,
           <Button
             key={"1"}
@@ -202,7 +210,8 @@ export const DataUserScreen = observer((initialData) => {
         ]}
       />
       {renderModal()}
-      <Table dataSource={store.user.data.slice()} columns={columns}
+      <Table dataSource={mapping}
+        columns={columns}
         loading={store.user.isLoading} size="small"
         hasEmpty
         style={{ marginLeft: '12px' }}
@@ -229,6 +238,7 @@ export const DataUserScreen = observer((initialData) => {
           .validateFields()
           .then(values => {
             editData(values);
+            loading(values)
           })
           .catch(info => {
 
@@ -261,7 +271,7 @@ export const DataUserScreen = observer((initialData) => {
           size={'large'}
           rules={[{ required: true, message: 'Please input your Product Type!' }]}
         >
-          <Switch checked={check} onChange={unchecked}/>
+          <Switch checked={check} onChange={unchecked} />
         </Form.Item>
         <Form.Item
           label="Url"

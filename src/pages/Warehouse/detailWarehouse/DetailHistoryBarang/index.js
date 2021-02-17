@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from "react";
-import {
-  message, Table
+import React, { useEffect} from "react";
+import {Table
 } from 'antd';
 // import {
 //   DeleteOutlined,
 // } from '@ant-design/icons';
-import { Link, useHistory } from 'react-router-dom';
+// import {useHistory } from 'react-router-dom';
 import { useStore } from "../../../../utils/useStores";
 import { observer } from "mobx-react-lite";
 // import moment from "moment";
 
 
-function cancel(e) {
-  message.error('Anda Tidak Jadi Hapus Data Ini!');
-}
+// function cancel(e) {
+//   message.error('Anda Tidak Jadi Hapus Data Ini!');
+// }
 
 export const DetailWarehouseHistoryBarangScreen = observer(() => {
   const store = useStore();
-  const history = useHistory();
+  // const history = useHistory();
 
 
   useEffect(() => {
@@ -39,7 +38,6 @@ export const DetailWarehouseHistoryBarangScreen = observer(() => {
       // warehouseName: e.warehouse?.warehouseName
     }
   })
-  console.log(data,'test')
 
   const columns = [
     {

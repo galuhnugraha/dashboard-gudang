@@ -12,11 +12,11 @@ export const ForgotPassword = observer(() => {
     console.log(id);
     const [loading, setLoading] = useState(false);
     const store = useStore();
-    const [state, setState] = useState({
-        human: false,
-        disabled: true,
-        email: ""
-    })
+    // const [state, setState] = useState({
+    //     human: false,
+    //     disabled: true,
+    //     email: ""
+    // })
     // const enterLoading = () => {
     //   history.push("/app/dashboard");
     // }

@@ -33,6 +33,7 @@ export const DetailSuplierScreen = observer(() => {
 
     const data = store.supliers.data.map((e) => {
         let obj = {
+            _id: e._id,
             productName: e.product?.productName,
             pricePerUnit: e.product?.pricePerUnit,
             quantity: e.product?.quantity,
@@ -41,7 +42,6 @@ export const DetailSuplierScreen = observer(() => {
         }
         return obj;
     })
-    console.log(data,'testtttt')
 
 
     const columns = [
@@ -55,11 +55,11 @@ export const DetailSuplierScreen = observer(() => {
             dataIndex: 'pricePerUnit',
             key: 'pricePerUnit',
         },
-        // {
-        //     title: 'Stok',
-        //     dataIndex: 'quantity',
-        //     key: 'quantity',
-        // },
+        {
+            title: 'Stok',
+            dataIndex: 'quantity',
+            key: 'quantity',
+        },
     ];
 
     return <div>
@@ -108,7 +108,7 @@ export const DetailSuplierScreen = observer(() => {
                 dataSource={data}
                 columns={columns}
                 size={"middle"}
-                rowKey={record => record.data}
+                rowKey={record => record._id}
                 hasEmpty
                 style={{ paddingLeft: '12px' }}
             />

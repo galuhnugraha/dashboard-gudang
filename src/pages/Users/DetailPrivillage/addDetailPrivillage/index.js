@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Form, Input, message, DatePicker, Checkbox, Switch, PageHeader, Card, Button, Table } from 'antd';
-import { Link, useHistory } from 'react-router-dom';
+import { Form, Input, message, DatePicker,Switch, PageHeader, Card, Button} from 'antd';
+import {useHistory } from 'react-router-dom';
 import { useStore } from "../../../../utils/useStores";
 import {
     UserOutlined, LockOutlined, PhoneOutlined, MailOutlined
@@ -8,7 +8,7 @@ import {
 import { observer } from "mobx-react-lite";
 
 export const AddDetailPrivillage = observer(() => {
-    const { Search } = Input;
+    // const { Search } = Input;
     const history = useHistory();
     const store = useStore();
     const [loading, setLoading] = useState(false);
@@ -147,7 +147,7 @@ export const AddDetailPrivillage = observer(() => {
                         block
                         htmlType="submit"
                         size={'large'}
-                        // loading={loading}
+                        loading={loading}
                     >
                         Submit
 					</Button>

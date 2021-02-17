@@ -13,14 +13,11 @@ import {
   EditOutlined,
   PlusOutlined,
   FilterOutlined,
-  MinusOutlined
 } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../utils/useStores";
 import { observer } from "mobx-react-lite";
 import { appConfig } from "../config/app";
-import { ShowModalSupliers } from "./ShowModalSuplier";
-import * as _ from "lodash";
 
 function cancel(e) {
   message.error('Click on No');
@@ -34,8 +31,8 @@ export const DataProdukScreen = observer((initialData) => {
   const [xImg, setXImg] = useState('')
   const [filterModal, setFilterModal] = useState(false);
   const [filterQuery, setFilterQuery] = useState({});
-  const [filterProduct, setFilterProduct] = useState(false);
-  const [prOutId, setPrOut] = useState('')
+  // const [filterProduct, setFilterProduct] = useState(false);
+  // const [prOutId, setPrOut] = useState('')
   const [filterSupliers, setFilterSupliers] = useState('');
   const [filterWarehouse, setFilterWarehouse] = useState('');
   const [filterProductName, setFilterProductName] = useState('');
@@ -81,10 +78,10 @@ export const DataProdukScreen = observer((initialData) => {
   //   })
   // }
 
-  const onFinish = values => {
-    // ProductOut(values)
-    setFilterProduct(false)
-  };
+  // const onFinish = values => {
+  //   // ProductOut(values)
+  //   setFilterProduct(false)
+  // };
 
   // function modalProduct() {
   //   return <Modal
@@ -399,16 +396,16 @@ export const DataProdukScreen = observer((initialData) => {
 
   function FilterWarehouse(value) {
     // console.log(value)
-    return value.warehouseId == filterWarehouse
+    return value.warehouseId === filterWarehouse
   }
 
   function FilterSupliers(value) {
     // console.log(value)
-    return value.suplierId == filterSupliers
+    return value.suplierId === filterSupliers
   }
 
   function FilterProduct(value) {
-    return value.id == filterProductName
+    return value.id === filterProductName
   }
   const selectedDataProduct = dataMap.filter(FilterProduct);
 
@@ -425,7 +422,7 @@ export const DataProdukScreen = observer((initialData) => {
       onCancel={handleCancel}
     >
       <Card>
-        <Col span={12}>Supliers Name :  {selectedDataSupliers[0]?.suplierAddress}</Col>
+        <Col span={12}>Supliers Name :  {selectedDataSupliers[0]?.suplierName}</Col>
         <Col span={12}>Company Name : {selectedDataSupliers[0]?.companyName}</Col>
         <Col span={12}>Supliers Phone : {selectedDataSupliers[0]?.suplierPhone}</Col>
       </Card>
@@ -480,10 +477,10 @@ export const DataProdukScreen = observer((initialData) => {
         key: 'productName',
         render: (text, record) => {
           return (<div>
-            <a onClick={() => {
+            <span onClick={() => {
               setFilterProductName(record.id)
               setEditModeReviewProduct(record)
-            }} style={{ color: '#132743' }}>{text}</a>
+            }} style={{ color: '#132743' }}>{text}</span>
           </div>)
         },
       },
@@ -537,11 +534,10 @@ export const DataProdukScreen = observer((initialData) => {
         // key: 'location',
         render: (text, record) => {
           return (<div>
-            <a style={{ color: '#132743' }} onClick={() => {
+            <span style={{ color: '#132743' }} onClick={() => {
               setFilterSupliers(record.suplierId)
-              console.log(record.suplierId)
               setEditModeReview(record)
-            }}>{text}</a>
+            }}>{text}</span>
           </div>)
         },
       },
@@ -552,13 +548,12 @@ export const DataProdukScreen = observer((initialData) => {
         key: 'location',
         render: (text, record) => {
           return (<div>
-            <a style={{ color: '#132743' }} onClick={() => {
+            <span style={{ color: '#132743' }} onClick={() => {
               // setFilterProduct(true)
               // onDetailProduct(record)
               setFilterWarehouse(record.warehouseId)
-              console.log(record.warehouseId,'testtt')
               setEditModeReviewLocation(record)
-            }}>{text}</a>
+            }}>{text}</span>
           </div>)
         },
       },
@@ -652,7 +647,7 @@ export const DataProdukScreen = observer((initialData) => {
         {renderModal()}
         {modalItemLocation()}
         <Table
-          rowKey={record => record.id}
+          rowKey={record => record._id}
           hasEmpty
           // style={{ paddingLeft: '12px' }}
           size="small"

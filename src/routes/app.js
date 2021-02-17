@@ -15,13 +15,13 @@ import { DataReciveScreen } from "../pages/Payment/Recive";
 import { AddPurchaseOrder } from "../pages/Payment/PurchaseOrder/AddPurchaseOrder";
 import { ReceiveScreen } from "../pages/Payment/Recive/AddReceive";
 import { DetailSuplierScreen } from "../pages/DataSupplier/DetailSuplier";
-import { ProductOut } from "../pages/Payment/ProductOut";
-import {InputProductOut} from "../pages/Payment/ProductOut/addProductOut";
+// import { ProductOut } from "../pages/Payment/ProductOut";
+// import {InputProductOut} from "../pages/Payment/ProductOut/addProductOut";
 import {ApprovalScreen} from "../pages/Payment/Approval";
 import {DataUserScreen} from "../pages/Users";
 import { DataInputUserScreen } from "../pages/Users/AddPrivillage";
-import {DataPrivillageScreen} from "../pages/Users/Privillage";
-import {AddPrivillageScreen} from "../pages/Users/Privillage/AddPrivillage";
+// import {DataPrivillageScreen} from "../pages/Users/Privillage";
+// import {AddPrivillageScreen} from "../pages/Users/Privillage/AddPrivillage";
 import { DetailPrivillageScreen } from "../pages/Users/DetailPrivillage";
 import {AddDetailPrivillage} from "../pages/Users/DetailPrivillage/addDetailPrivillage";
 import { DetailProductInScreen } from "../pages/Payment/PurchaseOrder/DetailProductIn";
@@ -76,12 +76,12 @@ export const AppRoutes = () => {
     <Route path="/app/detail-suplier/:id" exact>
       <DetailSuplierScreen />
     </Route>
-    <Route path="/app/product-out" exact>
+    {/* <Route path="/app/product-out" exact>
       <ProductOut />
-    </Route>
-    <Route path="/app/input-product-out" exact>
+    </Route> */}
+    {/* <Route path="/app/input-product-out" exact>
       <InputProductOut />
-    </Route>
+    </Route> */}
     <Route path="/app/approval" exact>
       {/* <InputProductOut /> */}
       <ApprovalScreen />
@@ -92,12 +92,12 @@ export const AppRoutes = () => {
     <Route path="/app/input-user-privillage" exact>
       <DataInputUserScreen />
     </Route>
-    <Route path="/app/privillage" exact>
+    {/* <Route path="/app/privillage" exact>
       <DataPrivillageScreen />
-    </Route>
-    <Route path="/app/input-privillage" exact>
+    </Route> */}
+    {/* <Route path="/app/input-privillage" exact>
       <AddPrivillageScreen />
-    </Route>
+    </Route> */}
     <Route path="/app/privillage-detail" exact>
       <DetailPrivillageScreen />
     </Route>

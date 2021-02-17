@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import {
-    message, Tabs, Table, Space, Form, Breadcrumb, Card, PageHeader, Input, Button, Popconfirm
+    Table
 } from 'antd';
-import {
-    DeleteOutlined,
-} from '@ant-design/icons';
-import { Link, useHistory } from 'react-router-dom';
+// import {useHistory } from 'react-router-dom';
 import { useStore } from "../../../../utils/useStores";
 import { observer } from "mobx-react-lite";
 // import moment from "moment";
@@ -14,12 +11,12 @@ import { observer } from "mobx-react-lite";
 
 export const DetailWarehouseBarangScreen = observer(() => {
     const store = useStore();
-    const history = useHistory();
-    const [form] = Form.useForm();
-    const [state, setState] = useState({
-        success: false,
-        warehouseId: '',
-    });
+    // const history = useHistory();
+    // const [form] = Form.useForm();
+    // const [state, setState] = useState({
+    //     success: false,
+    //     warehouseId: '',
+    // });
 
     useEffect(() => {
         fetchData();

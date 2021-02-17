@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
     Table,
-    Space,
-    Popconfirm, Input,
+    Space,Input,
     Form, Modal,
     message, Breadcrumb,
     PageHeader, Card, Button, Select
@@ -11,19 +10,11 @@ import {
     DeleteOutlined,
     EditOutlined,
     PlusOutlined,
-    EyeOutlined,
-    PrinterOutlined,
-    FilterOutlined
     // DownloadOutlined
 } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
 import { observer } from "mobx-react-lite";
-import xlsx from 'xlsx';
-
-function cancel(e) {
-    message.error('Click on No');
-}
 
 export const PurchaseOrderScreen = observer((initialData) => {
     const store = useStore();
@@ -38,7 +29,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
         warehouseId: '',
         purchaseId: ''
     });
-    const [loading, setLoading] = useState(false);
     const [prOutId, setPrOut] = useState('')
     const [filterModal, setFilterModal] = useState(false);
     const [filterQuery, setFilterQuery] = useState({});
@@ -273,7 +263,6 @@ export const PurchaseOrderScreen = observer((initialData) => {
                 key: 'invoiceNo',
                 render: (text, record) => {
                     return (<div onClick={() => {
-                        console.log(record._id)
                         paramsId(record._id)
                     }} style={{ color: '#132743' }} >
                         {text}

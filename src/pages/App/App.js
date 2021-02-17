@@ -77,7 +77,7 @@ export const App = () => {
         breakpoint="lg"
         collapsedWidth="0"
         onBreakpoint={broken => {
-          console.log(broken);
+          // console.log(broken);
         }}
         style={{ background: '#132743' }}
         trigger={null} collapsible collapsed={collapsed}
