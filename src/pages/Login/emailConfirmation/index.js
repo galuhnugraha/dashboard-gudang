@@ -152,7 +152,7 @@ export const EmailConfirmation = observer(() => {
                                     disabled={robot}
                                     loading={loading}
                                     className="login-form-button">
-                                    Submit
+                                    Submi
                                 </Button>
                             </Form.Item>
                         </Form>
