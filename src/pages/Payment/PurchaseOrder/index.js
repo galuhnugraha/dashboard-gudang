@@ -15,7 +15,6 @@ import {
 import { Link, useHistory } from 'react-router-dom';
 import { useStore } from "../../../utils/useStores";
 import { observer } from "mobx-react-lite";
-import xlsx from 'xlsx';
 
 export const PurchaseOrderScreen = observer((initialData) => {
     const store = useStore();
